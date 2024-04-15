@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.home')
 
 @section('title')
     Contact | Point Sebelas
@@ -6,19 +6,19 @@
 
 @section('content')
     <!-- Single Page Header start -->
-    <div class="container-fluid page-header py-5">
+    <div class="py-5 container-fluid page-header">
         <h1 class="text-center text-white display-6">Cart</h1>
-        <ol class="breadcrumb justify-content-center mb-0">
+        <ol class="mb-0 breadcrumb justify-content-center">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
             <li class="breadcrumb-item"><a href="#">Pages</a></li>
-            <li class="breadcrumb-item active text-white">Cart</li>
+            <li class="text-white breadcrumb-item active">Cart</li>
         </ol>
     </div>
     <!-- Single Page Header End -->
 
 
     <!-- Cart Page Start -->
-    <div class="container-fluid py-5">
+    <div class="py-5 container-fluid">
         <div class="container py-5">
             <div class="table-responsive">
                 <table class="table">
@@ -41,32 +41,32 @@
                                 </div>
                             </th>
                             <td>
-                                <p class="mb-0 mt-4">Big Banana</p>
+                                <p class="mt-4 mb-0">Big Banana</p>
                             </td>
                             <td>
-                                <p class="mb-0 mt-4">2.99 $</p>
+                                <p class="mt-4 mb-0">2.99 $</p>
                             </td>
                             <td>
-                                <div class="input-group quantity mt-4" style="width: 100px;">
+                                <div class="mt-4 input-group quantity" style="width: 100px;">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-minus rounded-circle bg-light border">
+                                        <button class="border btn btn-sm btn-minus rounded-circle bg-light">
                                             <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
-                                    <input type="text" class="form-control form-control-sm text-center border-0"
+                                    <input type="text" class="text-center border-0 form-control form-control-sm"
                                         value="1">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-plus rounded-circle bg-light border">
+                                        <button class="border btn btn-sm btn-plus rounded-circle bg-light">
                                             <i class="fa fa-plus"></i>
                                         </button>
                                     </div>
                                 </div>
                             </td>
                             <td>
-                                <p class="mb-0 mt-4">2.99 $</p>
+                                <p class="mt-4 mb-0">2.99 $</p>
                             </td>
                             <td>
-                                <button class="btn btn-md rounded-circle bg-light border mt-4">
+                                <button class="mt-4 border btn btn-md rounded-circle bg-light">
                                     <i class="fa fa-times text-danger"></i>
                                 </button>
                             </td>
@@ -80,32 +80,32 @@
                                 </div>
                             </th>
                             <td>
-                                <p class="mb-0 mt-4">Potatoes</p>
+                                <p class="mt-4 mb-0">Potatoes</p>
                             </td>
                             <td>
-                                <p class="mb-0 mt-4">2.99 $</p>
+                                <p class="mt-4 mb-0">2.99 $</p>
                             </td>
                             <td>
-                                <div class="input-group quantity mt-4" style="width: 100px;">
+                                <div class="mt-4 input-group quantity" style="width: 100px;">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-minus rounded-circle bg-light border">
+                                        <button class="border btn btn-sm btn-minus rounded-circle bg-light">
                                             <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
-                                    <input type="text" class="form-control form-control-sm text-center border-0"
+                                    <input type="text" class="text-center border-0 form-control form-control-sm"
                                         value="1">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-plus rounded-circle bg-light border">
+                                        <button class="border btn btn-sm btn-plus rounded-circle bg-light">
                                             <i class="fa fa-plus"></i>
                                         </button>
                                     </div>
                                 </div>
                             </td>
                             <td>
-                                <p class="mb-0 mt-4">2.99 $</p>
+                                <p class="mt-4 mb-0">2.99 $</p>
                             </td>
                             <td>
-                                <button class="btn btn-md rounded-circle bg-light border mt-4">
+                                <button class="mt-4 border btn btn-md rounded-circle bg-light">
                                     <i class="fa fa-times text-danger"></i>
                                 </button>
                             </td>
@@ -118,32 +118,32 @@
                                 </div>
                             </th>
                             <td>
-                                <p class="mb-0 mt-4">Awesome Brocoli</p>
+                                <p class="mt-4 mb-0">Awesome Brocoli</p>
                             </td>
                             <td>
-                                <p class="mb-0 mt-4">2.99 $</p>
+                                <p class="mt-4 mb-0">2.99 $</p>
                             </td>
                             <td>
-                                <div class="input-group quantity mt-4" style="width: 100px;">
+                                <div class="mt-4 input-group quantity" style="width: 100px;">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-minus rounded-circle bg-light border">
+                                        <button class="border btn btn-sm btn-minus rounded-circle bg-light">
                                             <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
-                                    <input type="text" class="form-control form-control-sm text-center border-0"
+                                    <input type="text" class="text-center border-0 form-control form-control-sm"
                                         value="1">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-plus rounded-circle bg-light border">
+                                        <button class="border btn btn-sm btn-plus rounded-circle bg-light">
                                             <i class="fa fa-plus"></i>
                                         </button>
                                     </div>
                                 </div>
                             </td>
                             <td>
-                                <p class="mb-0 mt-4">2.99 $</p>
+                                <p class="mt-4 mb-0">2.99 $</p>
                             </td>
                             <td>
-                                <button class="btn btn-md rounded-circle bg-light border mt-4">
+                                <button class="mt-4 border btn btn-md rounded-circle bg-light">
                                     <i class="fa fa-times text-danger"></i>
                                 </button>
                             </td>
@@ -152,17 +152,17 @@
                 </table>
             </div>
             <div class="mt-5">
-                <input type="text" class="border-0 border-bottom rounded me-5 py-3 mb-4" placeholder="Coupon Code">
-                <button class="btn border-secondary rounded-pill px-4 py-3 text-primary" type="button">Apply
+                <input type="text" class="py-3 mb-4 border-0 rounded border-bottom me-5" placeholder="Coupon Code">
+                <button class="px-4 py-3 btn border-secondary rounded-pill text-primary" type="button">Apply
                     Coupon</button>
             </div>
             <div class="row g-4 justify-content-end">
                 <div class="col-8"></div>
                 <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
-                    <div class="bg-light rounded">
+                    <div class="rounded bg-light">
                         <div class="p-4">
-                            <h1 class="display-6 mb-4">Cart <span class="fw-normal">Total</span></h1>
-                            <div class="d-flex justify-content-between mb-4">
+                            <h1 class="mb-4 display-6">Cart <span class="fw-normal">Total</span></h1>
+                            <div class="mb-4 d-flex justify-content-between">
                                 <h5 class="mb-0 me-4">Subtotal:</h5>
                                 <p class="mb-0">$96.00</p>
                             </div>
@@ -178,8 +178,9 @@
                             <h5 class="mb-0 ps-4 me-4">Total</h5>
                             <p class="mb-0 pe-4">$99.00</p>
                         </div>
-                        <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4"
-                            type="button">Proceed Checkout</button>
+                        <a href="{{ route('checkout') }}"
+                            class="px-4 py-3 mb-4 btn border-secondary rounded-pill text-primary text-uppercase ms-4"
+                            type="button">Proceed Checkout</a>
                     </div>
                 </div>
             </div>

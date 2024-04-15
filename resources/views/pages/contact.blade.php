@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.home')
 
 @section('title')
     Contact | Point Sebelas
@@ -43,7 +43,7 @@
                             <input type="email" class="py-3 mb-4 border-0 w-100 form-control"
                                 placeholder="Enter Your Email">
                             <textarea class="mb-4 border-0 w-100 form-control" rows="5" cols="10" placeholder="Your Message"></textarea>
-                            <button class="py-3 bg-white w-100 btn form-control border-secondary text-primary "
+                            <button class="py-3 bg-white w-100 btn form-control border-secondary text-primary"
                                 type="submit">Submit</button>
                         </form>
                     </div>
