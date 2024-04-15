@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/category', [CategoryController::class, 'index'])->name('category');
     Route::get('/category/create', [CategoryController::class, 'create'])->name('category.create');
     Route::post('/category/store', [CategoryController::class, 'store'])->name('category.store');
+    Route::delete('/category/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
 
     Route::get('/product', [ProductController::class, 'index'])->name('product');
     Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction');

@@ -19,50 +19,32 @@
                                     <table class="table table-hover scroll-horizontal-vertical w-100" id="crudTable">
                                         <thead>
                                             <tr>
-                                                <th>ID</th>
+                                                <th>No</th>
                                                 <th>Nama</th>
                                                 <th>Slug</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($query as $category)
+                                            @foreach ($query as $key => $category)
                                                 <tr>
-                                                    <td>{{ $category->id }}</td>
+                                                    <td>{{ $key + 1 }}</td>
                                                     <td>{{ $category->name }}</td>
                                                     <td>{{ $category->slug }}</td>
                                                     <td>
                                                         <div class="btn-group">
-                                                            <div class="dropdown">
-                                                                <button
-                                                                    class="mb-1 mr-1 btn btn-primary dropdown-toggle"
-                                                                    type="button" id="action{{ $category->id }}"
-                                                                    data-toggle="dropdown" aria-haspopup="true"
-                                                                    aria-expanded="false">
-                                                                    Aksi
+                                                            <a href="#" class="mb-1 mr-1 btn btn-primary">
+                                                                Edit
+                                                            </a>
+                                                            <form
+                                                                action="{{ route('category.destroy', $category->id) }}"
+                                                                method="POST">
+                                                                @method('delete')
+                                                                @csrf
+                                                                <button type="submit" class="mb-1 mr-1 btn btn-danger">
+                                                                    Hapus
                                                                 </button>
-                                                                <button
-                                                                    class="mb-1 mr-1 btn btn-primary dropdown-toggle"
-                                                                    type="button" id="action{{ $category->id }}"
-                                                                    data-toggle="dropdown" aria-haspopup="true"
-                                                                    aria-expanded="false">
-                                                                    Aksi
-                                                                </button>
-                                                                <div class="dropdown-menu"
-                                                                    aria-labelledby="action{{ $category->id }}">
-                                                                    <a class="dropdown-item" href="#">
-                                                                        Edit
-                                                                    </a>
-                                                                    <form action="#" method="POST">
-                                                                        @method('delete')
-                                                                        @csrf
-                                                                        <button type="submit"
-                                                                            class="dropdown-item text-danger">
-                                                                            Hapus
-                                                                        </button>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
+                                                            </form>
                                                         </div>
                                                     </td>
                                                 </tr>
