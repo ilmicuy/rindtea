@@ -26,9 +26,13 @@ Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 //     return view('pages.home');
 // })->middleware(['auth', 'verified'])->name('home');
 
+
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/category', [CategoryController::class, 'index'])->name('category');
+    Route::get('/category/create', [CategoryController::class, 'create'])->name('category.create');
+    Route::post('/category/store', [CategoryController::class, 'store'])->name('category.store');
+
     Route::get('/product', [ProductController::class, 'index'])->name('product');
     Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction');
 
