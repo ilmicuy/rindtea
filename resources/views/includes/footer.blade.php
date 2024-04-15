@@ -5,7 +5,7 @@
               <div class="row g-4">
                   <div class="col-lg-3">
                       <a href="#">
-                          <h1 class="mb-0 text-primary">Fruitables</h1>
+                          <h1 class="mb-0 text-primary">Point Sebelas</h1>
                           <p class="mb-0 text-secondary">Fresh products</p>
                       </a>
                   </div>
