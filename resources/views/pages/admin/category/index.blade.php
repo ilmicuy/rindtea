@@ -25,7 +25,49 @@
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
-                                        <tbody></tbody>
+                                        <tbody>
+                                            @foreach ($query as $category)
+                                                <tr>
+                                                    <td>{{ $category->id }}</td>
+                                                    <td>{{ $category->name }}</td>
+                                                    <td>{{ $category->slug }}</td>
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            <div class="dropdown">
+                                                                <button
+                                                                    class="mb-1 mr-1 btn btn-primary dropdown-toggle"
+                                                                    type="button" id="action{{ $category->id }}"
+                                                                    data-toggle="dropdown" aria-haspopup="true"
+                                                                    aria-expanded="false">
+                                                                    Aksi
+                                                                </button>
+                                                                <button
+                                                                    class="mb-1 mr-1 btn btn-primary dropdown-toggle"
+                                                                    type="button" id="action{{ $category->id }}"
+                                                                    data-toggle="dropdown" aria-haspopup="true"
+                                                                    aria-expanded="false">
+                                                                    Aksi
+                                                                </button>
+                                                                <div class="dropdown-menu"
+                                                                    aria-labelledby="action{{ $category->id }}">
+                                                                    <a class="dropdown-item" href="#">
+                                                                        Edit
+                                                                    </a>
+                                                                    <form action="#" method="POST">
+                                                                        @method('delete')
+                                                                        @csrf
+                                                                        <button type="submit"
+                                                                            class="dropdown-item text-danger">
+                                                                            Hapus
+                                                                        </button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>
