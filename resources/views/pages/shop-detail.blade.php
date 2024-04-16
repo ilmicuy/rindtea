@@ -114,10 +114,10 @@
                                                 <div
                                                     class="py-2 text-center row bg-light align-items-center justify-content-center">
                                                     <div class="col-6">
-                                                        <p class="mb-0">Min Weight</p>
+                                                        <p class="mb-0">Name</p>
                                                     </div>
                                                     <div class="col-6">
-                                                        <p class="mb-0">250 Kg</p>
+                                                        <p class="mb-0">{{$product->name}}</p>
                                                     </div>
                                                 </div>
                                             </div>
