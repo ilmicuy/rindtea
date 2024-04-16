@@ -54,7 +54,6 @@
                                 {{ $cartsCount }}
                             </span>
                         </a>
-
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"> <i
                                     class="fas fa-user fa-2x"></i>
@@ -64,7 +63,7 @@
                                     <nav class="flex justify-end flex-1 -mx-3">
                                         @auth
                                             <x-dropdown-link :href="route('profile.edit')" class="dropdown-item">
-                                                {{ __('Profile') }}
+                                               Hi, {{ Auth::user()->name }}
                                             </x-dropdown-link>
 
                                             <!-- Authentication -->
