@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\admin\ProductRequest;
+use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
 
 class ProductController extends Controller
 {
@@ -11,7 +16,11 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('pages.admin.product');
+        $query = Product::take(6)->get();
+
+        return view('pages.admin.product.index', [
+            'query' => $query
+        ]);
     }
 
     /**
@@ -19,7 +28,12 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+
+        return view('pages.admin.product.create', [
+            'categories' => $categories
+        ]);
+
     }
 
     /**
@@ -27,7 +41,13 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        $data['slug'] = Str::slug($request->name);
+
+        Product::create($data);
+
+        return redirect()->route('product');
     }
 
     /**
@@ -41,17 +61,31 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $item = Product::findOrFail($id);
+        $categories = Category::all();
+
+        return view('pages.admin.product.edit', [
+            'item' => $item,
+            'categories' => $categories,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+
+        $data['slug'] = Str::slug($request->name);
+
+        $item = Product::findOrFail($id);
+
+        $item->update($data);
+
+        return redirect()->route('product');
     }
 
     /**
@@ -59,6 +93,9 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $item = Product::findOrFail($id);
+        $item->delete();
+
+        return redirect()->route('product');
     }
 }
