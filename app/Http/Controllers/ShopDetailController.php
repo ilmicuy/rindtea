@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ShopDetailController extends Controller
@@ -9,9 +10,15 @@ class ShopDetailController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+
+
+    public function index(Request $request, $id)
     {
-        return view('pages.shop-detail');
+        $product = Product::where('id', $id)->firstOrFail();
+
+        return view('pages.shop-detail', [
+            'product' => $product
+        ]);
     }
 
     /**

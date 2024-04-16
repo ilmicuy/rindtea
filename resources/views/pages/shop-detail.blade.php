@@ -25,14 +25,14 @@
                         <div class="col-lg-6">
                             <div class="border rounded">
                                 <a href="#">
-                                    <img src="img/single-item.jpg" class="rounded img-fluid" alt="Image">
+                                    <img src="{{ Storage::url($product->photos) }}" class="rounded img-fluid" alt="Image">
                                 </a>
                             </div>
                         </div>
                         <div class="col-lg-6">
-                            <h4 class="mb-3 fw-bold">Brocoli</h4>
-                            <p class="mb-3">Category: Vegetables</p>
-                            <h5 class="mb-3 fw-bold">3,35 $</h5>
+                            <h4 class="mb-3 fw-bold">{{ $product->name }}</h4>
+                            <p class="mb-3">Category: {{ $product->category->name }}</p>
+                            <h5 class="mb-3 fw-bold">Rp.{{ $product->price }}</h5>
                             <div class="mb-4 d-flex">
                                 <i class="fa fa-star text-secondary"></i>
                                 <i class="fa fa-star text-secondary"></i>
@@ -40,10 +40,8 @@
                                 <i class="fa fa-star text-secondary"></i>
                                 <i class="fa fa-star"></i>
                             </div>
-                            <p class="mb-4">The generated Lorem Ipsum is therefore always free from repetition injected
-                                humour, or non-characteristic words etc.</p>
-                            <p class="mb-4">Susp endisse ultricies nisi vel quam suscipit. Sabertooth peacock flounder;
-                                chain pickerel hatchetfish, pencilfish snailfish</p>
+                            <p class="mb-4">{{ $product->short_description }}</p>
+                            <p class="mb-3">Qty: {{ $product->quantity }}</p>
                             <div class="mb-5 input-group quantity" style="width: 100px;">
                                 <div class="input-group-btn">
                                     <button class="border btn btn-sm btn-minus rounded-circle bg-light">
@@ -75,13 +73,7 @@
                             </nav>
                             <div class="mb-5 tab-content">
                                 <div class="tab-pane active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
-                                    <p>The generated Lorem Ipsum is therefore always free from repetition injected humour,
-                                        or non-characteristic words etc.
-                                        Susp endisse ultricies nisi vel quam suscipit </p>
-                                    <p>Sabertooth peacock flounder; chain pickerel hatchetfish, pencilfish snailfish
-                                        filefish Antarctic
-                                        icefish goldeye aholehole trumpetfish pilot fish airbreathing catfish, electric ray
-                                        sweeper.</p>
+                                    <p>{{$product->long_description}}</p>
                                     <div class="px-2">
                                         <div class="row g-4">
                                             <div class="col-6">
@@ -91,7 +83,7 @@
                                                         <p class="mb-0">Weight</p>
                                                     </div>
                                                     <div class="col-6">
-                                                        <p class="mb-0">1 kg</p>
+                                                        <p class="mb-0">{{$product->weight}} kg</p>
                                                     </div>
                                                 </div>
                                                 <div class="py-2 text-center row align-items-center justify-content-center">
@@ -99,7 +91,7 @@
                                                         <p class="mb-0">Country of Origin</p>
                                                     </div>
                                                     <div class="col-6">
-                                                        <p class="mb-0">Agro Farm</p>
+                                                        <p class="mb-0">{{$product->country_of_origin}}</p>
                                                     </div>
                                                 </div>
                                                 <div
@@ -108,7 +100,7 @@
                                                         <p class="mb-0">Quality</p>
                                                     </div>
                                                     <div class="col-6">
-                                                        <p class="mb-0">Organic</p>
+                                                        <p class="mb-0">{{$product->quality}}</p>
                                                     </div>
                                                 </div>
                                                 <div class="py-2 text-center row align-items-center justify-content-center">
@@ -116,7 +108,7 @@
                                                         <p class="mb-0">Сheck</p>
                                                     </div>
                                                     <div class="col-6">
-                                                        <p class="mb-0">Healthy</p>
+                                                        <p class="mb-0">{{$product->check}}</p>
                                                     </div>
                                                 </div>
                                                 <div
@@ -134,7 +126,7 @@
                                 </div>
                                 <div class="tab-pane" id="nav-mission" role="tabpanel" aria-labelledby="nav-mission-tab">
                                     <div class="d-flex">
-                                        <img src="img/avatar.jpg" class="p-3 img-fluid rounded-circle"
+                                        <img src="{{asset('img/avatar.jpg')}}" class="p-3 img-fluid rounded-circle"
                                             style="width: 100px; height: 100px;" alt="">
                                         <div class="">
                                             <p class="mb-2" style="font-size: 14px;">April 12, 2024</p>
@@ -154,7 +146,7 @@
                                         </div>
                                     </div>
                                     <div class="d-flex">
-                                        <img src="img/avatar.jpg" class="p-3 img-fluid rounded-circle"
+                                        <img src="{{asset('img/avatar.jpg')}}" class="p-3 img-fluid rounded-circle"
                                             style="width: 100px; height: 100px;" alt="">
                                         <div class="">
                                             <p class="mb-2" style="font-size: 14px;">April 12, 2024</p>
@@ -273,7 +265,7 @@
                             <h4 class="mb-4">Featured products</h4>
                             <div class="d-flex align-items-center justify-content-start">
                                 <div class="rounded" style="width: 100px; height: 100px;">
-                                    <img src="img/featur-1.jpg" class="rounded img-fluid" alt="Image">
+                                    <img src="{{asset('img/featur-1.jpg')}}" class="rounded img-fluid" alt="Image">
                                 </div>
                                 <div>
                                     <h6 class="mb-2">Big Banana</h6>
@@ -292,7 +284,7 @@
                             </div>
                             <div class="d-flex align-items-center justify-content-start">
                                 <div class="rounded" style="width: 100px; height: 100px;">
-                                    <img src="img/featur-2.jpg" class="rounded img-fluid" alt="">
+                                    <img src="{{asset('img/featur-2.jpg')}}" class="rounded img-fluid" alt="">
                                 </div>
                                 <div>
                                     <h6 class="mb-2">Big Banana</h6>
@@ -311,7 +303,7 @@
                             </div>
                             <div class="d-flex align-items-center justify-content-start">
                                 <div class="rounded" style="width: 100px; height: 100px;">
-                                    <img src="img/featur-3.jpg" class="rounded img-fluid" alt="">
+                                    <img src="{{asset('img/featur-3.jpg')}}" class="rounded img-fluid" alt="">
                                 </div>
                                 <div>
                                     <h6 class="mb-2">Big Banana</h6>
@@ -330,7 +322,7 @@
                             </div>
                             <div class="d-flex align-items-center justify-content-start">
                                 <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                    <img src="img/vegetable-item-4.jpg" class="rounded img-fluid" alt="">
+                                    <img src="{{asset('img/vegetable-item-4.jpg')}}" class="rounded img-fluid" alt="">
                                 </div>
                                 <div>
                                     <h6 class="mb-2">Big Banana</h6>
@@ -349,7 +341,7 @@
                             </div>
                             <div class="d-flex align-items-center justify-content-start">
                                 <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                    <img src="img/vegetable-item-5.jpg" class="rounded img-fluid" alt="">
+                                    <img src="{{asset('img/vegetable-item-5.jpg')}}" class="rounded img-fluid" alt="">
                                 </div>
                                 <div>
                                     <h6 class="mb-2">Big Banana</h6>
@@ -368,7 +360,7 @@
                             </div>
                             <div class="d-flex align-items-center justify-content-start">
                                 <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                    <img src="img/vegetable-item-6.jpg" class="rounded img-fluid" alt="">
+                                    <img src="{{asset('img/vegetable-item-6.jpg')}}" class="rounded img-fluid" alt="">
                                 </div>
                                 <div>
                                     <h6 class="mb-2">Big Banana</h6>
@@ -393,7 +385,7 @@
                         </div>
                         <div class="col-lg-12">
                             <div class="position-relative">
-                                <img src="img/banner-fruits.jpg" class="rounded img-fluid w-100" alt="">
+                                <img src="{{asset('img/banner-fruits.jpg')}}" class="rounded img-fluid w-100" alt="">
                                 <div class="position-absolute"
                                     style="top: 50%; right: 10px; transform: translateY(-50%);">
                                     <h3 class="text-secondary fw-bold">Fresh <br> Fruits <br> Banner</h3>
@@ -408,7 +400,7 @@
                 <div class="owl-carousel vegetable-carousel justify-content-center">
                     <div class="border rounded border-primary position-relative vesitable-item">
                         <div class="vesitable-img">
-                            <img src="img/vegetable-item-6.jpg" class="img-fluid w-100 rounded-top" alt="">
+                            <img src="{{asset('img/vegetable-item-6.jpg')}}" class="img-fluid w-100 rounded-top" alt="">
                         </div>
                         <div class="px-3 py-1 text-white rounded bg-primary position-absolute"
                             style="top: 10px; right: 10px;">Vegetable</div>
@@ -425,7 +417,7 @@
                     </div>
                     <div class="border rounded border-primary position-relative vesitable-item">
                         <div class="vesitable-img">
-                            <img src="img/vegetable-item-1.jpg" class="img-fluid w-100 rounded-top" alt="">
+                            <img src="{{asset('img/vegetable-item-1.jpg')}}" class="img-fluid w-100 rounded-top" alt="">
                         </div>
                         <div class="px-3 py-1 text-white rounded bg-primary position-absolute"
                             style="top: 10px; right: 10px;">Vegetable</div>
@@ -442,7 +434,7 @@
                     </div>
                     <div class="border rounded border-primary position-relative vesitable-item">
                         <div class="vesitable-img">
-                            <img src="img/vegetable-item-3.png" class="img-fluid w-100 rounded-top bg-light"
+                            <img src="{{asset('img/vegetable-item-3.png')}}" class="img-fluid w-100 rounded-top bg-light"
                                 alt="">
                         </div>
                         <div class="px-3 py-1 text-white rounded bg-primary position-absolute"
@@ -460,7 +452,7 @@
                     </div>
                     <div class="border rounded border-primary position-relative vesitable-item">
                         <div class="vesitable-img">
-                            <img src="img/vegetable-item-4.jpg" class="img-fluid w-100 rounded-top" alt="">
+                            <img src="{{asset('img/vegetable-item-4.jpg')}}" class="img-fluid w-100 rounded-top" alt="">
                         </div>
                         <div class="px-3 py-1 text-white rounded bg-primary position-absolute"
                             style="top: 10px; right: 10px;">Vegetable</div>
@@ -477,7 +469,7 @@
                     </div>
                     <div class="border rounded border-primary position-relative vesitable-item">
                         <div class="vesitable-img">
-                            <img src="img/vegetable-item-5.jpg" class="img-fluid w-100 rounded-top" alt="">
+                            <img src="{{asset('img/vegetable-item-5.jpg')}}" class="img-fluid w-100 rounded-top" alt="">
                         </div>
                         <div class="px-3 py-1 text-white rounded bg-primary position-absolute"
                             style="top: 10px; right: 10px;">Vegetable</div>
