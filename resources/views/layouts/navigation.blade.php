@@ -12,16 +12,16 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard*')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('category')" :active="request()->routeIs('category')">
+                    <x-nav-link :href="route('category')" :active="request()->routeIs('category*')">
                         {{ __('Category') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('product')" :active="request()->routeIs('product')">
+                    <x-nav-link :href="route('product')" :active="request()->routeIs('product*')">
                         {{ __('Product') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('transaction')" :active="request()->routeIs('transaction')">
+                    <x-nav-link :href="route('transaction')" :active="request()->routeIs('transaction*')">
                         {{ __('Transaction') }}
                     </x-nav-link>
                 </div>
