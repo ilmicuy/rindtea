@@ -48,13 +48,14 @@
                                 $cartsCount = \App\Models\Cart::count();
                             @endphp
                             <i class="fa fa-shopping-bag fa-2x"></i>
-                            <span class="px-1 position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark"
+                            <span
+                                class="px-1 position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark"
                                 style="top: -5px; left: 15px; height: 20px; min-width: 20px;">
                                 {{ $cartsCount }}
                             </span>
                         </a>
-                        
-                        {{-- <div class="nav-item dropdown">
+
+                        <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"> <i
                                     class="fas fa-user fa-2x"></i>
                             </a>
@@ -91,7 +92,7 @@
                                 @endif
 
                             </div>
-                        </div> --}}
+                        </div>
                     </div>
                 </div>
             </nav>
