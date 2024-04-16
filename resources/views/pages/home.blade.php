@@ -153,7 +153,7 @@
                                                         style="top: 10px; left: 10px;">{{ $product->category->name }}</div>
                                                     <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                                                         <h4>{{ $product->name }}</h4>
-                                                        <p>{{ $product->thumb_description }}</p>
+                                                        <p style="color: #747d88 !important">{{ $product->thumb_description }}</p>
                                                         <div class="d-flex justify-content-between flex-lg-wrap">
                                                             <p class="mb-0 text-dark fs-5 fw-bold">
                                                                 Rp.{{ $product->price }}/ kg</p>
@@ -243,7 +243,7 @@
                             style="top: 10px; right: 10px;">{{ $product->category->name }}</div>
                         <div class="p-4 rounded-bottom">
                             <h4>
-                                <a href="{{ route('shop-detail', $product->id) }}">{{$product->name}}</a>
+                                <a style="color: #45595b !important" href="{{ route('shop-detail', $product->id) }}">{{$product->name}}</a>
                             </h4>
                             <p>{{$product->thumb_description}}</p>
                             <div class="d-flex justify-content-between flex-lg-wrap">
