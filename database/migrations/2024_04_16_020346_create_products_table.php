@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('photos')->nullable();
             $table->integer('quantity');
             $table->string('quality');
+            $table->longText('thumb_description');
             $table->longText('short_description');
             $table->longText('long_description');
             $table->integer('price');

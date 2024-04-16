@@ -66,6 +66,12 @@
                                             class="block w-full mt-1" autocomplete="weight" :value="old('weight', $item->weight)" />
                                     </div>
                                     <div>
+                                        <x-input-label for="thumb_description" :value="__('Thumbnail Description')" />
+                                        <textarea id="thumb_description" name="thumb_description"
+                                            class="block w-full mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+                                            autocomplete="thumb_description">{{ $item->thumb_description }}</textarea>
+                                    </div>
+                                    <div>
                                         <x-input-label for="short_description" :value="__('Short Description')" />
                                         <textarea id="short_description" name="short_description"
                                             class="block w-full mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"

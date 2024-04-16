@@ -20,6 +20,7 @@ class Product extends Model
         'photos',
         'quantity', 
         'quality',
+        'thumb_description', 
         'short_description', 
         'long_description', 
         'price' , 

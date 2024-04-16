@@ -26,6 +26,7 @@ class ProductRequest extends FormRequest
             'photos' => 'image',
             'quantity' => 'required|integer',
             'quality' => 'required|string',
+            'thumb_description' => 'required|string',
             'short_description' => 'required|string',
             'long_description' => 'required|string',
             'price' => 'required|integer',
