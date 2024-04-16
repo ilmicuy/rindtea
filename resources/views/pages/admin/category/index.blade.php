@@ -33,7 +33,7 @@
                                                     <td>{{ $category->slug }}</td>
                                                     <td>
                                                         <div class="btn-group">
-                                                            <a href="#" class="mb-1 mr-1 btn btn-primary">
+                                                            <a href="{{ route('category.edit', $category->id) }}" class="mb-1 mr-1 btn btn-primary">
                                                                 Edit
                                                             </a>
                                                             <form
