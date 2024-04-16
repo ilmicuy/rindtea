@@ -12,7 +12,8 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                <form method="post" action="{{ route('product.update', $item->id) }}" class="mt-6 space-y-6" enctype="multipart/form-data">
+                                <form method="post" action="{{ route('product.update', $item->id) }}"
+                                    class="mt-6 space-y-6" enctype="multipart/form-data">
                                     @csrf
                                     <div>
                                         <x-input-label for="categories_id" :value="__('Category')" />
@@ -76,10 +77,16 @@
                                             class="block w-full mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
                                             autocomplete="long_description">{{ $item->long_description }}</textarea>
                                     </div>
-                                    
+                                    <div>
+                                        <x-input-label for="photos" :value="__('Photos')" />
+                                        <x-text-input id="photos" name="photos" type="file"
+                                            class="block w-full mt-1" autocomplete="photos" />
+                                        <img class="mt-3" src="{{ Storage::url($item->photos) }}" style="max-width: 250px;" />
+                                    </div>
+
                                     <div class="flex items-center gap-4">
-                                        <a class="inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-25 transition ease-in-out duration-150" style="text-decoration: none;"
-                                             href="{{ route('product') }}">
+                                        <a class="inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-25 transition ease-in-out duration-150"
+                                            style="text-decoration: none;" href="{{ route('product') }}">
                                             {{ __('Cancel') }}
                                         </a>
 

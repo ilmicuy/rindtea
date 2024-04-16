@@ -17,6 +17,7 @@ class Product extends Model
         'name', 
         'categories_id', 
         'slug', 
+        'photos',
         'quantity', 
         'quality',
         'short_description', 

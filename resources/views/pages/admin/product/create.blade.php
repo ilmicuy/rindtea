@@ -68,6 +68,11 @@
                                         <x-input-label for="long_description" :value="__('Long Description')" />
                                         <textarea id="long_description" name="long_description" class="block w-full mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" autocomplete="long_description"></textarea>
                                     </div>    
+                                    <div>
+                                        <x-input-label for="photos" :value="__('Photos')" />
+                                        <x-text-input id="photos" name="photos" type="file"
+                                            class="block w-full mt-1" autocomplete="photos" />
+                                    </div>                                
 
                                     <div class="flex items-center gap-4">
                                         <x-primary-button>{{ __('Save') }}</x-primary-button>

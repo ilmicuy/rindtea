@@ -27,6 +27,7 @@
                                                 <th>Quality</th>
                                                 <th>Country Of Origin</th>
                                                 <th>Min Weight</th>
+                                                <th>Photo</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
@@ -41,7 +42,7 @@
                                                     <td>{{ $product->quality }}</td>
                                                     <td>{{ $product->country_of_origin }}</td>
                                                     <td>{{ $product->weight }} Kg</td>
-                                                    {{-- <td><img src="{{ Storage::url($product->photos) }}" style="max-width: 40px;"></td> --}}
+                                                    <td><img src="{{ Storage::url($product->photos) }}" style="max-width: 40px;"></td>
                                                     <td>
                                                         <div class="btn-group">
                                                             <a href="{{ route('product.edit', $product->id) }}" class="mb-1 mr-1 btn btn-primary">

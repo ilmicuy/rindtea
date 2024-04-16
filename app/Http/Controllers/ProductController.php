@@ -44,6 +44,8 @@ class ProductController extends Controller
         $data = $request->all();
 
         $data['slug'] = Str::slug($request->name);
+        $data['photos'] = $request->file('photos')->store('assets/product', 'public');
+
 
         Product::create($data);
 
@@ -80,6 +82,9 @@ class ProductController extends Controller
         $data = $request->all();
 
         $data['slug'] = Str::slug($request->name);
+        if ($request->hasFile('photos')) {
+            $data['photos'] = $request->file('photos')->store('assets/product', 'public');
+        }
 
         $item = Product::findOrFail($id);
 

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->uuid('categories_id');
             $table->string('name');
             $table->string('slug');
+            $table->string('photos')->nullable();
             $table->integer('quantity');
             $table->string('quality');
             $table->longText('short_description');
