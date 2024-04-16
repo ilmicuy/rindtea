@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -22,6 +22,16 @@ class ShopDetailController extends Controller
         ]);
     }
 
+    public function add(request $request, $id)
+    {
+        $data = [
+            'products_id' => $id,
+        ];
+
+        Cart::create($data);
+
+        return redirect()->route('shop');
+    }
     /**
      * Show the form for creating a new resource.
      */

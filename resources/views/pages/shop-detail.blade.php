@@ -56,9 +56,14 @@
                                     </button>
                                 </div>
                             </div>
-                            <a href="#"
-                                class="px-4 py-2 mb-4 border btn border-secondary rounded-pill text-primary"><i
-                                    class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                            <form action="{{ route('add-to-cart', $product->id) }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <button type="submit" 
+                                        class="x-4 py-2 mb-4 border btn border-secondary rounded-pill text-primary">
+                                        <i
+                                    class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
+                                </button>
+                            </form>
                         </div>
                         <div class="col-lg-12">
                             <nav>

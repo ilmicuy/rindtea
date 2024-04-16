@@ -215,10 +215,14 @@
                                                 <p style="color: #747d88 !important">{{ $item->thumb_description }}</p>
                                                 <div class="d-flex justify-content-between flex-lg-wrap">
                                                     <p class="mb-0 text-dark fs-5 fw-bold">Rp.{{ $item->price }} / kg</p>
-                                                    <a href="#"
-                                                        class="px-3 border btn border-secondary rounded-pill text-primary"><i
-                                                            class="fa fa-shopping-bag me-2 text-primary"></i> Add to
-                                                        cart</a>
+                                                    <form action="{{ route('add-to-cart', $item->id) }}" method="POST" enctype="multipart/form-data">
+                                                        @csrf
+                                                        <button type="submit" 
+                                                                class="x-4 py-2 mb-4 border btn border-secondary rounded-pill text-primary">
+                                                                <i
+                                                            class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </a>

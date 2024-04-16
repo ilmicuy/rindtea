@@ -16,7 +16,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/shop', [ShopController::class, 'index'])->name('shop');
+
 Route::get('/shop-detail/{id}', [ShopDetailController::class, 'index'])->name('shop-detail');
+Route::post('/add-to-cart/{id}', [ShopDetailController::class, 'add'])->name('add-to-cart');
+
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::get('/cart', [CartController::class, 'index'])->name('cart');
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
