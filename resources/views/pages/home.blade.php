@@ -131,7 +131,7 @@
         <div class="container py-5">
             <div class="text-center tab-class">
                 <div class="row g-4">
-                    <div class="col-lg-6 mb-4 text-start">
+                    <div class="mb-4 col-lg-6 text-start">
                         <h1>Our Organic Products</h1>
                     </div>
 
@@ -153,15 +153,13 @@
                                                         style="top: 10px; left: 10px;">{{ $product->category->name }}</div>
                                                     <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                                                         <h4>{{ $product->name }}</h4>
-                                                        <p style="color: #747d88 !important">{{ $product->thumb_description }}</p>
-                                                        <div class="d-flex justify-content-between flex-lg-wrap">
-                                                            <p class="mb-0 text-dark fs-5 fw-bold">
-                                                                Rp.{{ $product->price }}/ kg</p>
-                                                            <a href="#"
-                                                                class="px-3 border btn border-secondary rounded-pill text-primary"><i
-                                                                    class="fa fa-shopping-bag me-2 text-primary"></i> Add
-                                                                to
-                                                                cart</a>
+                                                        <p style="color: #747d88 !important">
+                                                            {{ $product->thumb_description }}</p>
+                                                        <div class="d-flex justify-content-center flex-lg-wrap">
+                                                            <a href="{{ route('shop-detail', $product->id) }}"
+                                                                class="px-3 border btn border-secondary rounded-pill text-primary">
+                                                                Detail
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -243,13 +241,15 @@
                             style="top: 10px; right: 10px;">{{ $product->category->name }}</div>
                         <div class="p-4 rounded-bottom">
                             <h4>
-                                <a style="color: #45595b !important" href="{{ route('shop-detail', $product->id) }}">{{$product->name}}</a>
+                                <a style="color: #45595b !important"
+                                    href="{{ route('shop-detail', $product->id) }}">{{ $product->name }}</a>
                             </h4>
-                            <p>{{$product->thumb_description}}</p>
-                            <div class="d-flex justify-content-between flex-lg-wrap">
-                                <p class="mb-0 text-dark fs-5 fw-bold">Rp.{{$product->price}} / kg</p>
-                                <a href="#" class="px-3 border btn border-secondary rounded-pill text-primary"><i
-                                        class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                            <p>{{ $product->thumb_description }}</p>
+                            <div class="d-flex justify-content-center flex-lg-wrap">
+                                <a href="{{ route('shop-detail', $product->id) }}"
+                                    class="px-3 border btn border-secondary rounded-pill text-primary">
+                                    Detail
+                                </a>
                             </div>
                         </div>
                     </div>
