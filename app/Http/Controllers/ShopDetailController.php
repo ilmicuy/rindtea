@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -14,10 +15,10 @@ class ShopDetailController extends Controller
 
     public function index(Request $request, $id)
     {
-        $product = Product::where('id', $id)->firstOrFail();
+        $product = Product::with(['category'])->where('id', $id)->firstOrFail();
 
         return view('pages.shop-detail', [
-            'product' => $product
+            'product' => $product,
         ]);
     }
 

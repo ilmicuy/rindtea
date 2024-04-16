@@ -131,7 +131,7 @@
         <div class="container py-5">
             <div class="text-center tab-class">
                 <div class="row g-4">
-                    <div class="col-lg-4 text-start">
+                    <div class="col-lg-6 mb-4 text-start">
                         <h1>Our Organic Products</h1>
                     </div>
 
@@ -242,7 +242,9 @@
                         <div class="px-3 py-1 text-white rounded bg-primary position-absolute"
                             style="top: 10px; right: 10px;">{{ $product->category->name }}</div>
                         <div class="p-4 rounded-bottom">
-                            <h4>{{$product->name}}</h4>
+                            <h4>
+                                <a href="{{ route('shop-detail', $product->id) }}">{{$product->name}}</a>
+                            </h4>
                             <p>{{$product->thumb_description}}</p>
                             <div class="d-flex justify-content-between flex-lg-wrap">
                                 <p class="mb-0 text-dark fs-5 fw-bold">Rp.{{$product->price}} / kg</p>
