@@ -36,15 +36,14 @@
                                                             <a href="{{ route('category.edit', $category->id) }}" class="mb-1 mr-1 btn btn-primary">
                                                                 Edit
                                                             </a>
-                                                            <form
-                                                                action="{{ route('category.destroy', $category->id) }}"
-                                                                method="POST">
+                                                            <form id="deleteForm{{ $category->id }}" action="{{ route('category.destroy', $category->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')">
                                                                 @method('delete')
                                                                 @csrf
                                                                 <button type="submit" class="mb-1 mr-1 btn btn-danger">
                                                                     Hapus
                                                                 </button>
                                                             </form>
+                                                            
                                                         </div>
                                                     </td>
                                                 </tr>

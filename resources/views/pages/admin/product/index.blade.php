@@ -48,15 +48,14 @@
                                                             <a href="{{ route('product.edit', $product->id) }}" class="mb-1 mr-1 btn btn-primary">
                                                                 Edit
                                                             </a>
-                                                            <form
-                                                                action="{{ route('product.destroy', $product->id) }}"
-                                                                method="POST">
+                                                            <form id="deleteForm{{ $product->id }}" action="{{ route('product.destroy', $product->id) }}" method="POST">
                                                                 @method('delete')
                                                                 @csrf
-                                                                <button type="submit" class="mb-1 mr-1 btn btn-danger">
+                                                                <button type="submit" class="mb-1 mr-1 btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">
                                                                     Hapus
                                                                 </button>
                                                             </form>
+                                                            
                                                         </div>
                                                     </td>
                                                 </tr>
