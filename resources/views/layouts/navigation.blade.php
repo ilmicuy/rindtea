@@ -25,6 +25,9 @@
                         <x-nav-link :href="route('transaction')" :active="request()->routeIs('transaction*')">
                             {{ __('Transaction') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('home')">
+                            {{ __('Home') }}
+                        </x-nav-link>
                     @else
                         <x-nav-link :href="route('home')">
                             {{ __('Home') }}

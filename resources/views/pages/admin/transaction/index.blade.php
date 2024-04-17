@@ -35,7 +35,32 @@
                                                     <td>Rp.{{ number_format($transaction->transaction->total_price) }}</td>
                                                     <td>{{ $transaction->qty}}</td>
                                                     <td>{{ \Carbon\Carbon::parse($transaction->transaction->created_at)->format('d M Y H:i:s') }}</td>
-                                                    <td>{{ $transaction->transaction->transaction_status }}</td>
+                                                    <td>
+                                                        @php
+                                                            $status = $transaction->transaction->transaction_status;
+                                                            $badgeColor = '';
+                                                    
+                                                            switch ($status) {
+                                                                case 'pending':
+                                                                    $badgeColor = 'bg-yellow-500';
+                                                                    break;
+                                                                case 'failed':
+                                                                    $badgeColor = 'bg-red-500';
+                                                                    break;
+                                                                case 'completed':
+                                                                    $badgeColor = 'bg-green-500';
+                                                                    break;
+                                                                default:
+                                                                    $badgeColor = 'bg-gray-500';
+                                                                    break;
+                                                            }
+                                                        @endphp
+                                                    
+                                                        <span class="px-2 inline-flex leading-5 text-base font-semibold rounded-full {{ $badgeColor }} text-white">
+                                                            {{ $status }}
+                                                        </span>
+                                                    </td>
+
                                                     <td>
                                                         <div class="btn-group">
                                                             <a href="{{ route('transaction.edit', $transaction->id) }}" class="mb-1 mr-1 btn btn-primary">
