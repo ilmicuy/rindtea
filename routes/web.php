@@ -15,24 +15,25 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/shop', [ShopController::class, 'index'])->name('shop');
-
-Route::get('/shop-detail/{id}', [ShopDetailController::class, 'index'])->name('shop-detail');
-Route::post('/add-to-cart/{id}', [ShopDetailController::class, 'add'])->name('add-to-cart');
-
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
-Route::get('/cart', [CartController::class, 'index'])->name('cart');
-Route::delete('/cart/{id}', [CartController::class, 'delete'])->name('cart-delete');
 
+Route::get('/shop', [ShopController::class, 'index'])->name('shop');
+Route::get('/shop-detail/{id}', [ShopDetailController::class, 'index'])->name('shop-detail');
+
+
+Route::get('/success', [CheckoutController::class, 'success'])->name('success');
 
 // Route::get('/home', function () {
-    //     return view('pages.home');
-    // })->middleware(['auth', 'verified'])->name('home');
-    
+//     return view('pages.home');
+// })->middleware(['auth', 'verified'])->name('home');
+
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
-    Route::get('/success', [CheckoutController::class, 'success'])->name('success');
+    Route::post('/checkout/store', [CheckoutController::class, 'store'])->name('checkout.store');
 
+    Route::post('/add-to-cart/{id}', [ShopDetailController::class, 'add'])->name('add-to-cart');
+    Route::get('/cart', [CartController::class, 'index'])->name('cart');
+    Route::delete('/cart/{id}', [CartController::class, 'delete'])->name('cart-delete');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

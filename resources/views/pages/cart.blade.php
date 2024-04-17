@@ -70,30 +70,34 @@
                     </tbody>
                 </table>
             </div>
-            <div class="mt-5">
-                <input type="text" class="py-3 mb-4 rounded border-1 me-5" placeholder=" Coupon Code">
-                <button class="px-4 py-3 btn border-secondary rounded-pill text-primary" type="button">Apply
-                    Coupon</button>
-            </div>
-            <div class="row g-4 justify-content-end">
-                <div class="col-8"></div>
-                <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
-                    <div class="rounded bg-light">
-                        @php $subtotal = 0; @endphp
-                        @foreach ($carts as $cart)
-                            @php $subtotal += $cart->product->price * $cart->qty; @endphp
-                        @endforeach
-                        <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
-                            <h5 class="mb-0 ps-4 me-4">Total</h5>
-                            <p class="mb-0 pe-4">Rp.{{ number_format($subtotal) }}</p>
+            @if(count($carts) > 0)
+                <div class="mt-5">
+                    <input type="text" class="py-3 mb-4 rounded border-1 me-5" placeholder=" Coupon Code">
+                    <button class="px-4 py-3 btn border-secondary rounded-pill text-primary" type="button">Apply
+                        Coupon</button>
+                </div>
+      
+                <div class="row g-4 justify-content-end">
+                    <div class="col-8"></div>
+                    <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
+                        <div class="rounded bg-light">
+                            @php $subtotal = 0; @endphp
+                            @foreach ($carts as $cart)
+                                @php $subtotal += $cart->product->price * $cart->qty; @endphp
+                            @endforeach
+                            <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
+                                <h5 class="mb-0 ps-4 me-4">Total</h5>
+                                <p class="mb-0 pe-4">Rp.{{ number_format($subtotal) }}</p>
+                            </div>
+                            <a href="{{ route('checkout') }}"
+                                class="px-4 py-3 mb-4 btn border-secondary rounded-pill text-primary text-uppercase ms-4"
+                                type="button">Proceed Checkout
+                            </a>
                         </div>
-                        <a href="{{ route('checkout') }}"
-                            class="px-4 py-3 mb-4 btn border-secondary rounded-pill text-primary text-uppercase ms-4"
-                            type="button">Proceed Checkout
-                        </a>
                     </div>
                 </div>
-            </div>
+            @endif
+
         </div>
     </div>
     <!-- Cart Page End -->

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CheckoutRequest;
 use App\Models\Cart;
+use App\Models\Transaction;
+use App\Models\TransactionDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +21,6 @@ class CheckoutController extends Controller
         return view('pages.checkout', [
             'checkouts' => $checkouts
         ]);
-
     }
 
     /**
@@ -32,16 +34,43 @@ class CheckoutController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CheckoutRequest $request)
     {
+        $carts = Cart::with(['product', 'user'])
+            ->where('users_id', Auth::user()->id)
+            ->get();
+
+        $transaction =  Transaction::create([
+            'users_id' => Auth::user()->id,
+            'total_price' => (int) $request->total_price,
+            'transaction_status' => 'PENDING',
+        ]);
+
+        foreach ($carts as $cart) {            
+            TransactionDetail::create([
+                'transactions_id' => $transaction->id,
+                'products_id' => $cart->product->id,
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'address'   => $request->address,
+                'city'      => $request->city,
+                'country'   => $request->country,
+                'zip_code'  => $request->zip_code,
+                'phone'     => $request->phone
+            ]);
+        }
+
+        Cart::where('users_id', Auth::user()->id)->delete();
+
+        return redirect()->route('home');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function success(string $id)
     {
-        //
+        return view('page.success');
     }
 
     /**
