@@ -18,8 +18,17 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Test',
             'email' => 'test@gmail.com',
+            'email_verified_at' => date('Y-m-d H:i:s', time()),
             'password' => bcrypt('12121212'),
-            'roles' => 'admin'
+            'is_admin' => true
+        ]);
+
+        User::factory()->create([
+            'name' => 'User',
+            'email' => 'user@gmail.com',
+            'email_verified_at' => date('Y-m-d H:i:s', time()),
+            'password' => bcrypt('12121212'),
+            'is_admin' => false
         ]);
     }
 }
