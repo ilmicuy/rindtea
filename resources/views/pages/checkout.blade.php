@@ -99,11 +99,11 @@
                                         @endforeach
                                         <th scope="row">
                                         </th>
-                                        <td class="py-5"></td>
-                                        <td class="py-5"></td>
                                         <td class="py-5">
-                                            <p class="py-3 mb-0 text-dark">Subtotal</p>
+                                            <p class="py-3 mb-0 text-dark text-uppercase">TOTAL + PPN 10%</p>
                                         </td>
+                                        <td class="py-5"></td>
+                                        <td class="py-5"></td>
                                         <td class="py-5">
                                             <input type="hidden" name="total_price" value={{$subtotal}}>
                                             <div class="py-3 border-bottom border-top">
@@ -133,20 +133,6 @@
                                                     id="Shipping-3" name="Shipping-1" value="Shipping">
                                                 <label class="form-check-label" for="Shipping-3">Local Pickup:
                                                     $8.00</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">
-                                        </th>
-                                        <td class="py-5">
-                                            <p class="py-3 mb-0 text-dark text-uppercase">TOTAL + PPN 10%</p>
-                                        </td>
-                                        <td class="py-5"></td>
-                                        <td class="py-5"></td>
-                                        <td class="py-5">
-                                            <div class="py-3 border-bottom border-top">
-                                                <p class="mb-0 text-dark">Rp 120</p>
                                             </div>
                                         </td>
                                     </tr>
