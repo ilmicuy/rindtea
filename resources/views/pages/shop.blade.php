@@ -203,7 +203,8 @@
                             <div class="row g-4 justify-content-center">
                                 @foreach ($products as $item)
                                     <div class="col-md-6 col-lg-6 col-xl-4">
-                                        <a href="{{ route('shop-detail', $item->id) }}" class="rounded position-relative fruite-item">
+                                        <a href="{{ route('shop-detail', $item->id) }}"
+                                            class="rounded position-relative fruite-item">
                                             <div class="fruite-img">
                                                 <img src="{{ Storage::url($item->photos) }}"
                                                     class="img-fluid w-100 rounded-top" alt="">
@@ -212,17 +213,14 @@
                                                 style="top: 10px; left: 10px;">{{ $item->category->name }}</div>
                                             <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                                                 <h4>{{ $item->name }}</h4>
+                                                <small class="mb-1 text-dark fw-bold">Rp.{{ number_format($item->price) }}
+                                                    / kg</small>
                                                 <p style="color: #747d88 !important">{{ $item->thumb_description }}</p>
-                                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                                    <p class="mb-0 text-dark fs-5 fw-bold">Rp.{{ $item->price }} / kg</p>
-                                                    <form action="{{ route('add-to-cart', $item->id) }}" method="POST" enctype="multipart/form-data">
-                                                        @csrf
-                                                        <button type="submit" 
-                                                                class="x-4 py-2 mb-4 border btn border-secondary rounded-pill text-primary">
-                                                                <i
-                                                            class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
-                                                        </button>
-                                                    </form>
+                                                <div class="d-flex justify-content-center flex-lg-wrap">
+                                                    <button type="submit"
+                                                        class="x-4 py-2 mb-4 border btn border-secondary rounded-pill text-primary">
+                                                        Detail
+                                                    </button>
                                                 </div>
                                             </div>
                                         </a>
