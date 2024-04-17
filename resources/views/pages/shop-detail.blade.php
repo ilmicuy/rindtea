@@ -32,7 +32,7 @@
                         <div class="col-lg-6">
                             <h4 class="mb-3 fw-bold">{{ $product->name }}</h4>
                             <p class="mb-3">Category: {{ $product->category->name }}</p>
-                            <h5 class="mb-3 fw-bold">Rp.{{ $product->price }}</h5>
+                            <h5 class="mb-3 fw-bold">Rp.{{ number_format($product->price) }}</h5>
                             <div class="mb-4 d-flex">
                                 <i class="fa fa-star text-secondary"></i>
                                 <i class="fa fa-star text-secondary"></i>
@@ -42,33 +42,31 @@
                             </div>
                             <p class="mb-4">{{ $product->short_description }}</p>
                             <p class="mb-3">Qty: {{ $product->quantity }}</p>
-                            <div class="mb-5 input-group quantity" style="width: 100px;">
-                                <div class="input-group-btn">
-                                    <button class="border btn btn-sm btn-minus rounded-circle bg-light">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
+                            <form id="add-to-cart-form" action="{{ route('add-to-cart', $product->id) }}" method="POST" enctype="multipart/form-data">
+                                <div class="mb-5 input-group quantity" style="width: 100px;">
+                                    <div class="input-group-btn">
+                                        <button id="btn-minus" class="border btn btn-sm btn-minus rounded-circle bg-light" type="button">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                    </div>
+                                    <input id="qty-input" type="number" name="qty" class="text-center border-0 form-control form-control-sm" value="1">
+                                    <div class="input-group-btn">
+                                        <button id="btn-plus" class="border btn btn-sm btn-plus rounded-circle bg-light" type="button">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                                <input type="text" class="text-center border-0 form-control form-control-sm"
-                                    value="1">
-                                <div class="input-group-btn">
-                                    <button class="border btn btn-sm btn-plus rounded-circle bg-light">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            @auth
-                                <form action="{{ route('add-to-cart', $product->id) }}" method="POST" enctype="multipart/form-data">
+                                @auth
                                     @csrf
                                     <button type="submit" class="x-4 py-2 mb-4 border btn border-secondary rounded-pill text-primary">
                                         <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
                                     </button>
-                                </form>
-                            @else
-                                <a href="{{ route('login') }}" class="x-4 py-2 mb-4 border btn border-secondary rounded-pill text-primary">
-                                    Login 
-                                </a>
-                            @endauth
-                        
+                                @else
+                                    <a href="{{ route('login') }}" class="x-4 py-2 mb-4 border btn border-secondary rounded-pill text-primary">
+                                        Login 
+                                    </a>
+                                @endauth
+                            </form>
                         </div>
                         <div class="col-lg-12">
                             <nav>

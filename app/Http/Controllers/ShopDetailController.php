@@ -23,13 +23,14 @@ class ShopDetailController extends Controller
         ]);
     }
 
-    public function add(request $request, $id)
+    public function add(Request $request, $id)
     {
         $data = [
             'products_id' => $id,
+            'qty' => $request->qty,
             'users_id' => Auth::user()->id,
         ];
-
+        
         Cart::create($data);
 
         return redirect()->back();
