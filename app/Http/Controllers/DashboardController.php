@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -11,7 +13,15 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('pages.admin.home');
+        $product = Product::count();
+        $revenue = Transaction::sum('total_price');
+        $transactionPending = Transaction::where('transaction_status', 'pending')->count('transaction_status');
+
+        return view('pages.admin.home', [
+            'product' => $product,
+            'revenue' => $revenue,
+            'transactionPending' => $transactionPending
+        ]);
     }
 
     /**
