@@ -72,7 +72,7 @@
             </div>
             @if(count($carts) > 0)
                 <div class="mt-5">
-                    <input type="text" class="py-3 mb-4 rounded border-1 me-5" placeholder=" Coupon Code">
+                    <input type="text" class="py-3 mb-4 rounded border-1 me-5" placeholder="  Coupon Code">
                     <button class="px-4 py-3 btn border-secondary rounded-pill text-primary" type="button">Apply
                         Coupon</button>
                 </div>
@@ -85,7 +85,7 @@
                             @foreach ($carts as $cart)
                                 @php $subtotal += $cart->product->price * $cart->qty; @endphp
                             @endforeach
-                            <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
+                            <div class="py-4 mb-4 border-bottom d-flex justify-content-between">
                                 <h5 class="mb-0 ps-4 me-4">Total</h5>
                                 <p class="mb-0 pe-4">Rp.{{ number_format($subtotal) }}</p>
                             </div>
