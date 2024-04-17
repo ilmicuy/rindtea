@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ShopDetailController extends Controller
 {
@@ -26,11 +27,12 @@ class ShopDetailController extends Controller
     {
         $data = [
             'products_id' => $id,
+            'users_id' => Auth::user()->id,
         ];
 
         Cart::create($data);
 
-        return redirect()->route('shop');
+        return redirect()->back();
     }
     /**
      * Show the form for creating a new resource.

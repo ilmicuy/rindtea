@@ -10,7 +10,7 @@ class Cart extends Model
     use HasFactory;
 
     protected $fillable = [
-        'products_id', 'qty'
+        'products_id', 'qty', 'users_id'
     ];
 
     protected $hidden = [];
@@ -18,6 +18,11 @@ class Cart extends Model
     public function product()
     {
         return $this->hasOne(Product::class, 'id', 'products_id');
+    }
+    
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'users_id', 'id');
     }
 
 }

@@ -56,14 +56,19 @@
                                     </button>
                                 </div>
                             </div>
-                            <form action="{{ route('add-to-cart', $product->id) }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <button type="submit" 
-                                        class="x-4 py-2 mb-4 border btn border-secondary rounded-pill text-primary">
-                                        <i
-                                    class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
-                                </button>
-                            </form>
+                            @auth
+                                <form action="{{ route('add-to-cart', $product->id) }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <button type="submit" class="x-4 py-2 mb-4 border btn border-secondary rounded-pill text-primary">
+                                        <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
+                                    </button>
+                                </form>
+                            @else
+                                <a href="{{ route('login') }}" class="x-4 py-2 mb-4 border btn border-secondary rounded-pill text-primary">
+                                    Login 
+                                </a>
+                            @endauth
+                        
                         </div>
                         <div class="col-lg-12">
                             <nav>
