@@ -49,7 +49,7 @@
                                             <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
-                                    <input id="qty-input" type="number" name="qty" class="text-center border-0 form-control form-control-sm" value="1">
+                                    <input id="qty-input" type="text" name="qty" class="text-center border-0 form-control form-control-sm" value="1">
                                     <div class="input-group-btn">
                                         <button id="btn-plus" class="border btn btn-sm btn-plus rounded-circle bg-light" type="button">
                                             <i class="fa fa-plus"></i>

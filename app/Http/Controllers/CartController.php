@@ -13,14 +13,20 @@ class CartController extends Controller
      */
     public function index()
     {
-        $carts = Cart::with(['product', 'user'])
-        ->where('users_id', Auth::user()->id)->get();
+        $carts = Cart::with(['product', 'user'])->where('users_id', Auth::user()->id)->get();
 
         return view('pages.cart', [
             'carts' => $carts
         ]);
     }
 
+    public function delete(Request $request, $id)
+    {
+        $cart = Cart::findOrFail($id);
+        $cart->delete();
+        return redirect()->route('cart');
+    }
+    
     /**
      * Show the form for creating a new resource.
      */
