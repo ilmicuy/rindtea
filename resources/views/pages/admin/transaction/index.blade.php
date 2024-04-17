@@ -21,6 +21,7 @@
                                                 <th>Nama Pembeli</th>
                                                 <th>Total Price</th>
                                                 <th>Quality</th>
+                                                <th>Status Transaction</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
@@ -32,6 +33,7 @@
                                                     <td>{{ $transaction->first_name }} {{ $transaction->last_name }}</td>
                                                     <td>Rp.{{ number_format($transaction->transaction->total_price) }}</td>
                                                     <td>1</td>
+                                                    <td>{{ $transaction->transaction->transaction_status }}</td>
                                                     <td>
                                                         <div class="btn-group">
                                                             <a href="#" class="mb-1 mr-1 btn btn-primary">
