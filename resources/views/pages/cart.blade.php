@@ -46,7 +46,7 @@
                                     <p class="mt-4 mb-0">{{$cart->product->name}}</p>
                                 </td>
                                 <td>
-                                    <p class="mt-4 mb-0">Rp.{{number_format($cart->product->price)}} / Kg</p>
+                                    <p class="mt-4 mb-0">Rp.{{number_format($cart->product->price)}}</p>
                                 </td>
                                 <td>
                                     <p class="mt-4 mb-0">{{$cart->qty}} Pcs</p>
