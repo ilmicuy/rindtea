@@ -41,7 +41,7 @@
                                                     <td>{{ $product->quantity }} Pcs</td>
                                                     <td>{{ $product->quality }}</td>
                                                     <td>{{ $product->country_of_origin }}</td>
-                                                    <td>{{ $product->weight }} Kg</td>
+                                                    <td>{{ $product->weight }}</td>
                                                     <td><img src="{{ Storage::url($product->photos) }}" style="max-width: 40px;"></td>
                                                     <td>
                                                         <div class="btn-group">

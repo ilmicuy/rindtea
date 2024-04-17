@@ -56,8 +56,8 @@
                                             class="block w-full mt-1" autocomplete="price" />
                                     </div>
                                     <div>
-                                        <x-input-label for="weight" :value="__('Weight')" />
-                                        <x-text-input id="weight" name="weight" type="number"
+                                        <x-input-label for="weight" :value="__('Min Weight')" />
+                                        <x-text-input id="weight" name="weight" type="text"
                                             class="block w-full mt-1" autocomplete="weight" />
                                     </div>
                                     <div>

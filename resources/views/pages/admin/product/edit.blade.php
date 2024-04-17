@@ -62,7 +62,7 @@
                                     </div>
                                     <div>
                                         <x-input-label for="weight" :value="__('Weight')" />
-                                        <x-text-input id="weight" name="weight" type="number"
+                                        <x-text-input id="weight" name="weight" type="text"
                                             class="block w-full mt-1" autocomplete="weight" :value="old('weight', $item->weight)" />
                                     </div>
                                     <div>
