@@ -86,16 +86,15 @@
                                             <td class="py-5">{{$checkout->product->name}}</td>
                                             <td class="py-5">Rp.{{number_format($checkout->product->price)}}</td>
                                             <td class="py-5">{{$checkout->qty}}</td>
+                                            <input type="hidden" name="qty" value={{$checkout->qty}}>
                                             <td class="py-5">{{number_format($total)}}</td>
                                         </tr>
                                     @endforeach
                                    
                                     <tr>
-                                        @php $subtotal = 0; @endphp
+                                        @php $totalPrice = 0 @endphp
                                         @foreach ($checkouts as $checkout)
-                                            @php 
-                                                $subtotal += $checkout->product->price * $checkout->qty; 
-                                            @endphp
+                                            @php $totalPrice += $checkout->product->price * $checkout->qty @endphp
                                         @endforeach
                                         <th scope="row">
                                         </th>
@@ -105,9 +104,9 @@
                                         <td class="py-5"></td>
                                         <td class="py-5"></td>
                                         <td class="py-5">
-                                            <input type="hidden" name="total_price" value={{$subtotal}}>
+                                            <input type="hidden" name="total_price" value={{$totalPrice}}>
                                             <div class="py-3 border-bottom border-top">
-                                                <p name='total_price' class="mb-0 text-dark">Rp.{{number_format($subtotal)}}</p>
+                                                <p name='total_price' class="mb-0 text-dark">Rp.{{number_format($totalPrice)}}</p>
                                             </div>
                                         </td>
                                     </tr>

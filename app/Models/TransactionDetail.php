@@ -22,7 +22,8 @@ class TransactionDetail extends Model
         'city', 
         'country' , 
         'zip_code',
-        'phone'
+        'phone',
+        'qty'
     ];
     protected $hidden = [];
 

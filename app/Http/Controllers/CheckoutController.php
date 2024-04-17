@@ -45,7 +45,7 @@ class CheckoutController extends Controller
             'total_price' => (int) $request->total_price,
             'transaction_status' => 'PENDING',
         ]);
-
+        
         foreach ($carts as $cart) {            
             TransactionDetail::create([
                 'transactions_id' => $transaction->id,
@@ -56,7 +56,8 @@ class CheckoutController extends Controller
                 'city'      => $request->city,
                 'country'   => $request->country,
                 'zip_code'  => $request->zip_code,
-                'phone'     => $request->phone
+                'phone'     => $request->phone,
+                'qty'       => $request->qty,
             ]);
         }
 

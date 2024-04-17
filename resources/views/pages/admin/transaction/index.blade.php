@@ -32,7 +32,7 @@
                                                     <td>{{ $transaction->product->name }}</td>
                                                     <td>{{ $transaction->first_name }} {{ $transaction->last_name }}</td>
                                                     <td>Rp.{{ number_format($transaction->transaction->total_price) }}</td>
-                                                    <td>1</td>
+                                                    <td>{{ $transaction->qty}}</td>
                                                     <td>{{ $transaction->transaction->transaction_status }}</td>
                                                     <td>
                                                         <div class="btn-group">
