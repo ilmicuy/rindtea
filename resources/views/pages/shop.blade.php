@@ -9,7 +9,7 @@
     <div class="py-5 container-fluid page-header">
         <h1 class="text-center text-white display-6">Shop</h1>
         <ol class="mb-0 breadcrumb justify-content-center">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('home')}}">Home</a></li>
             <li class="breadcrumb-item"><a href="#">Pages</a></li>
             <li class="text-white breadcrumb-item active">Shop</li>
         </ol>
@@ -48,38 +48,17 @@
                             <div class="row g-4">
                                 <div class="col-lg-12">
                                     <div class="mb-3">
-                                        <h4>Categories</h4>
+                                        <h4>Favorite Product</h4>
                                         <ul class="list-unstyled fruite-categorie">
-                                            <li>
-                                                <div class="d-flex justify-content-between fruite-name">
-                                                    <a href="#"><i class="fas fa-apple-alt me-2"></i>Apples</a>
-                                                    <span>(3)</span>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="d-flex justify-content-between fruite-name">
-                                                    <a href="#"><i class="fas fa-apple-alt me-2"></i>Oranges</a>
-                                                    <span>(5)</span>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="d-flex justify-content-between fruite-name">
-                                                    <a href="#"><i class="fas fa-apple-alt me-2"></i>Strawbery</a>
-                                                    <span>(2)</span>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="d-flex justify-content-between fruite-name">
-                                                    <a href="#"><i class="fas fa-apple-alt me-2"></i>Banana</a>
-                                                    <span>(8)</span>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="d-flex justify-content-between fruite-name">
-                                                    <a href="#"><i class="fas fa-apple-alt me-2"></i>Pumpkin</a>
-                                                    <span>(5)</span>
-                                                </div>
-                                            </li>
+                                            @foreach ($products as $item)
+                                                <li>
+                                                    <div class="d-flex justify-content-between fruite-name">
+                                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>{{$item->name}}</a>
+                                                        <span>({{$item->quantity}})</span>
+                                                    </div>
+                                                </li>
+                                                
+                                            @endforeach
                                         </ul>
                                     </div>
                                 </div>
@@ -95,95 +74,41 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="mb-3">
-                                        <h4>Additional</h4>
-                                        <div class="mb-2">
-                                            <input type="radio" class="me-2" id="Categories-1" name="Categories-1"
-                                                value="Beverages">
-                                            <label for="Categories-1"> Organic</label>
-                                        </div>
-                                        <div class="mb-2">
-                                            <input type="radio" class="me-2" id="Categories-2" name="Categories-1"
-                                                value="Beverages">
-                                            <label for="Categories-2"> Fresh</label>
-                                        </div>
-                                        <div class="mb-2">
-                                            <input type="radio" class="me-2" id="Categories-3" name="Categories-1"
-                                                value="Beverages">
-                                            <label for="Categories-3"> Sales</label>
-                                        </div>
-                                        <div class="mb-2">
-                                            <input type="radio" class="me-2" id="Categories-4" name="Categories-1"
-                                                value="Beverages">
-                                            <label for="Categories-4"> Discount</label>
-                                        </div>
-                                        <div class="mb-2">
-                                            <input type="radio" class="me-2" id="Categories-5" name="Categories-1"
-                                                value="Beverages">
-                                            <label for="Categories-5"> Expired</label>
-                                        </div>
+                                        <h4>Categories</h4>
+                                        @foreach ($categories as $item)
+                                            <div class="mb-2">
+                                                <input type="radio" class="me-2" id="Categories-{{$item->id}}" name="Categories-{{$item->id}}"
+                                                    value="Beverages">
+                                                <label for="Categories-{{$item->id}}"> {{$item->name}}</label>
+                                            </div>
+                                         @endforeach
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <h4 class="mb-3">Featured products</h4>
-                                    <div class="d-flex align-items-center justify-content-start">
-                                        <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                            <img src="img/featur-1.jpg" class="rounded img-fluid" alt="">
-                                        </div>
-                                        <div>
-                                            <h6 class="mb-2">Big Banana</h6>
-                                            <div class="mb-2 d-flex">
-                                                <i class="fa fa-star text-secondary"></i>
-                                                <i class="fa fa-star text-secondary"></i>
-                                                <i class="fa fa-star text-secondary"></i>
-                                                <i class="fa fa-star text-secondary"></i>
-                                                <i class="fa fa-star"></i>
+                                    @foreach ($products as $item)
+                                        <div class="d-flex align-items-center justify-content-start">
+                                            <div class="rounded me-4" style="width: 75px; height: 90px;">
+                                                <img src={{ Storage::url($item->photos) }} class="rounded img-fluid" alt="">
                                             </div>
-                                            <div class="mb-2 d-flex">
-                                                <h5 class="fw-bold me-2">2.99 $</h5>
-                                                <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center justify-content-start">
-                                        <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                            <img src="img/featur-2.jpg" class="rounded img-fluid" alt="">
-                                        </div>
-                                        <div>
-                                            <h6 class="mb-2">Big Banana</h6>
-                                            <div class="mb-2 d-flex">
-                                                <i class="fa fa-star text-secondary"></i>
-                                                <i class="fa fa-star text-secondary"></i>
-                                                <i class="fa fa-star text-secondary"></i>
-                                                <i class="fa fa-star text-secondary"></i>
-                                                <i class="fa fa-star"></i>
-                                            </div>
-                                            <div class="mb-2 d-flex">
-                                                <h5 class="fw-bold me-2">2.99 $</h5>
-                                                <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
+                                            <div>
+                                                <h6 class="mb-2">{{$item->name}}</h6>
+                                                <div class="mb-2 d-flex">
+                                                    <i class="fa fa-star text-secondary"></i>
+                                                    <i class="fa fa-star text-secondary"></i>
+                                                    <i class="fa fa-star text-secondary"></i>
+                                                    <i class="fa fa-star text-secondary"></i>
+                                                    <i class="fa fa-star"></i>
+                                                </div>
+                                                <div class="mb-2 d-flex">
+                                                    <h5 class="fw-bold me-2">Rp.{{ number_format($item->price)}}</h5>
+                                                    <h5 class="text-danger fw-normal">-5%</h5>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="d-flex align-items-center justify-content-start">
-                                        <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                            <img src="img/featur-3.jpg" class="rounded img-fluid" alt="">
-                                        </div>
-                                        <div>
-                                            <h6 class="mb-2">Big Banana</h6>
-                                            <div class="mb-2 d-flex">
-                                                <i class="fa fa-star text-secondary"></i>
-                                                <i class="fa fa-star text-secondary"></i>
-                                                <i class="fa fa-star text-secondary"></i>
-                                                <i class="fa fa-star text-secondary"></i>
-                                                <i class="fa fa-star"></i>
-                                            </div>
-                                            <div class="mb-2 d-flex">
-                                                <h5 class="fw-bold me-2">2.99 $</h5>
-                                                <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    @endforeach
                                     <div class="my-4 d-flex justify-content-center">
-                                        <a href="#"
+                                        <a href="{{route('shop')}}"
                                             class="px-4 py-3 border btn border-secondary rounded-pill text-primary w-100">Vew
                                             More</a>
                                     </div>

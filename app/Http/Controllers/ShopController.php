@@ -13,12 +13,12 @@ class ShopController extends Controller
      */
     public function index()
     {
-        $categories = Category::get();
-        $products = Product::get();
+        $products = Product::with(['category'])->take(3)->get();
+        $categories = Category::all();
 
         return view('pages.shop', [
-            'categories' => $categories,
-            'products'    => $products
+            'products'    => $products,
+            'categories'  => $categories
         ]);
     }
 

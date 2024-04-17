@@ -9,7 +9,7 @@
     <div class="py-5 container-fluid page-header">
         <h1 class="text-center text-white display-6">Cart</h1>
         <ol class="mb-0 breadcrumb justify-content-center">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('home')}}">Home</a></li>
             <li class="breadcrumb-item"><a href="#">Pages</a></li>
             <li class="text-white breadcrumb-item active">Cart</li>
         </ol>
