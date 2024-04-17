@@ -22,7 +22,9 @@ Route::post('/add-to-cart/{id}', [ShopDetailController::class, 'add'])->name('ad
 
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::get('/cart', [CartController::class, 'index'])->name('cart');
+Route::delete('/cart/{id}', [CartController::class, 'delete'])->name('cart-delete');
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+Route::get('/success', [CheckoutController::class, 'success'])->name('success');
 
 
 // Route::get('/home', function () {
