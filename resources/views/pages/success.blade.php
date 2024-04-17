@@ -1,38 +1,48 @@
-<html lang="en">
+@extends('layouts.success')
 
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>DIGITAL SURVEY | ANGKASA PURA SUPPORT</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <style>
-        @import url(//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css);
-        @import url(//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);
-        * {
-            font-family: "Poppins", sans-serif;
-        }
-    </style>
-    <link rel="stylesheet" href="https://2-22-4-dot-lead-pages.appspot.com/static/lp918/min/default_thank_you.css">
-    <script src="https://2-22-4-dot-lead-pages.appspot.com/static/lp918/min/jquery-1.9.1.min.js"></script>
-    <script src="https://2-22-4-dot-lead-pages.appspot.com/static/lp918/min/html5shiv.js"></script>
-</head>
+@section('title')
+  Success | Point Sebelas
+@endsection
 
-<body>
-    <header class="site-header" id="header">
-        <i class="fa fa-check main-content__checkmark" id="checkmark"></i>
-    </header>
-    
-    <div class="main-content">
-        <h1 class="site-header__title" data-lead-id="site-header-title">TERIMA KASIH!</h1>
-        <p class="main-content__body" data-lead-id="main-content-body">Atas Penilaian Anda.</p>
+@section('content')
+
+  <!-- Hero Start -->
+  <div class="py-5 mb-5 container-fluid hero-header">
+    <div class="container py-5">
+        <div class="row g-5 align-items-center">
+            <div class="col-md-12 col-lg-7">
+                <h4 class="mb-3 text-secondary">100% Organic Foods</h4>
+                <h1 class="mb-5 display-3 text-primary">Transaksi Kamu Sedang Di Proses</h1>
+            </div>
+            <div class="col-md-12 col-lg-5">
+                <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
+                    <div class="carousel-inner" role="listbox">
+                        <div class="rounded carousel-item active">
+                            <img src="img/hero-img-1.png" class="rounded img-fluid w-100 h-100 bg-secondary"
+                                alt="First slide">
+                            <a href="#" class="px-4 py-2 text-white rounded btn">Fruites</a>
+                        </div>
+                        <div class="rounded carousel-item">
+                            <img src="img/hero-img-2.jpg" class="rounded img-fluid w-100 h-100" alt="Second slide">
+                            <a href="#" class="px-4 py-2 text-white rounded btn">Vesitables</a>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselId"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselId"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
+<!-- Hero End -->
 
-    <!-- <footer class="site-footer" id="footer">
-        <p class="site-footer__fineprint" id="fineprint">Copyright ©2014 | All Rights Reserved</p>
-    </footer> -->
-</body>
+@endsection
 
-</html>

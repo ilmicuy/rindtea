@@ -62,15 +62,15 @@ class CheckoutController extends Controller
 
         Cart::where('users_id', Auth::user()->id)->delete();
 
-        return redirect()->route('home');
+        return redirect()->route('success');
     }
 
     /**
      * Display the specified resource.
      */
-    public function success(string $id)
+    public function success()
     {
-        return view('page.success');
+        return view('pages.success');
     }
 
     /**
