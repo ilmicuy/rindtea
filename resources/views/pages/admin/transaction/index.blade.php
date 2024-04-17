@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-            {{ __('Category') }}
+            {{ __('Transaction History') }}
         </h2>
     </x-slot>
 
@@ -25,7 +25,22 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            
+                                            @foreach ($query as $key => $transaction)
+                                                <tr>
+                                                    <td>{{ $key + 1 }}</td>
+                                                    <td>{{ $transaction->product->name }}</td>
+                                                    <td>{{ $transaction->first_name }} {{ $transaction->last_name }}</td>
+                                                    <td>Rp.{{ number_format($transaction->transaction->total_price) }}</td>
+                                                    <td>1</td>
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            <a href="#" class="mb-1 mr-1 btn btn-primary">
+                                                                Edit
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>

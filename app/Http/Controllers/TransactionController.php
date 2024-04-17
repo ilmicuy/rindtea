@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
+use App\Models\TransactionDetail;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
@@ -12,7 +13,11 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        return view('pages.admin.transaction.index');
+        $query = TransactionDetail::with(['transaction', 'product'])->get();
+
+        return view('pages.admin.transaction.index', [
+            'query' => $query
+        ]);
     }
 
     /**
@@ -28,11 +33,7 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        // $data = $request->all();
 
-        // Transaction::create($data);
-
-        // return redirect()->route('product');
     }
 
     /**
