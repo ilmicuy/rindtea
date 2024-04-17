@@ -62,23 +62,6 @@
                             <label class="my-3 form-label">Mobile<sup>*</sup></label>
                             <input type="tel" class="form-control">
                         </div>
-                        <div class="form-item">
-                            <label class="my-3 form-label">Email Address<sup>*</sup></label>
-                            <input type="email" class="form-control">
-                        </div>
-                        <div class="my-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="Account-1" name="Accounts" value="Accounts">
-                            <label class="form-check-label" for="Account-1">Create an account?</label>
-                        </div>
-                        <hr>
-                        <div class="my-3 form-check">
-                            <input class="form-check-input" type="checkbox" id="Address-1" name="Address" value="Address">
-                            <label class="form-check-label" for="Address-1">Ship to a different address?</label>
-                        </div>
-                        <div class="form-item">
-                            <textarea name="text" class="form-control" spellcheck="false" cols="30" rows="11"
-                                placeholder="Oreder Notes (Optional)"></textarea>
-                        </div>
                     </div>
                     <div class="col-md-12 col-lg-6 col-xl-5">
                         <div class="table-responsive">
@@ -93,43 +76,32 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php $total = 0 @endphp
+                                    @foreach ($checkouts as $checkout)
+                                    @php $total = $checkout->product->price * $checkout->qty @endphp
+                                        <tr>
+                                            <th scope="row">
+                                                <div class="mt-2 d-flex align-items-center">
+                                                    <img src="{{Storage::url($checkout->product->photos) }}" class="img-fluid rounded-circle"
+                                                        style="width: 90px; height: 90px;" alt="">
+                                                </div>
+                                            </th>
+                                            <td class="py-5">{{$checkout->product->name}}</td>
+                                            <td class="py-5">Rp.{{number_format($checkout->product->price)}}</td>
+                                            <td class="py-5">{{$checkout->qty}}</td>
+                                            <td class="py-5">{{number_format($total)}}</td>
+                                        </tr>
+                                    @endforeach
+                                   
                                     <tr>
-                                        <th scope="row">
-                                            <div class="mt-2 d-flex align-items-center">
-                                                <img src="img/vegetable-item-2.jpg" class="img-fluid rounded-circle"
-                                                    style="width: 90px; height: 90px;" alt="">
-                                            </div>
-                                        </th>
-                                        <td class="py-5">Awesome Brocoli</td>
-                                        <td class="py-5">$69.00</td>
-                                        <td class="py-5">2</td>
-                                        <td class="py-5">$138.00</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">
-                                            <div class="mt-2 d-flex align-items-center">
-                                                <img src="img/vegetable-item-5.jpg" class="img-fluid rounded-circle"
-                                                    style="width: 90px; height: 90px;" alt="">
-                                            </div>
-                                        </th>
-                                        <td class="py-5">Potatoes</td>
-                                        <td class="py-5">$69.00</td>
-                                        <td class="py-5">2</td>
-                                        <td class="py-5">$138.00</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">
-                                            <div class="mt-2 d-flex align-items-center">
-                                                <img src="img/vegetable-item-3.png" class="img-fluid rounded-circle"
-                                                    style="width: 90px; height: 90px;" alt="">
-                                            </div>
-                                        </th>
-                                        <td class="py-5">Big Banana</td>
-                                        <td class="py-5">$69.00</td>
-                                        <td class="py-5">2</td>
-                                        <td class="py-5">$138.00</td>
-                                    </tr>
-                                    <tr>
+                                        @php $subtotal = 0; @endphp
+                                        @foreach ($checkouts as $checkout)
+                                            @php 
+                                                $subtotal += $checkout->product->price * $checkout->qty; 
+                                                $totalPrice = $subtotal + ($subtotal * 0.10);
+                                            @endphp
+                                            
+                                        @endforeach
                                         <th scope="row">
                                         </th>
                                         <td class="py-5"></td>
@@ -139,7 +111,7 @@
                                         </td>
                                         <td class="py-5">
                                             <div class="py-3 border-bottom border-top">
-                                                <p class="mb-0 text-dark">$414.00</p>
+                                                <p class="mb-0 text-dark">Rp.{{number_format($subtotal)}}</p>
                                             </div>
                                         </td>
                                     </tr>
@@ -172,13 +144,13 @@
                                         <th scope="row">
                                         </th>
                                         <td class="py-5">
-                                            <p class="py-3 mb-0 text-dark text-uppercase">TOTAL</p>
+                                            <p class="py-3 mb-0 text-dark text-uppercase">TOTAL + PPN 10%</p>
                                         </td>
                                         <td class="py-5"></td>
                                         <td class="py-5"></td>
                                         <td class="py-5">
                                             <div class="py-3 border-bottom border-top">
-                                                <p class="mb-0 text-dark">$135.00</p>
+                                                <p class="mb-0 text-dark">Rp{{number_format($totalPrice)}}</p>
                                             </div>
                                         </td>
                                     </tr>

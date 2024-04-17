@@ -37,7 +37,7 @@
                                                     <td>{{ $key + 1 }}</td>
                                                     <td>{{ $product->name }}</td>
                                                     <td>{{ $product->category->name }}</td>
-                                                    <td>{{ $product->price }}</td>
+                                                    <td>Rp.{{ number_format($product->price) }}</td>
                                                     <td>{{ $product->quantity }} Pcs</td>
                                                     <td>{{ $product->quality }}</td>
                                                     <td>{{ $product->country_of_origin }}</td>

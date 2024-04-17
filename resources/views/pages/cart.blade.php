@@ -38,7 +38,7 @@
                             <tr>
                                 <th scope="row">
                                     <div class="d-flex align-items-center">
-                                        <img src="{{ Storage::url($cart->product->photos) }}" class="img-fluid me-5"
+                                        <img src="{{ Storage::url($cart->product->photos) }}" class="img-fluid me-5 rounded-circle"
                                             style="width: 80px; height: 80px;" alt="">
                                     </div>
                                 </th>
