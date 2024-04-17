@@ -12,6 +12,7 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    @if (auth()->user()->is_admin != 0)
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard*')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
@@ -24,9 +25,11 @@
                         <x-nav-link :href="route('transaction')" :active="request()->routeIs('transaction*')">
                             {{ __('Transaction') }}
                         </x-nav-link>
+                    @else
                         <x-nav-link :href="route('home')">
                             {{ __('Home') }}
                         </x-nav-link>
+                    @endif
                 </div>
             </div>
 
