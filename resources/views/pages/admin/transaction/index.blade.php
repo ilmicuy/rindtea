@@ -12,6 +12,9 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
+                                <form action="">
+                                    <x-text-input id="weight" name="weight" type="text" placeholder="Search" class="block w-52 m-3" autocomplete="weight" />
+                                </form>
                                 <div class="table-responsive">
                                     <table class="table table-hover scroll-horizontal-vertical w-100" id="crudTable">
                                         <thead>
