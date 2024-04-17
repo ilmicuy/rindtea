@@ -109,7 +109,7 @@
                                     @endforeach
                                     <div class="my-4 d-flex justify-content-center">
                                         <a href="{{route('shop')}}"
-                                            class="px-4 py-3 border btn border-secondary rounded-pill text-primary w-100">Vew
+                                            class="px-4 py-3 border btn border-secondary rounded-pill text-primary w-100">View
                                             More</a>
                                     </div>
                                 </div>
