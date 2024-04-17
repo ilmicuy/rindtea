@@ -13,7 +13,7 @@ class ShopController extends Controller
      */
     public function index()
     {
-        $products = Product::with(['category'])->take(3)->get();
+        $products = Product::with(['category'])->simplePaginate(6);
         $categories = Category::all();
 
         return view('pages.shop', [

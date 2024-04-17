@@ -13,8 +13,10 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $query = TransactionDetail::with(['transaction', 'product'])->get();
-
+        $query = TransactionDetail::with(['transaction', 'product'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+    
         return view('pages.admin.transaction.index', [
             'query' => $query
         ]);

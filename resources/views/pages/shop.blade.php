@@ -152,19 +152,9 @@
                                     </div>
                                 @endforeach
 
-
-                                {{-- <div class="col-12">
-                                    <div class="mt-5 pagination d-flex justify-content-center">
-                                        <a href="#" class="rounded">&laquo;</a>
-                                        <a href="#" class="rounded active">1</a>
-                                        <a href="#" class="rounded">2</a>
-                                        <a href="#" class="rounded">3</a>
-                                        <a href="#" class="rounded">4</a>
-                                        <a href="#" class="rounded">5</a>
-                                        <a href="#" class="rounded">6</a>
-                                        <a href="#" class="rounded">&raquo;</a>
-                                    </div>
-                                </div> --}}
+                                <div class="text-center">
+                                    {{$products->links()}}
+                                </div>
                             </div>
                         </div>
                     </div>

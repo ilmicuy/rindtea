@@ -16,7 +16,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $query = Product::take(6)->get();
+        $query = Product::paginate(10);
 
         return view('pages.admin.product.index', [
             'query' => $query

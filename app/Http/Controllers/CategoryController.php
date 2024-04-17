@@ -16,7 +16,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $query = Category::take(6)->get();
+        $query = Category::paginate(10);
 
         return view('pages.admin.category.index', [
             'query' => $query
