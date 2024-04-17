@@ -17,10 +17,11 @@
                                         <thead>
                                             <tr>
                                                 <th>No</th>
-                                                <th>Nama Barang</th>
-                                                <th>Nama Pembeli</th>
+                                                <th>Product Name</th>
+                                                <th>Buyer Name</th>
                                                 <th>Total Price</th>
                                                 <th>Quality</th>
+                                                <th>Tanggal Checkout</th>
                                                 <th>Status Transaction</th>
                                                 <th>Aksi</th>
                                             </tr>
@@ -33,10 +34,11 @@
                                                     <td>{{ $transaction->first_name }} {{ $transaction->last_name }}</td>
                                                     <td>Rp.{{ number_format($transaction->transaction->total_price) }}</td>
                                                     <td>{{ $transaction->qty}}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($transaction->transaction->created_at)->format('d M Y H:i:s') }}</td>
                                                     <td>{{ $transaction->transaction->transaction_status }}</td>
                                                     <td>
                                                         <div class="btn-group">
-                                                            <a href="#" class="mb-1 mr-1 btn btn-primary">
+                                                            <a href="{{ route('transaction.edit', $transaction->id) }}" class="mb-1 mr-1 btn btn-primary">
                                                                 Edit
                                                             </a>
                                                         </div>

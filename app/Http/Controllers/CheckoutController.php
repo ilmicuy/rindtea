@@ -43,7 +43,7 @@ class CheckoutController extends Controller
         $transaction =  Transaction::create([
             'users_id' => Auth::user()->id,
             'total_price' => (int) $request->total_price,
-            'transaction_status' => 'PENDING',
+            'transaction_status' => 'pending',
         ]);
         
         foreach ($carts as $cart) {            
