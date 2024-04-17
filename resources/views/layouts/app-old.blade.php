@@ -41,8 +41,27 @@
     </div>
 
     @stack('prepend-script')
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/ckeditor.js"></script>
     <script src="vendor/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.3/datatables.min.js"></script>
+    <script>
+            ClassicEditor
+                    .create( document.querySelector( '#editor2' ) )
+                    .then( editor => {
+                            console.log( editor );
+                    } )
+                    .catch( error => {
+                            console.error( error );
+                    } );
+            ClassicEditor
+                    .create( document.querySelector( '#editor3' ) )
+                    .then( editor => {
+                            console.log( editor );
+                    } )
+                    .catch( error => {
+                            console.error( error );
+                    } );
+    </script>
     @stack('addon-script')
 </body>
 

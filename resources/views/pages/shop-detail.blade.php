@@ -40,7 +40,7 @@
                                 <i class="fa fa-star text-secondary"></i>
                                 <i class="fa fa-star"></i>
                             </div>
-                            <p class="mb-4">{{ $product->short_description }}</p>
+                            <p class="mb-4">{!! $product->short_description !!}</p>
                             <p class="mb-3">Qty: {{ $product->quantity }}</p>
                             <form id="add-to-cart-form" action="{{ route('add-to-cart', $product->id) }}" method="POST" enctype="multipart/form-data">
                                 <div class="mb-5 input-group quantity" style="width: 100px;">
@@ -81,7 +81,7 @@
                             </nav>
                             <div class="mb-5 tab-content">
                                 <div class="tab-pane active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
-                                    <p>{{$product->long_description}}</p>
+                                    <p>{!! $product->long_description !!}</p>
                                     <div class="px-2">
                                         <div class="row g-4">
                                             <div class="col-6">

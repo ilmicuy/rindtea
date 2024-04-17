@@ -215,7 +215,7 @@
                                                 <h4>{{ $item->name }}</h4>
                                                 <small class="mb-1 text-dark fw-bold">Rp.{{ number_format($item->price) }}
                                                     / kg</small>
-                                                <p style="color: #747d88 !important">{{ $item->thumb_description }}</p>
+                                                <p style="color: #747d88 !important">{!! $item->thumb_description !!}</p>
                                                 <div class="d-flex justify-content-center flex-lg-wrap">
                                                     <button type="submit"
                                                         class="x-4 py-2 mb-4 border btn border-secondary rounded-pill text-primary">

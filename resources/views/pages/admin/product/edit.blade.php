@@ -73,13 +73,13 @@
                                     </div>
                                     <div>
                                         <x-input-label for="short_description" :value="__('Short Description')" />
-                                        <textarea id="short_description" name="short_description"
+                                        <textarea id="editor2" name="short_description"
                                             class="block w-full mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
                                             autocomplete="short_description">{{ $item->short_description }}</textarea>
                                     </div>
                                     <div>
                                         <x-input-label for="long_description" :value="__('Long Description')" />
-                                        <textarea id="long_description" name="long_description"
+                                        <textarea id="editor3" name="long_description"
                                             class="block w-full mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
                                             autocomplete="long_description">{{ $item->long_description }}</textarea>
                                     </div>
@@ -87,7 +87,8 @@
                                         <x-input-label for="photos" :value="__('Photos')" />
                                         <x-text-input id="photos" name="photos" type="file"
                                             class="block w-full mt-1" autocomplete="photos" />
-                                        <img class="mt-3" src="{{ Storage::url($item->photos) }}" style="max-width: 250px;" />
+                                        <img class="mt-3" src="{{ Storage::url($item->photos) }}"
+                                            style="max-width: 250px;" />
                                     </div>
 
                                     <div class="flex items-center gap-4">

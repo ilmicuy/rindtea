@@ -12,19 +12,21 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                <form method="post" action="{{ route('product.store') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
+                                <form method="post" action="{{ route('product.store') }}" class="mt-6 space-y-6"
+                                    enctype="multipart/form-data">
                                     @csrf
 
                                     <div>
                                         <x-input-label for="categories_id" :value="__('Category')" />
-                                        <select id="categories_id" name="categories_id" class="block w-full mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                                        <select id="categories_id" name="categories_id"
+                                            class="block w-full mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                                             <option value="">Choose Category</option>
-                                            @foreach($categories as $category)
+                                            @foreach ($categories as $category)
                                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
-                                    
+
                                     <div>
                                         <x-input-label for="name" :value="__('Product Name')" />
                                         <x-text-input id="name" name="name" type="text"
@@ -37,18 +39,18 @@
                                     </div>
                                     <div>
                                         <x-input-label for="quality" :value="__('Quality')" />
-                                        <x-text-input id="quality" name="quality" type="text" 
-                                            class="block w-full mt-1" autocomplete="quality"/>
+                                        <x-text-input id="quality" name="quality" type="text"
+                                            class="block w-full mt-1" autocomplete="quality" />
                                     </div>
                                     <div>
                                         <x-input-label for="check" :value="__('Check')" />
-                                        <x-text-input id="check" name="check" type="text" 
-                                            class="block w-full mt-1" autocomplete="check"/>
+                                        <x-text-input id="check" name="check" type="text"
+                                            class="block w-full mt-1" autocomplete="check" />
                                     </div>
                                     <div>
                                         <x-input-label for="country_of_origin" :value="__('Country Of Origin')" />
-                                        <x-text-input id="country_of_origin" name="country_of_origin" type="text" 
-                                            class="block w-full mt-1" autocomplete="country_of_origin"/>
+                                        <x-text-input id="country_of_origin" name="country_of_origin" type="text"
+                                            class="block w-full mt-1" autocomplete="country_of_origin" />
                                     </div>
                                     <div>
                                         <x-input-label for="price" :value="__('Price')" />
@@ -62,21 +64,27 @@
                                     </div>
                                     <div>
                                         <x-input-label for="thumb_description" :value="__('Thumbnail Description')" />
-                                        <textarea id="thumb_description" name="thumb_description" class="block w-full mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" autocomplete="thumb_description"></textarea>
+                                        <textarea id="thumb_description" name="thumb_description"
+                                            class="block w-full mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+                                            autocomplete="thumb_description"></textarea>
                                     </div>
                                     <div>
                                         <x-input-label for="short_description" :value="__('Short Description')" />
-                                        <textarea id="short_description" name="short_description" class="block w-full mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" autocomplete="short_description"></textarea>
+                                        <textarea id="editor2" name="short_description"
+                                            class="block w-full mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+                                            autocomplete="short_description"></textarea>
                                     </div>
                                     <div>
                                         <x-input-label for="long_description" :value="__('Long Description')" />
-                                        <textarea id="long_description" name="long_description" class="block w-full mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" autocomplete="long_description"></textarea>
-                                    </div>    
+                                        <textarea id="editor3" name="long_description"
+                                            class="block w-full mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+                                            autocomplete="long_description"></textarea>
+                                    </div>
                                     <div>
                                         <x-input-label for="photos" :value="__('Photos')" />
                                         <x-text-input id="photos" name="photos" type="file"
                                             class="block w-full mt-1" autocomplete="photos" />
-                                    </div>                                
+                                    </div>
 
                                     <div class="flex items-center gap-4">
                                         <x-primary-button>{{ __('Save') }}</x-primary-button>
@@ -90,4 +98,5 @@
             </div>
         </div>
     </div>
+
 </x-app-layout>

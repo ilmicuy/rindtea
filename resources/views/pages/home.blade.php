@@ -154,7 +154,8 @@
                                                     <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                                                         <h4>{{ $product->name }}</h4>
                                                         <p style="color: #747d88 !important">
-                                                            {{ $product->thumb_description }}</p>
+                                                            {{ $product->thumb_description }}
+                                                        </p>
                                                         <div class="d-flex justify-content-center flex-lg-wrap">
                                                             <a href="{{ route('shop-detail', $product->id) }}"
                                                                 class="px-3 border btn border-secondary rounded-pill text-primary">
