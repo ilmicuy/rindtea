@@ -27,7 +27,7 @@
                         </div>
                     </a>
 
-                    <a href="{{route('transaction') }}" style="text-decoration: none">
+                    <a href="{{ route('transaction') }}" style="text-decoration: none">
                         <div class="bg-white rounded-lg shadow-md">
                             <div class="p-4">
                                 <h1 class="pb-2">Revenue</h1>
@@ -37,8 +37,8 @@
                             </div>
                         </div>
                     </a>
-                    
-                    <a href="{{route('transaction') }}" style="text-decoration: none">
+
+                    <a href="{{ route('transaction') }}" style="text-decoration: none">
                         <div class="bg-white rounded-lg shadow-md">
                             <div class="p-4">
                                 <h1 class="pb-2">Pending Transaction</h1>
@@ -50,4 +50,6 @@
                     </a>
                 </div>
             </div>
+        </div>
+    </div>
 </x-app-layout>

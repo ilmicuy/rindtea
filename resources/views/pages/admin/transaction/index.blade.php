@@ -20,11 +20,8 @@
                                         <thead>
                                             <tr>
                                                 <th>No</th>
-                                                <th>Product Name</th>
-                                                <th>Buyer Name</th>
-                                                <th>Total Price</th>
-                                                <th>Quality</th>
                                                 <th>Tanggal Checkout</th>
+                                                <th>Total Price</th>
                                                 <th>Status Transaction</th>
                                                 <th>Aksi</th>
                                             </tr>
@@ -33,14 +30,11 @@
                                             @foreach ($query as $key => $transaction)
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
-                                                    <td>{{ $transaction->product->name }}</td>
-                                                    <td>{{ $transaction->first_name }} {{ $transaction->last_name }}</td>
-                                                    <td>Rp.{{ number_format($transaction->transaction->total_price) }}</td>
-                                                    <td>{{ $transaction->qty}}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($transaction->transaction->created_at)->format('d M Y H:i:s') }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($transaction->created_at)->format('d M Y H:i:s') }}</td>
+                                                    <td>Rp.{{ number_format($transaction->total_price) }}</td>
                                                     <td>
                                                         @php
-                                                            $status = $transaction->transaction->transaction_status;
+                                                            $status = $transaction->transaction_status;
                                                             $badgeColor = '';
                                                     
                                                             switch ($status) {

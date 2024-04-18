@@ -13,7 +13,7 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $query = TransactionDetail::with(['transaction', 'product'])
+        $query = Transaction::with(['transactionDetail'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
     
@@ -49,12 +49,20 @@ class TransactionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $transactions_id)
     {
-        $item = TransactionDetail::with(['transaction', 'product'])->findOrFail($id);
+        
+        $items = TransactionDetail::with(['transaction', 'product'])
+        ->where('transactions_id', $transactions_id)
+        ->firstOrFail();
 
+        $itemDetails = TransactionDetail::with(['transaction', 'product'])
+        ->where('transactions_id', $transactions_id)
+        ->get();
+    
         return view('pages.admin.transaction.edit', [
-            'item' => $item,
+            'items' => $items,
+            'itemDetails' => $itemDetails
         ]);
     }
 

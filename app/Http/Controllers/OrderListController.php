@@ -46,7 +46,6 @@ class OrderListController extends Controller
             ->where('transactions_id', $transactions_id)
             ->get();
 
-            // dd($query);
         return view('pages.order-list-detail', [
             'query' => $query
         ]);
