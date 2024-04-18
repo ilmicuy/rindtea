@@ -31,5 +31,10 @@ class CustomerReview extends Model
     {
         return $this->belongsTo(User::class, 'users_id', 'id');
     }
+    
+    public function transaction()
+    {
+        return $this->hasOne(Transaction::class, 'id', 'transactions_id');
+    }
 }
 
