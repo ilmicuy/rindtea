@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Transaction;
 use App\Models\TransactionDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderListController extends Controller
 {
@@ -13,7 +14,7 @@ class OrderListController extends Controller
      */
     public function index()
     {
-        $query = Transaction::with(['transactionDetail'])->get();
+        $query = Transaction::with(['transactionDetail'])->where('users_id', Auth::user()->id)->get();
 
         return view('pages.order-list', [
             'query' => $query,
@@ -39,14 +40,18 @@ class OrderListController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $transactions_id)
     {
-        $query = TransactionDetail::with(['transaction'])->get();
+        $query = TransactionDetail::with(['transaction', 'product'])
+            ->where('transactions_id', $transactions_id)
+            ->get();
 
+            // dd($query);
         return view('pages.order-list-detail', [
             'query' => $query
         ]);
     }
+    
 
     /**
      * Show the form for editing the specified resource.

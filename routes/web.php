@@ -41,7 +41,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/order-list', [OrderListController::class, 'index'])->name('order');
-    Route::get('/order-list-detail/{id}', [OrderListController::class, 'show'])->name('order.detail');
+    Route::get('/order-list-detail/{transactions_id}', [OrderListController::class, 'show'])->name('order.detail');
 
 });
 

@@ -25,6 +25,7 @@
                     <thead>
                         <tr>
                             <th scope="col">No</th>
+                            <th scope="col">Pesanan Dibuat</th>
                             <th scope="col">Total Price</th>
                             <th scope="col">Transaction Status</th>
                             <th scope="col">Action</th>
@@ -36,6 +37,11 @@
                                 <td>
                                     <p class="mt-4 mb-0">
                                         {{$key + 1}}
+                                    </p>
+                                </td>
+                                <td>
+                                    <p class="mt-4 mb-0">
+                                        {{ \Carbon\Carbon::parse($item->created_at)->format('d M Y H:i:s') }}
                                     </p>
                                 </td>
                                 <td>
@@ -61,6 +67,7 @@
                                     @endphp
                                     <p class="mt-4 mb-0" style="font-size: 1.2rem"><span class="{{ $badgeClass }}">{{ $item->transaction_status }}</span></p>
                                 </td>
+                              
                                 <td>
                                     <a href="{{ route('order.detail', $item->id) }}" class="mt-4 border btn btn-md rounded-circle bg-light">
                                         <i class="fa fa-eye text-success"></i>
