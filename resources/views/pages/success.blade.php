@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>DIGITAL SURVEY | ANGKASA PURA SUPPORT</title>
+    <title>Thanks | Pointsebelas</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -14,6 +14,7 @@
         * {
             font-family: "Poppins", sans-serif;
         }
+
         .btn-go-shopping {
             display: inline-block;
             padding: 0.75rem 1rem;
@@ -36,23 +37,36 @@
     <link rel="stylesheet" href="https://2-22-4-dot-lead-pages.appspot.com/static/lp918/min/default_thank_you.css">
     <script src="https://2-22-4-dot-lead-pages.appspot.com/static/lp918/min/jquery-1.9.1.min.js"></script>
     <script src="https://2-22-4-dot-lead-pages.appspot.com/static/lp918/min/html5shiv.js"></script>
+    <script>
+        var countdown = 10;
+        var countdownInterval = setInterval(function () {
+            countdown--;
+
+            document.getElementById('countdown').innerText = countdown;
+
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+                window.location.href = "{{ route('home') }}";
+            }
+        }, 1000);
+    </script>
 </head>
 
 <body>
     <header class="site-header" id="header">
         <i class="fa fa-check main-content__checkmark" id="checkmark" style="color: #81c408 !important"></i>
     </header>
-    
+
     <div class="main-content">
         <h1 class="site-header__title" data-lead-id="site-header-title">TERIMA KASIH!</h1>
-        <p class="main-content__body" data-lead-id="main-content-body">Pesanan Kamu Sedang Di Prosess.</p>
+        <p class="main-content__body" data-lead-id="main-content-body">Pesanan Kamu Sedang Di Proses...</p>
         <br>
         <a href="{{route('shop')}}" class="btn-go-shopping ">Go To Shopping</a>
     </div>
 
-    <!-- <footer class="site-footer" id="footer">
-        <p class="site-footer__fineprint" id="fineprint">Copyright ©2014 | All Rights Reserved</p>
-    </footer> -->
+    <footer class="site-footer" id="footer">
+        <p class="site-footer__fineprint" data-lead-id="main-content-body">Redirecting in <span id="countdown">5</span> seconds...</p>
+    </footer>
 </body>
 
 </html>
