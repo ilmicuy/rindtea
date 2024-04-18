@@ -61,13 +61,38 @@
                                     <a href="{{route('shop-detail', $item->product->id)}}" class="mt-3 border btn btn-md bg-success" style="color:white">
                                         Beli lagi
                                     </a>
+                                    <a class="mt-3 border btn btn-md bg-warning" style="color:white" data-bs-toggle="modal" data-bs-target="#buyAgainModal{{$item->product->id}}">
+                                        Review
+                                    </a>
+
+                                    <div class="modal fade" id="buyAgainModal{{$item->product->id}}" tabindex="-1" aria-labelledby="buyAgainModal{{$item->product->id}}Label" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <form method="post" action="{{ route('review.store') }}" enctype="multipart/form-data">
+                                                    @csrf
+                                                    <input type="hidden" name="transactions_id" value={{$item->transaction->id}}>
+                                                    <input type="hidden" name="products_id" value={{$item->product->id}}>
+                                                    <input type="hidden" name="name_reviewer" value="{{ auth()->user()->name }}">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="buyAgainModal{{$item->product->id}}Label">Berikan Review Kamu</h5>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="form-item">
+                                                            <textarea class="form-control" name="description_review" id="description_review" cols="30" rows="10"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color:white">Batal</button>
+                                                        <button type="submit" class="btn btn-success">Kirim</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
-                    </tbody>
-                    
-                    </tbody>
-                    
+                    </tbody>                    
                 </table>
             </div>
         </div>

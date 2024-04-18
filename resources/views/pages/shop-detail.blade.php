@@ -184,45 +184,6 @@
                                 </div>
                             </div>
                         </div>
-                        <form action="#">
-                            <h4 class="mb-5 fw-bold">Leave a Reply</h4>
-                            <div class="row g-4">
-                                <div class="col-lg-6">
-                                    <div class="rounded border-bottom">
-                                        <input type="text" class="border-0 form-control me-4"
-                                            placeholder="Yur Name *">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="rounded border-bottom">
-                                        <input type="email" class="border-0 form-control" placeholder="Your Email *">
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="my-4 rounded border-bottom">
-                                        <textarea name="" id="" class="border-0 form-control" cols="30" rows="8"
-                                            placeholder="Your Review *" spellcheck="false"></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="py-3 mb-5 d-flex justify-content-between">
-                                        <div class="d-flex align-items-center">
-                                            <p class="mb-0 me-3">Please rate:</p>
-                                            <div class="d-flex align-items-center" style="font-size: 12px;">
-                                                <i class="fa fa-star text-muted"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </div>
-                                        </div>
-                                        <a href="#"
-                                            class="px-4 py-3 border btn border-secondary text-primary rounded-pill"> Post
-                                            Comment</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
                     </div>
                 </div>
                 <div class="col-lg-4 col-xl-3">

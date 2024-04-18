@@ -9,6 +9,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerReviewController;
 use App\Http\Controllers\OrderListController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TransactionController;
@@ -31,18 +32,19 @@ Route::get('/success', [CheckoutController::class, 'success'])->name('success');
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
     Route::post('/checkout/store', [CheckoutController::class, 'store'])->name('checkout.store');
-
+    
     Route::post('/add-to-cart/{id}', [ShopDetailController::class, 'add'])->name('add-to-cart');
     Route::get('/cart', [CartController::class, 'index'])->name('cart');
     Route::delete('/cart/{id}', [CartController::class, 'delete'])->name('cart-delete');
-
+    
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
+    
     Route::get('/order-list', [OrderListController::class, 'index'])->name('order');
     Route::get('/order-list-detail/{transactions_id}', [OrderListController::class, 'show'])->name('order.detail');
-
+    
+    Route::post('/review/store', [CustomerReviewController::class, 'store'])->name('review.store');
 });
 
 Route::group(['middleware' => ['auth', 'admin']], function () {
