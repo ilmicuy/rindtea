@@ -9,6 +9,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderListController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
@@ -34,9 +35,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/add-to-cart/{id}', [ShopDetailController::class, 'add'])->name('add-to-cart');
     Route::get('/cart', [CartController::class, 'index'])->name('cart');
     Route::delete('/cart/{id}', [CartController::class, 'delete'])->name('cart-delete');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/order-list', [OrderListController::class, 'index'])->name('order');
+    Route::get('/order-list-detail/{id}', [OrderListController::class, 'show'])->name('order.detail');
+
 });
 
 Route::group(['middleware' => ['auth', 'admin']], function () {

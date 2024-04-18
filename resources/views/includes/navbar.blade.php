@@ -74,6 +74,9 @@
                                             <x-dropdown-link :href="route('profile.edit')" class="dropdown-item">
                                                Hi, {{ Auth::user()->name }}
                                             </x-dropdown-link>
+                                            <x-dropdown-link :href="route('order')" class="dropdown-item">
+                                               Order List
+                                            </x-dropdown-link>
 
                                             <!-- Authentication -->
                                             <form method="POST" action="{{ route('logout') }}">

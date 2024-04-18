@@ -1,7 +1,7 @@
 @extends('layouts.home')
 
 @section('title')
-    Contact | Point Sebelas
+    Cart | Point Sebelas
 @endsection
 
 @section('content')
