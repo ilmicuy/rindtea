@@ -45,6 +45,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/order-list-detail/{transactions_id}', [OrderListController::class, 'show'])->name('order.detail');
     
     Route::post('/review/store', [CustomerReviewController::class, 'store'])->name('review.store');
+    Route::post('/review/update/{id}', [CustomerReviewController::class, 'update'])->name('review.update');
 });
 
 Route::group(['middleware' => ['auth', 'admin']], function () {

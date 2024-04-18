@@ -60,7 +60,13 @@ class CustomerReviewController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = $request->all();
+
+        $item = CustomerReview::findOrFail($id);
+
+        $item->update($data);
+
+        return redirect()->back();
     }
 
     /**
