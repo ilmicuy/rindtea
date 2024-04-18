@@ -21,15 +21,5 @@ class CustomerReview extends Model
     ];
 
     protected $hidden = [];
-
-    public function product()
-    {
-        return $this->belongsTo(Product::class, 'products_id', 'id');
-    }
-
-    public function transaction()
-    {
-        return $this->hasOne(Transaction::class, 'id', 'transactions_id');
-    }
 }
 
