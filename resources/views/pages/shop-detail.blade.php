@@ -9,7 +9,7 @@
     <div class="py-5 container-fluid page-header">
         <h1 class="text-center text-white display-6">Shop Detail</h1>
         <ol class="mb-0 breadcrumb justify-content-center">
-            <li class="breadcrumb-item"><a href="{{ route('home')}}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
             <li class="breadcrumb-item"><a href="#">Pages</a></li>
             <li class="text-white breadcrumb-item active">Shop Detail</li>
         </ol>
@@ -25,7 +25,8 @@
                         <div class="col-lg-6">
                             <div class="border rounded">
                                 <a href="#">
-                                    <img src="{{ Storage::url($product->photos) }}" class="rounded img-fluid" alt="Image">
+                                    <img src="{{ Storage::url($product->photos) }}" class="rounded img-fluid"
+                                        alt="Image">
                                 </a>
                             </div>
                         </div>
@@ -42,28 +43,34 @@
                             </div>
                             <p class="mb-4">{!! $product->short_description !!}</p>
                             <p class="mb-3">Qty: {{ $product->quantity }}</p>
-                            <form id="add-to-cart-form" action="{{ route('add-to-cart', $product->id) }}" method="POST" enctype="multipart/form-data">
+                            <form id="add-to-cart-form" action="{{ route('add-to-cart', $product->id) }}" method="POST"
+                                enctype="multipart/form-data">
                                 <div class="mb-5 input-group quantity" style="width: 100px;">
                                     <div class="input-group-btn">
-                                        <button id="btn-minus" class="border btn btn-sm btn-minus rounded-circle bg-light" type="button">
+                                        <button id="btn-minus" class="border btn btn-sm btn-minus rounded-circle bg-light"
+                                            type="button">
                                             <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
-                                    <input id="qty-input" type="text" name="qty" class="text-center border-0 form-control form-control-sm" value="1">
+                                    <input id="qty-input" type="text" name="qty"
+                                        class="text-center border-0 form-control form-control-sm" value="1">
                                     <div class="input-group-btn">
-                                        <button id="btn-plus" class="border btn btn-sm btn-plus rounded-circle bg-light" type="button">
+                                        <button id="btn-plus" class="border btn btn-sm btn-plus rounded-circle bg-light"
+                                            type="button">
                                             <i class="fa fa-plus"></i>
                                         </button>
                                     </div>
                                 </div>
                                 @auth
                                     @csrf
-                                    <button type="submit" class="x-4 py-2 mb-4 border btn border-secondary rounded-pill text-primary">
+                                    <button type="submit"
+                                        class="x-4 py-2 mb-4 border btn border-secondary rounded-pill text-primary">
                                         <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
                                     </button>
                                 @else
-                                    <a href="{{ route('login') }}" class="x-4 py-2 mb-4 border btn border-secondary rounded-pill text-primary">
-                                        Login 
+                                    <a href="{{ route('login') }}"
+                                        class="x-4 py-2 mb-4 border btn border-secondary rounded-pill text-primary">
+                                        Login
                                     </a>
                                 @endauth
                             </form>
@@ -91,7 +98,7 @@
                                                         <p class="mb-0">Min Weight</p>
                                                     </div>
                                                     <div class="col-6">
-                                                        <p class="mb-0">{{$product->weight}}</p>
+                                                        <p class="mb-0">{{ $product->weight }}</p>
                                                     </div>
                                                 </div>
                                                 <div class="py-2 text-center row align-items-center justify-content-center">
@@ -99,7 +106,7 @@
                                                         <p class="mb-0">Country of Origin</p>
                                                     </div>
                                                     <div class="col-6">
-                                                        <p class="mb-0">{{$product->country_of_origin}}</p>
+                                                        <p class="mb-0">{{ $product->country_of_origin }}</p>
                                                     </div>
                                                 </div>
                                                 <div
@@ -108,7 +115,7 @@
                                                         <p class="mb-0">Quality</p>
                                                     </div>
                                                     <div class="col-6">
-                                                        <p class="mb-0">{{$product->quality}}</p>
+                                                        <p class="mb-0">{{ $product->quality }}</p>
                                                     </div>
                                                 </div>
                                                 <div class="py-2 text-center row align-items-center justify-content-center">
@@ -116,63 +123,48 @@
                                                         <p class="mb-0">Сheck</p>
                                                     </div>
                                                     <div class="col-6">
-                                                        <p class="mb-0">{{$product->check}}</p>
+                                                        <p class="mb-0">{{ $product->check }}</p>
                                                     </div>
                                                 </div>
                                                 <div
                                                     class="py-2 text-center row bg-light align-items-center justify-content-center">
                                                     <div class="col-6">
-                                                        <p class="mb-0">Name {{$product->category->name}}</p>
+                                                        <p class="mb-0">Name {{ $product->category->name }}</p>
                                                     </div>
                                                     <div class="col-6">
-                                                        <p class="mb-0">{{$product->name}}</p>
+                                                        <p class="mb-0">{{ $product->name }}</p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="nav-mission" role="tabpanel" aria-labelledby="nav-mission-tab">
-                                    <div class="d-flex">
-                                        <img src="{{asset('img/avatar.jpg')}}" class="p-3 img-fluid rounded-circle"
-                                            style="width: 100px; height: 100px;" alt="">
-                                        <div class="">
-                                            <p class="mb-2" style="font-size: 14px;">April 12, 2024</p>
-                                            <div class="d-flex justify-content-between">
-                                                <h5>Jason Smith</h5>
-                                                <div class="mb-3 d-flex">
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star"></i>
+                                <div class="tab-pane" id="nav-mission" role="tabpanel"
+                                    aria-labelledby="nav-mission-tab">
+                                    @foreach ($review as $item)
+                                        <div class="d-flex">
+                                            <img src="{{ asset('img/avatar.jpg') }}" class="p-3 img-fluid rounded-circle"
+                                                style="width: 100px; height: 100px;" alt="">
+                                            <div class="">
+                                                <p class="mb-2" style="font-size: 14px;">
+                                                    {{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}</p>
+                                                <div class="d-flex justify-content-between">
+                                                    <h5>{{ $item->user->name }}</h5>
+                                                    <div class="mb-3 d-flex">
+                                                        @for ($i = 1; $i <= 5; $i++)
+                                                            @if ($i <= $item->rating)
+                                                                <i class="fa fa-star text-secondary"></i>
+                                                            @else
+                                                                <i class="fa fa-star"></i>
+                                                            @endif
+                                                        @endfor
+                                                    </div>
                                                 </div>
+                                                <p>{{ $item->description_review }} </p>
                                             </div>
-                                            <p>The generated Lorem Ipsum is therefore always free from repetition injected
-                                                humour, or non-characteristic
-                                                words etc. Susp endisse ultricies nisi vel quam suscipit </p>
                                         </div>
-                                    </div>
-                                    <div class="d-flex">
-                                        <img src="{{asset('img/avatar.jpg')}}" class="p-3 img-fluid rounded-circle"
-                                            style="width: 100px; height: 100px;" alt="">
-                                        <div class="">
-                                            <p class="mb-2" style="font-size: 14px;">April 12, 2024</p>
-                                            <div class="d-flex justify-content-between">
-                                                <h5>Sam Peters</h5>
-                                                <div class="mb-3 d-flex">
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </div>
-                                            </div>
-                                            <p class="text-dark">The generated Lorem Ipsum is therefore always free from
-                                                repetition injected humour, or non-characteristic
-                                                words etc. Susp endisse ultricies nisi vel quam suscipit </p>
-                                        </div>
-                                    </div>
+                                        <hr>
+                                    @endforeach
                                 </div>
                                 <div class="tab-pane" id="nav-vision" role="tabpanel">
                                     <p class="text-dark">Tempor erat elitr rebum at clita. Diam dolor diam ipsum et tempor
@@ -234,7 +226,7 @@
                             <h4 class="mb-4">Featured products</h4>
                             <div class="d-flex align-items-center justify-content-start">
                                 <div class="rounded" style="width: 100px; height: 100px;">
-                                    <img src="{{asset('img/featur-1.jpg')}}" class="rounded img-fluid" alt="Image">
+                                    <img src="{{ asset('img/featur-1.jpg') }}" class="rounded img-fluid" alt="Image">
                                 </div>
                                 <div>
                                     <h6 class="mb-2">Big Banana</h6>
@@ -253,7 +245,7 @@
                             </div>
                             <div class="d-flex align-items-center justify-content-start">
                                 <div class="rounded" style="width: 100px; height: 100px;">
-                                    <img src="{{asset('img/featur-2.jpg')}}" class="rounded img-fluid" alt="">
+                                    <img src="{{ asset('img/featur-2.jpg') }}" class="rounded img-fluid" alt="">
                                 </div>
                                 <div>
                                     <h6 class="mb-2">Big Banana</h6>
@@ -272,7 +264,7 @@
                             </div>
                             <div class="d-flex align-items-center justify-content-start">
                                 <div class="rounded" style="width: 100px; height: 100px;">
-                                    <img src="{{asset('img/featur-3.jpg')}}" class="rounded img-fluid" alt="">
+                                    <img src="{{ asset('img/featur-3.jpg') }}" class="rounded img-fluid" alt="">
                                 </div>
                                 <div>
                                     <h6 class="mb-2">Big Banana</h6>
@@ -291,7 +283,8 @@
                             </div>
                             <div class="d-flex align-items-center justify-content-start">
                                 <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                    <img src="{{asset('img/vegetable-item-4.jpg')}}" class="rounded img-fluid" alt="">
+                                    <img src="{{ asset('img/vegetable-item-4.jpg') }}" class="rounded img-fluid"
+                                        alt="">
                                 </div>
                                 <div>
                                     <h6 class="mb-2">Big Banana</h6>
@@ -310,7 +303,8 @@
                             </div>
                             <div class="d-flex align-items-center justify-content-start">
                                 <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                    <img src="{{asset('img/vegetable-item-5.jpg')}}" class="rounded img-fluid" alt="">
+                                    <img src="{{ asset('img/vegetable-item-5.jpg') }}" class="rounded img-fluid"
+                                        alt="">
                                 </div>
                                 <div>
                                     <h6 class="mb-2">Big Banana</h6>
@@ -329,7 +323,8 @@
                             </div>
                             <div class="d-flex align-items-center justify-content-start">
                                 <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                    <img src="{{asset('img/vegetable-item-6.jpg')}}" class="rounded img-fluid" alt="">
+                                    <img src="{{ asset('img/vegetable-item-6.jpg') }}" class="rounded img-fluid"
+                                        alt="">
                                 </div>
                                 <div>
                                     <h6 class="mb-2">Big Banana</h6>
@@ -347,14 +342,15 @@
                                 </div>
                             </div>
                             <div class="my-4 d-flex justify-content-center">
-                                <a href="{{route('shop')}}"
+                                <a href="{{ route('shop') }}"
                                     class="px-4 py-3 border btn border-secondary rounded-pill text-primary w-100">View
                                     More</a>
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div class="position-relative">
-                                <img src="{{asset('img/banner-fruits.jpg')}}" class="rounded img-fluid w-100" alt="">
+                                <img src="{{ asset('img/banner-fruits.jpg') }}" class="rounded img-fluid w-100"
+                                    alt="">
                                 <div class="position-absolute"
                                     style="top: 50%; right: 10px; transform: translateY(-50%);">
                                     <h3 class="text-secondary fw-bold">Fresh <br> Fruits <br> Banner</h3>

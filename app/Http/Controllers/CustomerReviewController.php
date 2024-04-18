@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CustomerReview;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CustomerReviewController extends Controller
 {
@@ -31,7 +32,7 @@ class CustomerReviewController extends Controller
         CustomerReview::create([
             'products_id' => $request->products_id,
             'transactions_id' => $request->transactions_id,
-            'name_reviewer' => $request->name_reviewer,
+            'users_id' => Auth::user()->id,
             'description_review'   => $request->description_review,
             'rating'    => 5
         ]);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\CustomerReview;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,8 +19,11 @@ class ShopDetailController extends Controller
     {
         $product = Product::with(['category'])->where('id', $id)->firstOrFail();
 
+        $review = CustomerReview::with(['product', 'user'])->where('products_id', $id)->get();
+        
         return view('pages.shop-detail', [
             'product' => $product,
+            'review' => $review,
         ]);
     }
 

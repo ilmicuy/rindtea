@@ -59,7 +59,8 @@
                                     <p class="mt-4 mb-0">Rp.{{ number_format($item->product->price) }}</p>
                                 </td>
                                 <td>
-                                    @php $review = \App\Models\CustomerReview::where('products_id', $item->product->id)->first();
+                                    @php 
+                                        $review = \App\Models\CustomerReview::where('products_id', $item->product->id)->where('users_id', Auth::user()->id)->first();
                                     @endphp
                                     @if ($review == null)      
                                         <a class="mt-3 border btn btn-md bg-warning" style="color:white" data-bs-toggle="modal"
@@ -77,8 +78,6 @@
                                                             value={{ $item->transaction->id }}>
                                                         <input type="hidden" name="products_id"
                                                             value={{ $item->product->id }}>
-                                                        <input type="hidden" name="name_reviewer"
-                                                            value="{{ auth()->user()->name }}">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title"
                                                                 id="buyAgainModal{{ $item->product->id }}Label">Berikan Review

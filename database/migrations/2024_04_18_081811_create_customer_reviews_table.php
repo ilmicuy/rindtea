@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('products_id');
             $table->uuid('transactions_id');
-            $table->string('name_reviewer');
+            $table->integer('users_id');
             $table->longText('description_review');
             $table->integer('rating')->nullable();
 
