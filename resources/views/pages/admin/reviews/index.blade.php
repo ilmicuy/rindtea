@@ -20,6 +20,7 @@
                                         <thead>
                                             <tr>
                                                 <th>No</th>
+                                                <th>Tanggal Review</th>
                                                 <th>Nama User</th>
                                                 <th>Product</th>
                                                 <th>Rating</th>
@@ -30,6 +31,7 @@
                                             @foreach ($query as $key => $review)
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($review->created_at)->format('d M Y') }}</td>
                                                     <td>{{ $review->user->name }}</td>
                                                     <td>{{ $review->product->name }}</td>
                                                     <td>{{ $review->rating}} Bintang</td>                                                    
