@@ -13,7 +13,13 @@ class CustomerReviewController extends Controller
      */
     public function index()
     {
-        //
+        $query = CustomerReview::with(['product', 'user'])
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+        return view('pages.admin.reviews.index', [
+            'query' => $query
+        ]);
     }
 
     /**
@@ -53,7 +59,11 @@ class CustomerReviewController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $item = CustomerReview::findOrFail($id);
+
+        return view('pages.admin.reviews.edit', [
+            'item' => $item,
+        ]);
     }
 
     /**

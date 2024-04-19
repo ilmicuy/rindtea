@@ -68,6 +68,9 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction');
     Route::get('/transaction/{id}', [TransactionController::class, 'edit'])->name('transaction.edit');
     Route::post('/transaction/update/{id}', [TransactionController::class, 'update'])->name('transaction.update');
+
+    Route::get('/reviews', [CustomerReviewController::class, 'index'])->name('reviews');
+    Route::get('/reviews/{id}', [CustomerReviewController::class, 'edit'])->name('reviews.edit');
 });
 
 require __DIR__ . '/auth.php';

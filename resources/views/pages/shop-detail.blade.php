@@ -145,22 +145,24 @@
                                         <div class="d-flex">
                                             <img src="{{ asset('img/avatar.jpg') }}" class="p-3 img-fluid rounded-circle"
                                                 style="width: 100px; height: 100px;" alt="">
-                                            <div class="">
-                                                <p class="mb-2" style="font-size: 14px;">
-                                                    {{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}</p>
-                                                <div class="d-flex justify-content-between">
-                                                    <h5>{{ $item->user->name }}</h5>
-                                                    <div class="mb-3 d-flex">
-                                                        @for ($i = 1; $i <= 5; $i++)
-                                                            @if ($i <= $item->rating)
-                                                                <i class="fa fa-star text-secondary"></i>
-                                                            @else
-                                                                <i class="fa fa-star"></i>
-                                                            @endif
-                                                        @endfor
+                                            <div class="flex justify-between">
+                                                <div class="flex flex-col">
+                                                    <p class="mb-2 text-sm text-gray-600">
+                                                        {{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}</p>
+                                                    <h5 class="text-lg font-semibold">{{ $item->user->name }}</h5>
+                                                    <div class="flex items-center">
+                                                        <div class="mb-3 flex">
+                                                            @for ($i = 1; $i <= 5; $i++)
+                                                                @if ($i <= $item->rating)
+                                                                    <i class="fa fa-star text-secondary"></i>
+                                                                @else
+                                                                    <i class="fa fa-star"></i>
+                                                                @endif
+                                                            @endfor
+                                                        </div>
                                                     </div>
+                                                    <p>{{ $item->description_review }}</p>
                                                 </div>
-                                                <p>{{ $item->description_review }} </p>
                                             </div>
                                         </div>
                                         <hr>
