@@ -109,9 +109,31 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
+                @if (auth()->user()->is_admin != 0)
+                    <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard*')">
+                        {{ __('Dashboard') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('category')" :active="request()->routeIs('category*')">
+                        {{ __('Category') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('product')" :active="request()->routeIs('product*')">
+                        {{ __('Product') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('transaction')" :active="request()->routeIs('transaction*')">
+                        {{ __('Transaction') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('reviews')" :active="request()->routeIs('reviews*')">
+                        {{ __('Reviews') }}
+                    </x-responsive-nav-link>
+
+                    <x-responsive-nav-link :href="route('profile.edit')">
+                        {{ __('Profile') }}
+                    </x-responsive-nav-link>
+                @else
+                    <x-responsive-nav-link :href="route('home')">
+                        {{ __('Home') }}
+                    </x-responsive-nav-link>
+                @endif
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
