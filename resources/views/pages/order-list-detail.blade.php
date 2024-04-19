@@ -154,6 +154,10 @@
                                                 </div>
                                             </div>
                                         @endif
+                                    @else 
+                                        <p class="mt-4 badge bg-success" style="color:white mt-4 mb-0">
+                                            Menunggu Konfirmasi Penjual
+                                        </p>
                                     @endif
                                 </td>
                             </tr>
