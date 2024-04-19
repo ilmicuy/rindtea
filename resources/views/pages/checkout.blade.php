@@ -59,6 +59,11 @@
                             <label class="my-3 form-label">Mobile Phone<sup>*</sup></label>
                             <input type="tel" name="phone" class="form-control">
                         </div>
+                        {{-- <div class="mt-5">
+                            <input type="text" class="py-3 mb-4 rounded border-1 me-5" placeholder="  Coupon Code">
+                            <button class="px-4 py-3 btn border-secondary rounded-pill text-primary" type="button">Apply
+                                Coupon</button>
+                        </div> --}}
                     </div>
                     <div class="col-md-12 col-lg-6 col-xl-5">
                         <div class="table-responsive">

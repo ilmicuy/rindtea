@@ -71,11 +71,7 @@
                 </table>
             </div>
             @if(count($carts) > 0)
-                <div class="mt-5">
-                    <input type="text" class="py-3 mb-4 rounded border-1 me-5" placeholder="  Coupon Code">
-                    <button class="px-4 py-3 btn border-secondary rounded-pill text-primary" type="button">Apply
-                        Coupon</button>
-                </div>
+              
       
                 <div class="row g-4 justify-content-end">
                     <div class="col-8"></div>
