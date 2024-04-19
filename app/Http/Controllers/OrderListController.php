@@ -14,7 +14,10 @@ class OrderListController extends Controller
      */
     public function index()
     {
-        $query = Transaction::with(['transactionDetail'])->where('users_id', Auth::user()->id)->get();
+        $query = Transaction::with(['transactionDetail'])            
+            ->orderBy('created_at', 'desc')
+            ->where('users_id', Auth::user()->id)
+            ->get();
 
         return view('pages.order-list', [
             'query' => $query,
