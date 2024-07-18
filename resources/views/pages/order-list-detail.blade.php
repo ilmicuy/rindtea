@@ -157,7 +157,7 @@
 @push('myscript')
 <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
 <script>
-    @if($transaction - > paid_at == null && $transaction - > snap_token != null)
+    @if($transaction -> paid_at == null && $transaction -> snap_token != null)
 
     function snapPay() {
         snap.pay('{{ $transaction->snap_token }}', {
