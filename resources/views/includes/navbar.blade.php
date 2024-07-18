@@ -37,7 +37,7 @@
                     data-feather="user"></i></button>
             <div class="dropdown-content">
                 @if (Route::has('login'))
-                    <nav class="dropdown-menu dropdown-menu-dark">
+                    <nav class="dropdown-menu dropdown-menu-dark" style="margin-top: -10px;">
                         @auth
                             <x-dropdown-link :href="route('profile.edit')" class="dropdown-item">
                                 Hi, {{ Auth::user()->name }}
