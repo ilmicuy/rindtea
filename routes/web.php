@@ -36,7 +36,6 @@ Route::get('/success', [CheckoutController::class, 'success'])->name('success');
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
     Route::post('/checkout/store', [CheckoutController::class, 'store'])->name('checkout.store');
-    Route::post('/midtrans-callback', [CheckoutController::class, 'callback'])->name('midtrans.callback');
     Route::post('/cost', [CheckoutController::class, 'cost'])->name('cost');
     Route::post('/shippingfee', [CheckoutController::class, 'shippingfee'])->name('shippingfee');
 
@@ -116,5 +115,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('/reviews', [CustomerReviewController::class, 'index'])->name('reviews');
     Route::get('/reviews/{id}', [CustomerReviewController::class, 'edit'])->name('reviews.edit');
 });
+
+Route::post('/midtrans-callback', [CheckoutController::class, 'callback'])->name('midtrans.callback');
 
 require __DIR__ . '/auth.php';

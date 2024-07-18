@@ -43,14 +43,15 @@ class OrderListController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $transactions_id)
+    public function show(Transaction $transactions_id)
     {
         $query = TransactionDetail::with(['transaction', 'product'])
-            ->where('transactions_id', $transactions_id)
+            ->where('transactions_id', $transactions_id->id)
             ->get();
 
         return view('pages.order-list-detail', [
-            'query' => $query
+            'query' => $query,
+            'transaction' => $transactions_id
         ]);
     }
     

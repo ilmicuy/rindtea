@@ -18,6 +18,7 @@ class Transaction extends Model
         'users_id',
         'transaction_status',
         'total_price',
+        'snap_token',
     ];
 
     protected $hidden = [];

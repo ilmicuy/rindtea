@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Http\Requests\CheckoutRequest;
+use Carbon\Carbon;
 
 class CheckoutController extends Controller
 {
@@ -147,10 +148,14 @@ class CheckoutController extends Controller
             ],
             'vtweb' => []
         ];
+        
         try {
-            $paymentUrl = Snap::createTransaction($midtrans)->redirect_url;
-            return redirect($paymentUrl);
-        } catch (Exception $e) {
+            $snapToken = Snap::getSnapToken($midtrans);
+            $transaction->snap_token = $snapToken;
+            $transaction->save();
+
+            return redirect(route('order.detail', $transaction->id));
+        } catch (\Exception $e) {
             Log::error('Midtrans Error: ' . $e->getMessage());
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -172,24 +177,32 @@ class CheckoutController extends Controller
 
         $transaction = Transaction::findOrFail($order_id);
 
+        // $payment_method =
+        $payment_status = 'PENDING';
+
         if ($status == 'capture') {
             if ($type == 'credit_card') {
                 if ($fraud == 'challange') {
-                    $transaction->status = 'PENDING';
+                    $payment_status = 'PENDING';
                 } else {
-                    $transaction->status = 'SUCCESS';
+                    $payment_status = 'SUCCESS';
                 }
             }
         } else if ($status == 'settlement') {
-            $transaction->status = 'SUCCESS';
+            $payment_status = 'SUCCESS';
         } else if ($status == 'pending') {
-            $transaction->status = 'PENDING';
+            $payment_status = 'PENDING';
         } else if ($status == 'deny') {
-            $transaction->status = 'CANCELED';
+            $payment_status = 'CANCELED';
         } else if ($status == 'expire') {
-            $transaction->status = 'CANCELED';
+            $payment_status = 'CANCELED';
         } else if ($status == 'cancel') {
-            $transaction->status = 'CANCELED';
+            $payment_status = 'CANCELED';
+        }
+
+        if($payment_status == 'SUCCESS'){
+            $transaction->paid_at = Carbon::now();
+            $transaction->paid_payload = json_encode($notification);
         }
 
         $transaction->save();
