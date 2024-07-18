@@ -18,7 +18,7 @@
             <a href="{{ route('cart') }}"><i data-feather="shopping-cart"></i>
                 @php
                     $user = Auth::user();
-                    $carts = \App\Models\Cart::where('users_id', $user->id)->count();
+                    $carts = \App\Models\Cart::where('users_id', $user->id)->sum('qty');
                 @endphp
                 @if ($carts > 0)
                     <span class="">
