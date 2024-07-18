@@ -157,37 +157,36 @@
 @push('myscript')
 <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
 <script>
-    
-    @if($transaction->paid_at == null && $transaction->snap_token != null)
-        function snapPay() {
-            snap.pay('{{ $transaction->snap_token }}', {
-                // Optional
-                onSuccess: function(result) {
-                    /* You may add your own js here, this is just example */
-                    window.reload();
-                    // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                },
-                // Optional
-                onPending: function(result) {
-                    // window.reload();
-                    /* You may add your own js here, this is just example */
-                    // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                },
-                // Optional
-                onError: function(result) {
-                    // window.reload();
-                    /* You may add your own js here, this is just example */
-                    // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                }
-            });
-        }
-        
+    @if($transaction - > paid_at == null && $transaction - > snap_token != null)
+
+    function snapPay() {
+        snap.pay('{{ $transaction->snap_token }}', {
+            // Optional
+            onSuccess: function(result) {
+                /* You may add your own js here, this is just example */
+                window.location.reload();
+                // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+            },
+            // Optional
+            onPending: function(result) {
+                // window.reload();
+                /* You may add your own js here, this is just example */
+                // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+            },
+            // Optional
+            onError: function(result) {
+                // window.reload();
+                /* You may add your own js here, this is just example */
+                // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+            }
+        });
+    }
+
+    snapPay();
+
+    document.getElementById('pay-button').onclick = function() {
         snapPay();
-
-        document.getElementById('pay-button').onclick = function() {
-            snapPay();
-        };
+    };
     @endif
-
 </script>
 @endpush
