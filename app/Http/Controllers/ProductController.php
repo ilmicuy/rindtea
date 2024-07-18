@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\admin\ProductRequest;
+use App\Http\Requests\admin\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -33,7 +34,6 @@ class ProductController extends Controller
         return view('pages.admin.product.create', [
             'categories' => $categories
         ]);
-
     }
 
     /**
@@ -57,7 +57,7 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+     
     }
 
     /**
@@ -77,7 +77,7 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProductRequest $request, $id)
+    public function update(UpdateProductRequest $request, $id)
     {
         $data = $request->all();
 

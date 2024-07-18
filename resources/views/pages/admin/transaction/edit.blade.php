@@ -1,4 +1,4 @@
-<x-app-layout>
+{{-- <x-app-layout>
     <x-slot name="header">
         <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
             {{ __('Transaction Edit') }}
@@ -14,7 +14,7 @@
                         <div class="p-4">
                             <h1 class="pb-2 font-semibold">Nama Pembeli </h1>
                             <div class="text-gray-900 dark:text-gray-100">
-                                {{ $items->first_name }} {{ $items->last_name }}
+                                {{ $items->fullname }}
                             </div>
                         </div>
                     </div>
@@ -106,4 +106,100 @@
             </div>
         </div>
     </form>
-</x-app-layout>
+</x-app-layout> --}}
+@extends('layouts.app-old')
+@section('content')
+    <div class="main-content">
+        <div class="title">
+            Transaction Edit
+        </div>
+        <form method="post" action="{{ route('transaction.update', $items->transaction->id) }}" class="mt-6 space-y-6"
+            enctype="multipart/form-data">
+            @csrf
+            <div class="content-wrapper">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="bg-white rounded-lg shadow-md">
+                                <div class="p-4">
+                                    <h4 class="pb-2 font-semibold">Nama Pembeli </h4>
+                                    <div class="text-gray-900 dark:text-gray-100">
+                                        {{ $items->transaction->user->name }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="bg-white rounded-lg shadow-md">
+                                <div class="p-4">
+                                    <h4 class="pb-2 font-semibold">Phone Number </h4>
+                                    <div class="text-gray-900 dark:text-gray-100">
+                                        {{ $items->transaction->address->phone}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="bg-white rounded-lg shadow-md">
+                                <div class="p-4">
+                                    <h4 class="pb-2 font-semibold">Transaction Status </h4>
+                                    <select id="transaction_status" name="transaction_status" class="form-control">
+                                        <option value="pending" @if (old('transaction_status', $items->transaction->transaction_status) == 'pending') selected @endif>Pending
+                                        </option>
+                                        <option value="completed" @if (old('transaction_status', $items->transaction->transaction_status) == 'completed') selected @endif>
+                                            Completed
+                                        </option>
+                                        <option value="failed" @if (old('transaction_status', $items->transaction->transaction_status) == 'failed') selected @endif>Failed
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Product</th>
+                                            <th>Tanggal Checkout</th>
+                                            <th>Price / Item</th>
+                                            <th>Quantity</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($itemDetails as $key => $itemDetail)
+                                            <tr>
+                                                <td>{{ $key + 1 }}</td>
+                                                <th scope="row">
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="{{ Storage::url($itemDetail->product->photos) }}"
+                                                            class="img-fluid me-5" style="width: 25px; height: 25px;"
+                                                            alt="">
+                                                    </div>
+                                                </th>
+                                                <td>{{ \Carbon\Carbon::parse($itemDetail->created_at)->format('d M Y H:i:s') }}
+                                                </td>
+                                                <td>Rp.{{ number_format($itemDetail->product->price) }}</td>
+                                                <td>{{ $itemDetail->qty }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <a class="btn btn-secondary" href="{{ route('transaction') }}">
+                                {{ __('Cancel') }}
+                            </a>
+                            <button type="submit" class="btn btn-primary"> Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+@endsection

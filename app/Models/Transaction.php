@@ -15,8 +15,8 @@ class Transaction extends Model
 
 
     protected $fillable = [
-        'users_id', 
-        'transaction_status', 
+        'users_id',
+        'transaction_status',
         'total_price',
     ];
 
@@ -30,5 +30,10 @@ class Transaction extends Model
     public function transactionDetail()
     {
         return $this->hasMany(TransactionDetail::class, 'id', 'transaction_detail_id');
+    }
+
+    public function address()
+    {
+        return $this->belongsTo(Address::class, 'users_id', 'users_id');
     }
 }

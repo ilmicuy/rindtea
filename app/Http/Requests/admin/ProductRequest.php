@@ -23,12 +23,12 @@ class ProductRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'photos' => 'image',
+            'photos' =>'required|image|mimes:png,jpg,jpeg,svg,gif',
             'quantity' => 'required|integer',
             'quality' => 'required|string',
             'thumb_description' => 'required|string',
-            'short_description' => 'required|string',
-            'long_description' => 'required|string',
+            // 'short_description' => 'required|string',
+            // 'long_description' => 'required|string',
             'price' => 'required|integer',
             'weight' => 'required|string',
             'check' => 'required|string',

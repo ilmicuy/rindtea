@@ -1,4 +1,4 @@
-<x-app-layout>
+{{-- <x-app-layout>
     <x-slot name="header">
         <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
             {{ __('Product Edit') }}
@@ -15,20 +15,6 @@
                                 <form method="post" action="{{ route('product.update', $item->id) }}"
                                     class="mt-6 space-y-6" enctype="multipart/form-data">
                                     @csrf
-                                    <div>
-                                        <x-input-label for="categories_id" :value="__('Category')" />
-                                        <select id="categories_id" name="categories_id"
-                                            class="block w-full mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
-                                            <option value="">Choose Category</option>
-                                            @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}"
-                                                    {{ $category->id == $item->categories_id ? 'selected' : '' }}>
-                                                    {{ $category->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
                                     <div>
                                         <x-input-label for="name" :value="__('Product Name')" />
                                         <x-text-input id="name" name="name" type="text"
@@ -66,24 +52,11 @@
                                             class="block w-full mt-1" autocomplete="weight" :value="old('weight', $item->weight)" />
                                     </div>
                                     <div>
-                                        <x-input-label for="thumb_description" :value="__('Thumbnail Description')" />
+                                        <x-input-label for="thumb_description" :value="__('Description')" />
                                         <textarea id="thumb_description" name="thumb_description"
                                             class="block w-full mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
                                             autocomplete="thumb_description">{{ $item->thumb_description }}</textarea>
                                     </div>
-                                    <div>
-                                        <x-input-label for="short_description" :value="__('Short Description')" />
-                                        <textarea id="editor2" name="short_description"
-                                            class="block w-full mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
-                                            autocomplete="short_description">{{ $item->short_description }}</textarea>
-                                    </div>
-                                    <div>
-                                        <x-input-label for="long_description" :value="__('Long Description')" />
-                                        <textarea id="editor3" name="long_description"
-                                            class="block w-full mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
-                                            autocomplete="long_description">{{ $item->long_description }}</textarea>
-                                    </div>
-                                    <div>
                                         <x-input-label for="photos" :value="__('Photos')" />
                                         <x-text-input id="photos" name="photos" type="file"
                                             class="block w-full mt-1" autocomplete="photos" />
@@ -107,4 +80,88 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-app-layout> --}}
+
+@extends('layouts.app-old')
+@section('content')
+    <div class="main-content">
+        <div class="title">
+            Edit Product
+        </div>
+        <div class="content-wrapper">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="post" action="{{ route('product.update', $item->id) }}" enctype="multipart/form-data">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="name" class="form-label">Product Name</label>
+                                        <input type="text" class="form-control" id="name" name="name"
+                                            autocomplete="name" required value="{{ $item->name }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="quantity" class="form-label">Quantity</label>
+                                        <input type="number" class="form-control" id="quantity" name="quantity" required value="{{ $item->quantity }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="quality" class="form-label">Quality</label>
+                                        <input type="text" class="form-control" id="quality" name="quality" value="{{ $item->quality }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="check" class="form-label">Check</label>
+                                        <input type="text" class="form-control" id="check" name="check" required value="{{ $item->check }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="country_of_origin" class="form-label">Country_of_origin</label>
+                                        <input type="text" class="form-control" id="country_of_origin"
+                                            name="country_of_origin" required value="{{ $item->country_of_origin }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="price" class="form-label">Price</label>
+                                        <input type="number" class="form-control" id="price" name="price" required value="{{ $item->price }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="weight" class="form-label">Weight</label>
+                                        <input type="number" class="form-control" id="weight" name="weight" required value="{{ $item->weight }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="photos" class="form-label">Image</label>
+                                        <input type="file" class="form-control" id="photos" name="photos" required>
+                                    </div>
+                                    <img src="{{ Storage::url($item->photos) }}" alt="" class="img-fluid" width="200px">
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group mb-3">
+                                        <label for="thumb_description" class="form-label">Description</label>
+                                        <textarea name="thumb_description" id="thumb_description" cols="30" rows="5" class="form-control">{{ $item->thumb_description }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <a class="btn btn-secondary" href="{{ route('product') }}">
+                                        {{ __('Cancel') }}
+                                    </a>
+                                    <button type="submit" class="btn btn-primary"> Save</button>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection

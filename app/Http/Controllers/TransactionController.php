@@ -16,7 +16,7 @@ class TransactionController extends Controller
         $query = Transaction::with(['transactionDetail'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
-    
+
         return view('pages.admin.transaction.index', [
             'query' => $query
         ]);
@@ -35,7 +35,6 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-
     }
 
     /**
@@ -51,15 +50,16 @@ class TransactionController extends Controller
      */
     public function edit(string $transactions_id)
     {
-        
-        $items = TransactionDetail::with(['transaction', 'product'])
-        ->where('transactions_id', $transactions_id)
-        ->firstOrFail();
+
+        $items = TransactionDetail::with(['transaction', 'product', 'transaction.user'])
+            ->where('transactions_id', $transactions_id)
+            ->firstOrFail();
 
         $itemDetails = TransactionDetail::with(['transaction', 'product'])
-        ->where('transactions_id', $transactions_id)
-        ->get();
-    
+            ->where('transactions_id', $transactions_id)
+            ->get();
+
+
         return view('pages.admin.transaction.edit', [
             'items' => $items,
             'itemDetails' => $itemDetails

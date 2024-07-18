@@ -1,33 +1,31 @@
 @extends('layouts.home')
 
-@section('title')
-    Order List | Point Sebelas
-@endsection
 
 @section('content')
     <!-- Single Page Header start -->
-    <div class="py-5 container-fluid page-header">
-        <h1 class="text-center text-white display-6">Order List</h1>
-        <ol class="mb-0 breadcrumb justify-content-center">
-            <li class="breadcrumb-item"><a href="{{ route('home')}}">Home</a></li>
+    <div class="single-page-header">
+        <h1 class="page-title">Order List</h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
             <li class="breadcrumb-item"><a href="#">Pages</a></li>
-            <li class="text-white breadcrumb-item active">Order List</li>
+            <li class="breadcrumb-item active">Order List</li>
         </ol>
     </div>
     <!-- Single Page Header End -->
 
 
+
     <!-- Order List Page Start -->
-    <div class="py-5 container-fluid">
-        <div class="container py-5">
-            <div class="table-responsive">
-                <table class="table">
+    <div class="order-list-page">
+        <div class="">
+            <div class="">
+                <table class="">
                     <thead>
                         <tr>
                             <th scope="col">No</th>
                             <th scope="col">Pesanan Dibuat</th>
-                            <th scope="col">Total Price</th>
-                            <th scope="col">Transaction Status</th>
+                            <th scope="col">Total Harga</th>
+                            <th scope="col">Status Transaksi</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
@@ -35,17 +33,14 @@
                         @foreach ($query as $key => $item)
                             <tr>
                                 <td>
-                                    <p class="mt-4 mb-0">
-                                        {{$key + 1}}
+                                    <p class="">{{ $key + 1 }}</p>
+                                </td>
+                                <td>
+                                    <p class="">{{ \Carbon\Carbon::parse($item->update_at)->format('d M Y H:i:s') }}
                                     </p>
                                 </td>
                                 <td>
-                                    <p class="mt-4 mb-0">
-                                        {{ \Carbon\Carbon::parse($item->created_at)->format('d M Y H:i:s') }}
-                                    </p>
-                                </td>
-                                <td>
-                                    <p class="mt-4 mb-0">Rp.{{number_format($item->total_price)}}</p>
+                                    <p class="">Rp.{{ number_format($item->total_price) }}</p>
                                 </td>
                                 <td>
                                     @php
@@ -65,12 +60,13 @@
                                                 break;
                                         }
                                     @endphp
-                                    <p class="mt-4 mb-0" style="font-size: 1.2rem"><span class="{{ $badgeClass }}">{{ $item->transaction_status }}</span></p>
+                                    <p class=""><span
+                                            class="{{ $badgeClass }}">{{ $item->transaction_status }}</span></p>
                                 </td>
-                              
+
                                 <td>
-                                    <a href="{{ route('order.detail', $item->id) }}" class="mt-4 border btn btn-md rounded-circle bg-light">
-                                        <i class="fa fa-eye text-success"></i>
+                                    <a href="{{ route('order.detail', $item->id) }}">
+                                        <i data-feather="eye"></i>
                                     </a>
                                 </td>
                             </tr>
@@ -80,5 +76,6 @@
             </div>
         </div>
     </div>
+
     <!-- Cart Page End -->
 @endsection

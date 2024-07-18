@@ -26,7 +26,6 @@ return new class extends Migration
             $table->string('weight');
             $table->string('check');
             $table->string('country_of_origin');
-
             $table->softDeletes();
             $table->timestamps();
         });

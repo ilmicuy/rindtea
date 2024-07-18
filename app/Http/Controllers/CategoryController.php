@@ -63,7 +63,7 @@ class CategoryController extends Controller
         return view('pages.admin.category.edit', [
             'item' => $item
         ]);
-    }
+    }  
 
     /**
      * Update the specified resource in storage.

@@ -13,14 +13,12 @@ class ShopDetailController extends Controller
     /**
      * Display a listing of the resource.
      */
-
-
     public function index(Request $request, $id)
     {
-        $product = Product::with(['category'])->where('id', $id)->firstOrFail();
+        $product = Product::where('id', $id)->firstOrFail();
 
         $review = CustomerReview::with(['product', 'user'])->where('products_id', $id)->get();
-        
+
         return view('pages.shop-detail', [
             'product' => $product,
             'review' => $review,
@@ -34,9 +32,8 @@ class ShopDetailController extends Controller
             'qty' => $request->qty,
             'users_id' => Auth::user()->id,
         ];
-        
-        Cart::create($data);
 
+        Cart::create($data);
         return redirect()->back();
     }
     /**

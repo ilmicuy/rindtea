@@ -1,27 +1,25 @@
 @extends('layouts.home')
 
-@section('title')
-    Cart | Point Sebelas
-@endsection
 
 @section('content')
+    
     <!-- Single Page Header start -->
-    <div class="py-5 container-fluid page-header">
-        <h1 class="text-center text-white display-6">Cart</h1>
-        <ol class="mb-0 breadcrumb justify-content-center">
-            <li class="breadcrumb-item"><a href="{{ route('home')}}">Home</a></li>
+    <div class="single-page-header">
+        <h1 class="page-title">Keranjang</h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
             <li class="breadcrumb-item"><a href="#">Pages</a></li>
-            <li class="text-white breadcrumb-item active">Cart</li>
+            <li class="breadcrumb-item active">Keranjang</li>
         </ol>
     </div>
     <!-- Single Page Header End -->
 
 
     <!-- Cart Page Start -->
-    <div class="py-5 container-fluid">
-        <div class="container py-5">
-            <div class="table-responsive">
-                <table class="table">
+    <div class="cart-page">
+        <div class="">
+            <div class="">
+                <table class="">
                     <thead>
                         <tr>
                             <th scope="col">Products</th>
@@ -36,64 +34,51 @@
                         @php $total = 0 @endphp
                         @foreach ($carts as $cart)
                             <tr>
-                                <th scope="row">
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{ Storage::url($cart->product->photos) }}" class="img-fluid me-5 rounded-circle"
-                                            style="width: 80px; height: 80px;" alt="">
+                                <td>
+                                    <div class="cart-item">
+                                        <img src="{{ Storage::url($cart->product->photos) }}" alt="">
                                     </div>
-                                </th>
-                                <td>
-                                    <p class="mt-4 mb-0">{{$cart->product->name}}</p>
                                 </td>
                                 <td>
-                                    <p class="mt-4 mb-0">Rp.{{number_format($cart->product->price)}}</p>
+                                    <p class="cart-item-name">{{ $cart->product->name }}</p>
                                 </td>
                                 <td>
-                                    <p class="mt-4 mb-0">{{$cart->qty}} Pcs</p>
+                                    <p class="cart-item-price rupiah" data-price="{{ $cart->product->price }}"></p>
+                                </td>
+                                <td>
+                                    <p class="cart-item-qty">{{ $cart->qty }} Pcs</p>
                                 </td>
                                 @php $total = $cart->product->price * $cart->qty @endphp
                                 <td>
-                                    <p class="mt-4 mb-0">{{number_format($total)}}</p>
+                                    <p class="cart-item-total rupiah" data-price="{{ $total }}"></p>
                                 </td>
                                 <td>
                                     <form action="{{ route('cart-delete', $cart->id) }}" method="POST">
                                         @method('DELETE')
                                         @csrf
-                                        <button class="mt-4 border btn btn-md rounded-circle bg-light">
-                                            <i class="fa fa-times text-danger"></i>
+                                        <button class="cart-item-action">
+                                            <i data-feather="x-circle"></i>
                                         </button>
                                     </form>
                                 </td>
-
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-            @if(count($carts) > 0)
-              
-      
-                <div class="row g-4 justify-content-end">
-                    <div class="col-8"></div>
-                    <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
-                        <div class="rounded bg-light">
-                            @php $subtotal = 0; @endphp
-                            @foreach ($carts as $cart)
-                                @php $subtotal += $cart->product->price * $cart->qty; @endphp
-                            @endforeach
-                            <div class="py-4 mb-4 border-bottom d-flex justify-content-between">
-                                <h5 class="mb-0 ps-4 me-4">Total</h5>
-                                <p class="mb-0 pe-4">Rp.{{ number_format($subtotal) }}</p>
-                            </div>
-                            <a href="{{ route('checkout') }}"
-                                class="px-4 py-3 mb-4 btn border-secondary rounded-pill text-primary text-uppercase ms-4"
-                                type="button">Proceed Checkout
-                            </a>
-                        </div>
+            @if (count($carts) > 0)
+                <div class="cart-summary">
+                    <div class="">
+                        @php $subtotal = 0; @endphp
+                        @foreach ($carts as $cart)
+                            @php $subtotal += $cart->product->price * $cart->qty; @endphp
+                        @endforeach
+                        <h5 class="">Total</h5>
+                        <p class="rupiah" data-price="{{ $subtotal }}"></p>
                     </div>
+                    <a href="{{ route('checkout') }}" class="checkout-button" type="button">Proceed to Checkout</a>
                 </div>
             @endif
-
         </div>
     </div>
     <!-- Cart Page End -->

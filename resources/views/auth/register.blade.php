@@ -1,50 +1,35 @@
 @extends('layouts.home')
-
-@section('title')
-    Cart | Point Sebelas
-@endsection
-
 @section('content')
-    <!-- Single Page Header start -->
-    <div class="py-5 container-fluid page-header">
-        <h1 class="text-center text-white display-6">Register</h1>
+    <section class="login" id="login">
+        <div class="inner-page">
+            <div class="login-container">
+                <h1>Register</h1>
+                <form method="POST" action="{{ route('register') }}">
+                    @csrf
 
-    </div>
-    <!-- Single Page Header End -->
+                    <x-text-input id="name" class="login-input" type="text" name="name"
+                        :value="old('name')" autofocus autocomplete="name" placeholder="Your Name" />
+                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
 
+                    <x-text-input id="email" class="login-input" type="email" name="email"
+                        :value="old('email')" autocomplete="username" placeholder="Your Email" />
+                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
 
-    <div class="py-5 container-fluid contact">
-        <div class="container py-5">
-            <div class="p-5 rounded bg-light">
-                <div class="col-lg-12">
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
+                    <x-text-input id="password" class="login-input" type="password"
+                        name="password" autocomplete="current-password" placeholder="Your Password" />
+                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
 
-                        <x-text-input id="name" class="py-3 mb-4 border-0 w-100 form-control" type="text"
-                            name="name" :value="old('name')" autofocus autocomplete="name"
-                            placeholder="Your Name" />
-                        <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                    <x-text-input id="password_confirmation" class="login-input" type="password"
+                        name="password_confirmation" autocomplete="new-password" placeholder="Your Confirm Password" />
 
-                        <x-text-input id="email" class="py-3 mb-4 border-0 w-100 form-control" type="email"
-                            name="email" :value="old('email')" autocomplete="username" placeholder="Your Email" />
-                        <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                    <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
 
-                        <x-text-input id="password" class="py-3 mb-4 border-0 w-100 form-control" type="password"
-                            name="password" autocomplete="current-password" placeholder="Your Password" />
-                        <x-input-error :messages="$errors->get('password')" class="mt-2" />
-
-                        <x-text-input id="password_confirmation" class="py-3 mb-4 border-0 w-100 form-control" type="password"
-                            name="password_confirmation" autocomplete="new-password" placeholder="Your Confirm Password"/>
-
-                        <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-
-                        <button class="py-3 bg-white w-100 btn form-control border-secondary text-primary"
-                            type="submit">Submit</button>
-                    </form>
-                </div>
+                    <button class="login-button"
+                        type="submit">Submit</button>
+                </form>
             </div>
         </div>
-    </div>
+    </section>
 @endsection
 
 {{-- <x-guest-layout>

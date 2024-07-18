@@ -1,17 +1,15 @@
 @extends('layouts.home')
 
-@section('title')
-    Order List Detail | Point Sebelas
-@endsection
+
 
 @section('content')
     <!-- Single Page Header start -->
-    <div class="py-5 container-fluid page-header">
-        <h1 class="text-center text-white display-6">Order List Detail</h1>
-        <ol class="mb-0 breadcrumb justify-content-center">
-            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+   <div class="single-page-header">
+        <h1 class="page-title">Order List Detail </h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
             <li class="breadcrumb-item"><a href="#">Pages</a></li>
-            <li class="text-white breadcrumb-item active">Order List Detail</li>
+            <li class="breadcrumb-item active">Order List Detail </li>
         </ol>
     </div>
     <!-- Single Page Header End -->
@@ -154,7 +152,7 @@
                                                 </div>
                                             </div>
                                         @endif
-                                    @else 
+                                    @else
                                         <p class="mt-4 badge bg-success" style="color:white mt-4 mb-0">
                                             Menunggu Konfirmasi Penjual
                                         </p>

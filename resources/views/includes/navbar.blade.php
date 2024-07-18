@@ -1,112 +1,83 @@
-    <!-- Spinner Start -->
-    <div id="spinner"
-        class="bg-white show w-100 vh-100 position-fixed translate-middle top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-grow text-primary" role="status"></div>
+<nav class="navbar" x-data>
+    <a href="/" class="navbar-logo">Rind <span>Tea</span></a>
+    <div class="navbar-nav">
+        <a href="/">Home</a>
+        <a href="#about">Tentang Kami</a>
+        <a href="#menu">Menu</a>
+        <a href="#products">Produk</a>
+        <a href="#contact">Kontak</a>
     </div>
-    <!-- Spinner End -->
+    <div class="navbar-extra">
+        <a href="{{ route('shop') }}"><svg xmlns="http://www.w3.org/2000/svg" width="23" height="23"
+                fill="currentColor" class="bi bi-shop" viewBox="0 0 16 16">
+                <path
+                    d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.37 2.37 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0M1.5 8.5A.5.5 0 0 1 2 9v6h1v-5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v5h6V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5M4 15h3v-5H4zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1zm3 0h-2v3h2z" />
+            </svg></a>
+        <a href="#" id="search-button"><i data-feather="search"></i></a>
+        @auth
+            <a href="{{ route('cart') }}"><i data-feather="shopping-cart"></i>
+                @php
+                    $user = Auth::user();
+                    $carts = \App\Models\Cart::where('users_id', $user->id)->count();
+                @endphp
+                @if ($carts > 0)
+                    <span class="">
+                        {{ $carts }}
+                    </span>
+                @else
+                    <span class="">
+                        0
+                    </span>
+                @endif
+            </a>
+        @endauth
 
+        <div class="dropdown">
+            <button class="dropdown-button dropdown-toggle" data-bs-toggle="dropdown"><i
+                    data-feather="user"></i></button>
+            <div class="dropdown-content">
+                @if (Route::has('login'))
+                    <nav class="dropdown-menu dropdown-menu-dark">
+                        @auth
+                            <x-dropdown-link :href="route('profile.edit')" class="dropdown-item">
+                                Hi, {{ Auth::user()->name }}
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('order')" class="dropdown-item">
+                                Order List
+                            </x-dropdown-link>
 
-    <!-- Navbar start -->
-    <div class="container-fluid fixed-top">
-        <div class="container topbar bg-primary d-none d-lg-block">
-            <div class="d-flex justify-content-between">
-                <div class="top-info ps-2">
-                    <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#"
-                            class="text-white">123 Street, Bekasi</a></small>
-                    <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#"
-                            class="text-white">Email@Example.com</a></small>
-                </div>
-                <div class="top-link pe-2">
-                    <a href="#" class="text-white"><small class="mx-2 text-white">Privacy Policy</small>/</a>
-                    <a href="#" class="text-white"><small class="mx-2 text-white">Terms of Use</small>/</a>
-                    <a href="#" class="text-white"><small class="text-white ms-2">Sales and Refunds</small></a>
-                </div>
+                            <!-- Authentication -->
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+
+                                <x-dropdown-link :href="route('logout')" class="dropdown-item"
+                                    onclick="event.preventDefault();
+                                                                this.closest('form').submit();">
+                                    {{ __('Log Out') }}
+                                </x-dropdown-link>
+                            </form>
+                        @else
+                            <a href="{{ route('login') }}" class="dropdown-item">
+                                Log in
+                            </a>
+
+                            @if (Route::has('register'))
+                                <a href="{{ route('register') }}" class="dropdown-item">
+                                    Register
+                                </a>
+                            @endif
+                        @endauth
+                    </nav>
+                @endif
             </div>
         </div>
-        <div class="container px-0">
-            <nav class="bg-white navbar navbar-light navbar-expand-xl">
-                <a href="{{ route('home') }}" class="navbar-brand">
-                    <h1 class="text-primary display-6">Point Sebelas</h1>
-                </a>
-                <button class="px-3 py-2 navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarCollapse">
-                    <span class="fa fa-bars text-primary"></span>
-                </button>
-                <div class="bg-white collapse navbar-collapse" id="navbarCollapse">
-                    <div class="mx-auto navbar-nav">
-                        <a href="{{ route('home') }}"
-                            class="nav-item nav-link{{ request()->routeIs('home') ? ' active' : '' }}">Home</a>
-                        <a href="{{ route('shop') }}"
-                            class="nav-item nav-link{{ request()->routeIs('shop') ? ' active' : '' }}">Shop</a>
-                        <a href="{{ route('contact') }}"
-                            class="nav-item nav-link{{ request()->routeIs('contact') ? ' active' : '' }}">Contact</a>
-                    </div>
-
-                    <div class="m-3 d-flex me-0">
-                        @auth
-                            <a href="{{ route('cart') }}" class="my-auto position-relative me-4">
-                                @php
-                                    $user = Auth::user();
-                                    $carts = \App\Models\Cart::where('users_id', $user->id)->count();
-                                @endphp
-                                @if ($carts > 0)
-                                    <i class="fa fa-shopping-bag fa-2x"></i>
-                                    <span class="px-1 position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">
-                                        {{ $carts }}
-                                    </span>
-                                @else
-                                    <i class="fa fa-shopping-bag fa-2x"></i>
-                                    <span class="px-1 position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">
-                                        0
-                                    </span>
-                                @endif
-                            </a>
-                        @endauth
-
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"> <i
-                                    class="fas fa-user fa-2x"></i>
-                            </a>
-                            <div class="m-0 dropdown-menu bg-secondary rounded-0">
-                                @if (Route::has('login'))
-                                    <nav class="flex justify-end flex-1 -mx-3">
-                                        @auth
-                                            <x-dropdown-link :href="route('profile.edit')" class="dropdown-item">
-                                               Hi, {{ Auth::user()->name }}
-                                            </x-dropdown-link>
-                                            <x-dropdown-link :href="route('order')" class="dropdown-item">
-                                               Order List
-                                            </x-dropdown-link>
-
-                                            <!-- Authentication -->
-                                            <form method="POST" action="{{ route('logout') }}">
-                                                @csrf
-
-                                                <x-dropdown-link :href="route('logout')" class="dropdown-item"
-                                                    onclick="event.preventDefault();
-                                                                this.closest('form').submit();">
-                                                    {{ __('Log Out') }}
-                                                </x-dropdown-link>
-                                            </form>
-                                        @else
-                                            <a href="{{ route('login') }}" class="dropdown-item">
-                                                Log in
-                                            </a>
-
-                                            @if (Route::has('register'))
-                                                <a href="{{ route('register') }}" class="dropdown-item">
-                                                    Register
-                                                </a>
-                                            @endif
-                                        @endauth
-                                    </nav>
-                                @endif
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-        </div>
+        <a href="#" id="hamburger-menu"><i data-feather="menu"></i></a>
     </div>
-    <!-- Navbar End -->
+
+    <!-- Search -->
+    <div class="search-form">
+        <input type="search" id="search-box" placeholder="Cari..." />
+        <label for="search-box"><i data-feather="search"></i></label>
+    </div>
+
+</nav>

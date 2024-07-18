@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\About;
 use App\Models\Category;
+use App\Models\HeroSection;
+use App\Models\Menu;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -10,12 +13,17 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $categories = Category::take(6)->get();
-        $products  = Product::take(6)->get();
+        $hero_section = HeroSection::orderByDesc('id')->take(1)->get();
+        $abouts = About::take(1)->get();
+        $menus = Menu::orderBy('id')->get();
+        $products = Product::orderBy('id')->get();
+        return view('pages.home', compact('hero_section', 'abouts', 'menus', 'products'));
+    }
 
-        return view('pages.home', [
-            'categories' => $categories,
-            'products'    => $products
-        ]);
+    public function detail(Request $request)
+    {
+        $product = $request->id;
+        $product = Product::findOrFail($product);
+        return view('pages.product-detail', compact('product'));
     }
 }

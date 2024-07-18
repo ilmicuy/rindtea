@@ -14,16 +14,15 @@ class Product extends Model
     use SoftDeletes, HasUuids;
 
     protected $fillable = [
-        'name', 
-        'categories_id', 
-        'slug', 
+        'name',
+        'slug',
         'photos',
-        'quantity', 
+        'quantity',
         'quality',
-        'thumb_description', 
-        'short_description', 
-        'long_description', 
-        'price' , 
+        'thumb_description',
+        // 'short_description',
+        // 'long_description',
+        'price' ,
         'weight',
         'check',
         'country_of_origin'
@@ -31,8 +30,8 @@ class Product extends Model
 
     protected $hidden = [];
 
-    public function category()
-    {
-        return $this->belongsTo(Category::class, 'categories_id', 'id');
-    }
+    // public function category()
+    // {
+    //     return $this->belongsTo(Category::class, 'categories_id', 'id');
+    // }
 }

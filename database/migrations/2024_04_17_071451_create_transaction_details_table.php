@@ -23,7 +23,6 @@ return new class extends Migration
             $table->string('zip_code');
             $table->string('phone');
             $table->integer('qty');
-
             $table->softDeletes();
             $table->timestamps();
         });
