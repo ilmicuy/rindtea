@@ -148,7 +148,7 @@ class CheckoutController extends Controller
             ],
             'vtweb' => []
         ];
-        
+
         try {
             $snapToken = Snap::getSnapToken($midtrans);
             $transaction->snap_token = $snapToken;

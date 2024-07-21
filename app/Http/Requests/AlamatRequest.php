@@ -29,6 +29,9 @@ class AlamatRequest extends FormRequest
             'label' => 'required|string',
             'postcode' => 'required|string',
             'phone' => 'required|string',
+            'latitude' => 'required',
+            'longitude' => 'required',
+            'distance_in_km' => 'required',
         ];
     }
 }

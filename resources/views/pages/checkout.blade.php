@@ -109,14 +109,14 @@
                                 <input class="courier-code" type="radio" name="courier" id="inlineRadio1" value="jne">
                                 <label class="courier-label ml-2" for="inlineRadio1">JNE</label>
                             </div>
-                            <div class="shipping-option d-flex align-items-center mr-4">
+                            {{-- <div class="shipping-option d-flex align-items-center mr-4">
                                 <input class="courier-code" type="radio" name="courier" id="inlineRadio2" value="pos">
                                 <label class="courier-label ml-2" for="inlineRadio2">POS</label>
                             </div>
                             <div class="shipping-option d-flex align-items-center">
                                 <input class="courier-code" type="radio" name="courier" id="inlineRadio3" value="tiki">
                                 <label class="courier-label ml-2" for="inlineRadio3">TIKI</label>
-                            </div>
+                            </div> --}}
                             @endif
 
                             <div class="shipping-option d-flex align-items-center">
@@ -233,6 +233,7 @@
 
             $('.courier-code').click(function() {
                 let courier = $(this).val();
+                // console.log(courier);
                 let addressID = $('.delivery-address:checked').val();
                 let weight = $('#weight').val();
 

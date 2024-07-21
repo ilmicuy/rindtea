@@ -29,7 +29,7 @@ class AddressController extends Controller
             'key' => env('API_ONGKIR_KEY')
         ])->get(env('API_ONGKIR_BASE_URL') . 'city');
         $cities = $response['rajaongkir']['results'];
-        
+
         $id = Auth::id();
         // $provinces = Province::all();
         $address = Address::where('users_id', $id)->get();

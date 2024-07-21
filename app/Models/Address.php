@@ -21,6 +21,9 @@ class Address extends Model
         'phone',
         'address',
         'postcode',
+        'latitude',
+        'longitude',
+        'distance_in_km',
     ];
 
     public function user()
