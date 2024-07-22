@@ -64,6 +64,9 @@
                     </select>
                     <x-input-error :messages="$errors->get('province_id')" class="mt-2" />
                 </div>
+
+                <input type="hidden" name="province_name">
+
                 <div>
                     <select id="regency_id" class="login-input" name="regency_id" autofocus autocomplete="regency_id">
                         @foreach ($cities as $city)
@@ -72,6 +75,9 @@
                     </select>
                     <x-input-error :messages="$errors->get('regency_id')" class="mt-2" />
                 </div>
+
+                <input type="hidden" name="regency_name">
+
                 {{-- <div>
                         <select id="district_id" class="login-input" name="district_id" autofocus
                             autocomplete="district_id">
@@ -215,6 +221,18 @@
     }
 
     loadGoogleMapsAPI();
+
+
+    $('#province_id').on('change', function() {
+        let province_name = $('#province_id').find(":selected").text();
+        $("input[name='province_name']").val(province_name);
+    });
+
+
+    $('#regency_id').on('change', function() {
+        let regency_name = $('#regency_id').find(":selected").text();
+        $("input[name='regency_name']").val(regency_name);
+    });
 </script>
 
 <script>

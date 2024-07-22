@@ -51,26 +51,38 @@ class CheckoutController extends Controller
         $destination = $address->regency_id;
         $origin = env('API_ONGKIR_ORIGIN');
 
-        $response = Http::withHeaders([
-            'key' => env('API_ONGKIR_KEY')
-        ])->post(env('API_ONGKIR_BASE_URL') . 'cost', [
-            'origin' => $origin,
-            'destination' => $destination,
-            'weight' => $weight,
-            'courier' => $courier
-        ]);
+        $tarif_lokal_kurir = 5000;
 
-        $shipping_options = $response->json();
+        if($courier == 'lokal_kurir'){
+            $total = $address->distance_in_km * $tarif_lokal_kurir;
 
-        if ($response->failed() || !isset($shipping_options['rajaongkir']['results'][0]['costs'])) {
-            return response()->json(['error' => 'Unable to get shipping cost'], 500);
+            return response()->json([
+                'status' => 'success',
+                'total' => $total
+            ]);
+        }else{
+            $response = Http::withHeaders([
+                'key' => env('API_ONGKIR_KEY')
+            ])->post(env('API_ONGKIR_BASE_URL') . 'cost', [
+                'origin' => $origin,
+                'destination' => $destination,
+                'weight' => $weight,
+                'courier' => $courier
+            ]);
+
+            $shipping_options = $response->json();
+
+            if ($response->failed() || !isset($shipping_options['rajaongkir']['results'][0]['costs'])) {
+                return response()->json(['error' => 'Unable to get shipping cost'], 500);
+            }
+
+            $costs = $shipping_options['rajaongkir']['results'][0]['costs'];
+
+            $html = view('pages.available_service', ['costs' => $costs])->render();
+
+            return response()->json($html);
         }
 
-        $costs = $shipping_options['rajaongkir']['results'][0]['costs'];
-
-        $html = view('pages.available_service', ['costs' => $costs])->render();
-
-        return response()->json($html);
     }
 
     public function cost(Request $request)

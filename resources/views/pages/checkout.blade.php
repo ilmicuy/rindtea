@@ -81,14 +81,14 @@
                                 <div class="col-lg-6 col-12 mb-4 address-card">
                                     <div class="card card-body p-3">
                                         <div class="form-check mb-4">
-                                            <input class="form-check-input delivery-address" value="{{ $address->id }}" type="radio" name="address_id" id="homeRadio" class="homeRadio">
+                                            <input class="form-check-input delivery-address" value="{{ $address->id }}" type="radio" name="address_id" class="homeRadio">
                                             <label class="form-check-label" for="homeRadio">{{ $address->label }}</label>
                                         </div>
                                         <address>
                                             <strong>{{ $address->fullname }}</strong><br>
                                             {{ $address->address }}<br>
-                                            {{ $address->regency_id }}<br>
-                                            {{ $address->province_id }}<br>
+                                            {{ $address->regency_name }}<br>
+                                            {{ $address->province_name }}<br>
                                             {{ $address->postcode }}<br>
                                             <abbr title="Phone">P: {{ $address->phone }}</abbr>
                                         </address>
@@ -199,7 +199,8 @@
 @push('myscript')
 <script>
     $("#frmCheckout").submit(function(event) {
-        var address = $("#homeRadio").is(":checked");
+        // var address = $(".homeRadio").is(":checked");
+        var address = $("input[name='address_id']:checked").val();
         var courier = $(".courier-code").is(":checked");
 
         if (!address) {
@@ -233,9 +234,10 @@
 
             $('.courier-code').click(function() {
                 let courier = $(this).val();
-                // console.log(courier);
-                let addressID = $('.delivery-address:checked').val();
                 let weight = $('#weight').val();
+                let addressID = $('.delivery-address:checked').val();
+
+                let totalPriceInput = $("input[name='total_price']").val();
 
                 if (addressID) {
                     $.ajax({
@@ -248,8 +250,27 @@
                             _token: $('meta[name="csrf-token"]').attr('content')
                         },
                         success: function(result) {
-                            $('.available-services').show();
-                            $('.available-services').html(result);
+                            // console.log(lokal_kurir);
+                            if(courier == 'lokal_kurir'){
+                                // total_price =
+                                let lokal_kurir_price = result.total;
+
+                                var originalTotalPrice = parseFloat($(".total-amount .rupiah").attr('data-price')) || 0;
+
+                                var currentShippingCost = parseFloat($(".shipping-cost .rupiah").attr('data-price')) || 0;
+
+                                var newTotalPrice = originalTotalPrice - currentShippingCost + lokal_kurir_price;
+
+                                $(".shipping-cost .rupiah").attr('data-price', lokal_kurir_price).text(rupiah(lokal_kurir_price));
+
+                                $(".total-amount .rupiah").attr('data-price', newTotalPrice).text(rupiah(
+                                newTotalPrice));
+
+                                $("input[name='total_price']").val(newTotalPrice);
+                            }else{
+                                $('.available-services').show();
+                                $('.available-services').html(result);
+                            }
                         },
                         error: function(e) {
                             console.log(e);
@@ -258,6 +279,15 @@
                 } else {
                     alert('Please select a delivery address first.');
                 }
+
+
+                if(courier == 'lokal_kurir') {
+                    $('.available-services').hide();
+                    $('.available-services').html('');
+                }else{
+                    // console.log(courier);
+                }
+
             });
         });
 
