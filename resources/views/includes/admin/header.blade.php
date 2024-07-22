@@ -143,7 +143,7 @@
                 <a href="#" class="user-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
                     <div class="label">
                         <span></span>
-                        <div>Admin</div>
+                        <div>{{ Auth::user()->name }}</div>
                     </div>
                     <img class="img-user" src="{{ asset('admin') }}/assets/images/avatar1.png" alt="user"srcset="">
                 </a>
@@ -162,11 +162,20 @@
                                 <i class="ti-settings"></i> Setting
                             </div>
                         </a>
-                        <a href="#">
-                            <div class="description">
-                                <i class="ti-power-off"></i> Logout
-                            </div>
-                        </a>
+
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <a
+                                href="{{ route('logout') }}"
+                                onclick="event.preventDefault(); this.closest('form').submit();"
+                                class="dropdown-item"
+                            >
+                                <div class="description">
+                                    <i class="ti-power-off"></i> Logout
+                                </div>
+                            </a>
+                        </form>
+
                     </li>
                 </ul>
             </div>

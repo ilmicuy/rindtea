@@ -25,6 +25,8 @@
                     <span>Dashboard</span>
                 </a>
             </li>
+
+            @hasanyrole('owner')
             <li class="menu-category">
                 <span>User Interface</span>
             </li>
@@ -53,9 +55,13 @@
                     </li>
                 </ul>
             </li>
+            @endhasanyrole
+
             <li class="menu-category">
                 <span class="">Utilities</span>
             </li>
+
+            @hasanyrole('owner|produksi')
             <li>
                 <a href="{{ route('product') }}" class="link {{ request()->is('product') ? 'active' : '' }}">
                     <i class="ti-package"></i>
@@ -63,17 +69,45 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('product') }}" class="link {{ request()->is('product') ? 'active' : '' }}">
+                    <i class="ti-package"></i>
+                    <span>Request Bahan Baku</span>
+                </a>
+            </li>
+            @endhasanyrole
+
+            @hasanyrole('owner|marketing')
+            <li>
+                <a href="{{ route('product') }}" class="link {{ request()->is('product') ? 'active' : '' }}">
+                    <i class="ti-package"></i>
+                    <span>Request Product</span>
+                </a>
+            </li>
+            @endhasanyrole
+
+            @hasanyrole('owner|keuangan')
+            <li>
                 <a href="{{ route('transaction') }}" class="link">
                     <i class="ti-package"></i>
                     <span>Transaction</span>
                 </a>
             </li>
             <li>
+                <a href="{{ route('transaction') }}" class="link">
+                    <i class="ti-package"></i>
+                    <span>Add Bahan Baku</span>
+                </a>
+            </li>
+            @endhasanyrole
+
+            @hasanyrole('owner|marketing')
+            <li>
                 <a href="{{ route('reviews') }}" class="link">
                     <i class="ti-package"></i>
                     <span>Reviews</span>
                 </a>
             </li>
+            @endhasanyrole
 
         </ul>
     </div>
