@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Transaction;
 use App\Models\TransactionDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class TransactionController extends Controller
 {
@@ -20,6 +21,32 @@ class TransactionController extends Controller
         return view('pages.admin.transaction.index', [
             'query' => $query
         ]);
+    }
+
+    public function cekResi(Request $request)
+    {
+        return view('pages.admin.transaction.cekResi');
+    }
+
+    public function cekResiProcess(Request $request)
+    {
+        $response = Http::get('https://api.binderbyte.com/v1/track', [
+            'api_key' => env('BINDERBYTE_API_KEY'),
+            'courier' => $request->courier,
+            'awb' => $request->awb,
+        ]);
+
+        // Check if the request was successful
+        if ($response->successful()) {
+            $data = $response->json();
+            // Handle the response data as needed
+            // For example, return it as a response in a controller
+            return response()->json($data);
+        } else {
+            // Handle the error
+            return response()->json(['error' => 'Unable to fetch data'], $response->status());
+        }
+
     }
 
     /**

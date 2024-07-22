@@ -63,6 +63,12 @@
 
             @hasanyrole('owner|produksi')
             <li>
+                <a href="{{ route('cekResi') }}" class="link {{ request()->is('cekResi') ? 'active' : '' }}">
+                    <i class="ti-package"></i>
+                    <span>Cek Resi</span>
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('product') }}" class="link {{ request()->is('product') ? 'active' : '' }}">
                     <i class="ti-package"></i>
                     <span>Product</span>

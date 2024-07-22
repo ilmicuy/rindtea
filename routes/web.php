@@ -110,6 +110,9 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction');
     Route::get('/transaction/{id}', [TransactionController::class, 'edit'])->name('transaction.edit');
     Route::post('/transaction/update/{id}', [TransactionController::class, 'update'])->name('transaction.update');
+    // TEMPORARY: Cek Resi Route
+    Route::get('/cek-resi', [TransactionController::class, 'cekResi'])->name('cekResi');
+    Route::post('/cek-resi', [TransactionController::class, 'cekResiProcess'])->name('cekResiProcess');
 
     // reviews
     Route::get('/reviews', [CustomerReviewController::class, 'index'])->name('reviews');
