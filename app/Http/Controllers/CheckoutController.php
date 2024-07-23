@@ -125,6 +125,28 @@ class CheckoutController extends Controller
             ->where('users_id', Auth::user()->id)
             ->get();
 
+        $items = [];
+        $itemTotalPrice = 0;
+        $shippingFee = 0;
+
+        foreach ($carts as $cart) {
+            $items[] = [
+                'id'       => 'item' . $cart->id,
+                'price'    => $cart->product->price, // Assuming the product model has a 'price' attribute
+                'quantity' => $cart->qty,
+                'name'     => $cart->product->name, // Assuming the product model has a 'name' attribute
+            ];
+
+            $itemTotalPrice += $cart->qty * $cart->product->price;
+        }
+
+        $items[] = [
+            'id'       => 'ongkir_' . $request->courier,
+            'price'    => $request->total_price - $itemTotalPrice,
+            'quantity' => 1,
+            'name'     => 'Ongkos Kirim (' . ucwords(str_replace('_', ' ', $request->courier)) . ')',
+        ];
+
         $transaction =  Transaction::create([
             'checkout_date' => date('Y-m-d H:i:s'),
             'users_id' => Auth::user()->id,
@@ -160,6 +182,7 @@ class CheckoutController extends Controller
             'enable_payments' => [
                 'gopay', 'permata_va', 'shoppepay', 'bank_transfer'
             ],
+            'item_details' => $items,
             'vtweb' => []
         ];
 
