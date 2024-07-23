@@ -58,6 +58,8 @@ class CheckoutController extends Controller
 
             return response()->json([
                 'status' => 'success',
+                'distance_in_km' => $address->distance_in_km,
+                'tarif_lokal_kurir_per_km' => $tarif_lokal_kurir,
                 'total' => $total
             ]);
         }else{

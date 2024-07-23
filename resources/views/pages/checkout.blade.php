@@ -255,6 +255,24 @@
                                 // total_price =
                                 let lokal_kurir_price = result.total;
 
+                                $('.available-services').show();
+                                $('.available-services').html(`
+                                    <table>
+                                        <tr>
+                                            <th>Ongkos Kirim Lokal Kurir</th>
+                                            <td>${rupiah(result.tarif_lokal_kurir_per_km)}/Km</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Jarak Kirim</th>
+                                            <td>${result.distance_in_km}Km</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Total Ongkos Kirim</th>
+                                            <td>${rupiah(lokal_kurir_price)}</td>
+                                        </tr>
+                                    </table>
+                                `);
+
                                 var originalTotalPrice = parseFloat($(".total-amount .rupiah").attr('data-price')) || 0;
 
                                 var currentShippingCost = parseFloat($(".shipping-cost .rupiah").attr('data-price')) || 0;
