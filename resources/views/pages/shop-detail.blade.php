@@ -45,8 +45,8 @@
                                         <i data-feather="minus"></i>
                                     </button>
                                 </div>
-                                <input id="qty-input" type="text" name="qty" class="form-control text-center"
-                                    value="1">
+                                <input id="qty-input" type="number" name="qty" class="form-control text-center"
+                                    value="1" min="1" max="{{ $product->quantity }}">
                                 <div class="input-group-btn">
                                     <button id="btn-plus" class="border btn btn-sm btn-plus rounded-circle bg-light"
                                         type="button">
@@ -173,6 +173,11 @@
                     newVal = 0;
                 }
             }
+
+            if(newVal > {{ $product->quantity }}){
+                return false;
+            }
+
             button.parent().parent().find('input').val(newVal);
         });
     </script>

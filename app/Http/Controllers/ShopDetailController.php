@@ -27,6 +27,12 @@ class ShopDetailController extends Controller
 
     public function add(Request $request, $id)
     {
+        $product = Product::find($id);
+
+        if($product->quantity < $request->qty){
+            return redirect()->back()->with('error', 'Stok tidak mencukupi!');
+        }
+
         $data = [
             'products_id' => $id,
             'qty' => $request->qty,
