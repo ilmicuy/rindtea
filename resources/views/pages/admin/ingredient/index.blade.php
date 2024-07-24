@@ -20,7 +20,7 @@
                     </div>
                     <div class="form-group mb-4">
                         <label>Quantity Awal</label>
-                        <input type="number" name="qty_requested" class="form-control" min="0" value="0" required>
+                        <input type="number" name="qty" class="form-control" min="0" value="0" required>
                     </div>
                     <div class="form-group mb-4">
                         <label>Satuan</label>
@@ -112,7 +112,7 @@
     function validateAndSubmitForm() {
         // Get form fields
         const namaBahanBaku = document.querySelector('[name="nama_bahan_baku"]').value;
-        const qtyRequested = document.querySelector('[name="qty_requested"]').value;
+        const qtyRequested = document.querySelector('[name="qty"]').value;
         const satuan = document.querySelector('[name="satuan"]').value;
 
         // Validate form fields
