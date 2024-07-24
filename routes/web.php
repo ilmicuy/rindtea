@@ -19,6 +19,7 @@ use App\Http\Controllers\ShopDetailController;
 use App\Http\Controllers\HeroSectionController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\CustomerReviewController;
+use App\Http\Controllers\InboxController;
 use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\RequestIngredientController;
 use App\Http\Controllers\RequestProductController;
@@ -142,6 +143,12 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::post('/request-product/store', [RequestProductController::class, 'store'])->name('requestProduct.store');
     Route::post('/request-product/status-edit', [RequestProductController::class, 'statusEdit'])->name('requestProduct.statusEdit');
     Route::get('/request-product/{id}', [RequestProductController::class, 'show'])->name('requestProduct.show');
+
+    // Inbox
+    Route::get('/inbox', [InboxController::class, 'index'])->name('inbox.index');
+    Route::get('/inbox/create', [InboxController::class, 'create'])->name('inbox.create');
+    Route::post('/inbox', [InboxController::class, 'store'])->name('inbox.store');
+    Route::get('/inbox/{id}', [InboxController::class, 'show'])->name('inbox.show');
 });
 
 Route::post('/midtrans-callback', [CheckoutController::class, 'callback'])->name('midtrans.callback');

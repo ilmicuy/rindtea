@@ -108,6 +108,12 @@
                     <span>Cek Resi</span>
                 </a>
             </li>
+            <li class="{{ request()->routeIs('inbox.*') ? 'active' : '' }}">
+                <a href="{{ route('inbox.index') }}" class="link {{ request()->is('inbox.index') ? 'active' : '' }}">
+                    <i class="ti-package"></i>
+                    <span>Inbox</span>
+                </a>
+            </li>
 
             @hasanyrole('owner')
             <li>
