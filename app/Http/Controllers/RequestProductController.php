@@ -98,7 +98,7 @@ class RequestProductController extends Controller
             // Log product transaction for the main product
             ProductTransaction::create([
                 'product_id' => $getRequestProduct->product->id,
-                'transaction_id' => $getRequestProduct->id,
+                'transaction_id' => null,
                 'user_id' => Auth::user()->id,
                 'transaction_type' => 'restock',
                 'quantity' => $qty_requested,
