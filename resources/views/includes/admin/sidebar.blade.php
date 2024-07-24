@@ -1,39 +1,29 @@
 <nav class="main-sidebar ps-menu">
-    <!-- <div class="sidebar-toggle action-toggle">
-                <a href="#">
-                    <i class="fas fa-bars"></i>
-                </a>
-            </div> -->
-    <!-- <div class="sidebar-opener action-toggle">
-                <a href="#">
-                    <i class="ti-angle-right"></i>
-                </a>
-            </div> -->
     <div class="sidebar-header">
         <div class="text">
             <h3>Rind Tea Apps</h3>
         </div>
         <div class="close-sidebar action-toggle">
-            <i class="ti-close"></i>
+            <i class="fas fa-times"></i>
         </div>
     </div>
     <div class="sidebar-content">
         <ul>
             <li class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 <a href="{{ route('dashboard') }}" class="link">
-                    <i class="ti-home"></i>
+                    <i class="fas fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
 
             @hasanyrole('owner|produksi')
             <li class="menu-category">
-                <span class="">Product</span>
+                <span>Product</span>
             </li>
 
             <li class="{{ request()->routeIs('product.*') && !request()->routeIs('product.productTransactions') ? 'active' : '' }}">
                 <a href="{{ route('product.index') }}" class="link">
-                    <i class="ti-package"></i>
+                    <i class="fas fa-box"></i>
                     <span>Product</span>
                 </a>
             </li>
@@ -42,7 +32,7 @@
             @hasrole('owner')
             <li class="{{ request()->routeIs('product.productTransactions') ? 'active' : '' }}">
                 <a href="{{ route('product.productTransactions') }}" class="link">
-                    <i class="ti-package"></i>
+                    <i class="fas fa-exchange-alt"></i>
                     <span>Product Transaction</span>
                 </a>
             </li>
@@ -51,7 +41,7 @@
             @hasanyrole('owner|marketing')
             <li class="{{ request()->routeIs('requestProduct.*') ? 'active' : '' }}">
                 <a href="{{ route('requestProduct.index') }}" class="link">
-                    <i class="ti-package"></i>
+                    <i class="fas fa-clipboard-list"></i>
                     <span>Request Product</span>
                 </a>
             </li>
@@ -59,19 +49,19 @@
 
             @hasanyrole('owner|produksi|keuangan')
             <li class="menu-category">
-                <span class="">Bahan Baku</span>
+                <span>Bahan Baku</span>
             </li>
 
             <li class="{{ request()->routeIs('ingredient.*') ? 'active' : '' }}">
                 <a href="{{ route('ingredient.index') }}" class="link">
-                    <i class="ti-package"></i>
+                    <i class="fas fa-cubes"></i>
                     <span>Bahan Baku</span>
                 </a>
             </li>
 
             <li class="{{ request()->routeIs('requestIngredient.*') ? 'active' : '' }}">
                 <a href="{{ route('requestIngredient.index') }}" class="link">
-                    <i class="ti-package"></i>
+                    <i class="fas fa-cube"></i>
                     <span>Request Bahan Baku</span>
                 </a>
             </li>
@@ -79,11 +69,11 @@
 
             @hasanyrole('owner|keuangan')
             <li class="menu-category">
-                <span class="">Transaction</span>
+                <span>Transaction</span>
             </li>
             <li class="{{ request()->routeIs('transaction.*') ? 'active' : '' }}">
                 <a href="{{ route('transaction.index') }}" class="link">
-                    <i class="ti-package"></i>
+                    <i class="fas fa-money-bill-wave"></i>
                     <span>Transaction</span>
                 </a>
             </li>
@@ -92,25 +82,24 @@
             @hasanyrole('owner|marketing|produksi')
             <li class="{{ request()->routeIs('reviews.index') ? 'active' : '' }}">
                 <a href="{{ route('reviews.index') }}" class="link">
-                    <i class="ti-package"></i>
+                    <i class="fas fa-star"></i>
                     <span>Reviews</span>
                 </a>
             </li>
             @endhasanyrole
 
-
             <li class="menu-category">
-                <span class="">Tools</span>
+                <span>Tools</span>
             </li>
             <li class="{{ request()->routeIs('cekResi') ? 'active' : '' }}">
-                <a href="{{ route('cekResi') }}" class="link {{ request()->is('cekResi') ? 'active' : '' }}">
-                    <i class="ti-package"></i>
+                <a href="{{ route('cekResi') }}" class="link">
+                    <i class="fas fa-shipping-fast"></i>
                     <span>Cek Resi</span>
                 </a>
             </li>
             <li class="{{ request()->routeIs('inbox.*') ? 'active' : '' }}">
-                <a href="{{ route('inbox.index') }}" class="link {{ request()->is('inbox.index') ? 'active' : '' }}">
-                    <i class="ti-package"></i>
+                <a href="{{ route('inbox.index') }}" class="link">
+                    <i class="fas fa-envelope"></i>
                     <span>Inbox</span>
                 </a>
             </li>
@@ -118,7 +107,7 @@
             @hasanyrole('owner')
             <li>
                 <a href="#" class="main-menu has-dropdown">
-                    <i class="ti-desktop"></i>
+                    <i class="fas fa-globe"></i>
                     <span>Landing Page</span>
                 </a>
                 <ul class="sub-menu {{ request()->is('herosection') || request()->is('about') || request()->is('menu') ? 'show' : '' }}">
