@@ -33,13 +33,28 @@ class ShopDetailController extends Controller
             return redirect()->back()->with('error', 'Stok tidak mencukupi!');
         }
 
-        $data = [
-            'products_id' => $id,
-            'qty' => $request->qty,
+        $getExistingCart = Cart::where([
             'users_id' => Auth::user()->id,
-        ];
+            'products_id' => $id,
+        ])->first();
 
-        Cart::create($data);
+        if($getExistingCart){
+            if($product->quantity < $getExistingCart->qty + $request->qty){
+                return redirect()->back()->with('error', 'Stok tidak mencukupi!');
+            }
+
+            $getExistingCart->qty += $request->qty;
+            $getExistingCart->save();
+        }else{
+            $data = [
+                'products_id' => $id,
+                'qty' => $request->qty,
+                'users_id' => Auth::user()->id,
+            ];
+
+            Cart::create($data);
+        }
+
         return redirect()->back();
     }
     /**
