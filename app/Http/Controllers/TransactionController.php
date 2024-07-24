@@ -104,7 +104,7 @@ class TransactionController extends Controller
 
         $item->update($data);
 
-        return redirect()->route('transaction');
+        return redirect()->route('transaction.index');
     }
 
     /**

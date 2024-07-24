@@ -10,6 +10,15 @@ class IngredientRequest extends Model
     use HasFactory;
 
     public $fillable = [
-
+        'ingredient_id',
+        'qty_request',
+        'approved_at',
+        'created_at',
+        'updated_at',
     ];
+
+    public function ingredient()
+    {
+        return $this->belongsTo(Ingredient::class);
+    }
 }

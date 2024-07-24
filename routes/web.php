@@ -20,6 +20,7 @@ use App\Http\Controllers\HeroSectionController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\CustomerReviewController;
 use App\Http\Controllers\IngredientController;
+use App\Http\Controllers\RequestIngredientController;
 use App\Http\Controllers\RequestProductController;
 
 Route::group(['middleware' => ['redirect_to_admin']], function() {
@@ -102,7 +103,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::delete('/category/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
 
     // product
-    Route::get('/product', [ProductController::class, 'index'])->name('product');
+    Route::get('/product', [ProductController::class, 'index'])->name('product.index');
     Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');
     Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
 
@@ -111,7 +112,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
 
     // transaction
-    Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction');
+    Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
     Route::get('/transaction/{id}', [TransactionController::class, 'edit'])->name('transaction.edit');
     Route::post('/transaction/update/{id}', [TransactionController::class, 'update'])->name('transaction.update');
     // TEMPORARY: Cek Resi Route
@@ -119,17 +120,25 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::post('/cek-resi', [TransactionController::class, 'cekResiProcess'])->name('cekResiProcess');
 
     // reviews
-    Route::get('/reviews', [CustomerReviewController::class, 'index'])->name('reviews');
+    Route::get('/reviews', [CustomerReviewController::class, 'index'])->name('reviews.index');
     Route::get('/reviews/{id}', [CustomerReviewController::class, 'edit'])->name('reviews.edit');
 
     // bahan baku
     Route::get('/ingredient', [IngredientController::class, 'index'])->name('ingredient.index');
-    Route::get('/ingredient/create', [IngredientController::class, 'create'])->name('ingredient.create');
+    // Route::get('/ingredient/create', [IngredientController::class, 'create'])->name('ingredient.create');
     Route::post('/ingredient/store', [IngredientController::class, 'store'])->name('ingredient.store');
-    Route::get('/ingredient/{id}', [IngredientController::class, 'edit'])->name('ingredient.edit');
+    // Route::get('/ingredient/{id}', [IngredientController::class, 'edit'])->name('ingredient.edit');
+
+    // request bahan baku
+    Route::get('/request-bahan-baku', [RequestIngredientController::class, 'index'])->name('requestIngredient.index');
+    Route::post('/request-bahan-baku/store', [RequestIngredientController::class, 'store'])->name('requestIngredient.store');
+    Route::post('/request-bahan-baku/status-edit', [RequestIngredientController::class, 'statusEdit'])->name('requestIngredient.statusEdit');
 
     // request product
     Route::get('/request-product', [RequestProductController::class, 'index'])->name('requestProduct.index');
+    Route::post('/request-product/store', [RequestProductController::class, 'store'])->name('requestProduct.store');
+    Route::post('/request-product/status-edit', [RequestProductController::class, 'statusEdit'])->name('requestProduct.statusEdit');
+    Route::get('/request-product/{id}', [RequestProductController::class, 'show'])->name('requestProduct.show');
 });
 
 Route::post('/midtrans-callback', [CheckoutController::class, 'callback'])->name('midtrans.callback');

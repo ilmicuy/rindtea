@@ -24,7 +24,7 @@ class ProductRequest extends FormRequest
         return [
             'name' => 'required|string',
             'photos' =>'required|image|mimes:png,jpg,jpeg,svg,gif',
-            'quantity' => 'required|integer',
+            // 'quantity' => 'required|integer',
             'quality' => 'required|string',
             'thumb_description' => 'required|string',
             // 'short_description' => 'required|string',
@@ -33,6 +33,9 @@ class ProductRequest extends FormRequest
             'weight' => 'required|string',
             'check' => 'required|string',
             'country_of_origin' => 'required|string',
+            'list_bahan_baku' => 'required|array',
+            'list_bahan_baku.*.bahan_baku' => 'required|integer|exists:ingredients,id',
+            'list_bahan_baku.*.qty_needed' => 'required|integer|min:1',
         ];
     }
 }

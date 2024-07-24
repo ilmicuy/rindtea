@@ -33,8 +33,12 @@ class IngredientController extends Controller
     public function store(Request $request)
     {
         Ingredient::create([
-
+            'nama_bahan_baku' => $request->nama_bahan_baku,
+            'qty' => abs($request->qty),
+            'satuan' => $request->satuan,
         ]);
+
+        return redirect(route("ingredient.index"));
     }
 
     /**

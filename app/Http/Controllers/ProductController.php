@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\admin\ProductRequest;
 use App\Http\Requests\admin\UpdateProductRequest;
 use App\Models\Category;
+use App\Models\Ingredient;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -31,8 +32,11 @@ class ProductController extends Controller
     {
         $categories = Category::all();
 
+        $bahanBaku = Ingredient::all();
+
         return view('pages.admin.product.create', [
-            'categories' => $categories
+            'categories' => $categories,
+            'ingredients' => $bahanBaku
         ]);
     }
 
@@ -45,11 +49,18 @@ class ProductController extends Controller
 
         $data['slug'] = Str::slug($request->name);
         $data['photos'] = $request->file('photos')->store('assets/product', 'public');
+        $data['quantity'] = 0;
 
+        $product = Product::create($data);
 
-        Product::create($data);
+        $bahanBakuData = [];
+        foreach ($request->list_bahan_baku as $bahan_baku) {
+            $bahanBakuData[$bahan_baku['bahan_baku']] = ['qty_needed' => $bahan_baku['qty_needed']];
+        }
 
-        return redirect()->route('product');
+        $product->ingredients()->sync($bahanBakuData);
+
+        return redirect()->route('product.index');
     }
 
     /**
@@ -67,10 +78,12 @@ class ProductController extends Controller
     {
         $item = Product::findOrFail($id);
         $categories = Category::all();
+        $bahanBaku = Ingredient::all();
 
         return view('pages.admin.product.edit', [
             'item' => $item,
             'categories' => $categories,
+            'ingredients' => $bahanBaku
         ]);
     }
 
@@ -90,7 +103,20 @@ class ProductController extends Controller
 
         $item->update($data);
 
-        return redirect()->route('product');
+
+        $bahanBakuData = [];
+        foreach ($request->list_bahan_baku as $bahan_baku) {
+            $bahanBakuData[$bahan_baku['bahan_baku']] = ['qty_needed' => $bahan_baku['qty_needed']];
+
+            // $bahanBakuData[] = [
+            //     'ingredient_id' => $bahan_baku['bahan_baku'],
+            //     'qty_needed' => $bahan_baku['qty_needed']
+            // ];
+        }
+
+        $item->ingredients()->sync($bahanBakuData);
+
+        return redirect()->route('product.edit', $id);
     }
 
     /**
@@ -101,6 +127,6 @@ class ProductController extends Controller
         $item = Product::findOrFail($id);
         $item->delete();
 
-        return redirect()->route('product');
+        return redirect()->route('product.index');
     }
 }

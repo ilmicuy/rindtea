@@ -35,12 +35,6 @@
 
 @push('js')
 <script>
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-
     function cekResi() {
         if ($("input[name='awb']").val() == "") {
             alert('Silahkan isi Nomor Resi Terlebih dahulu!');
