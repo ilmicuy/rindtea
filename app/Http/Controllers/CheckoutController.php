@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Http\Requests\CheckoutRequest;
+use App\Models\Product;
 use Carbon\Carbon;
 
 class CheckoutController extends Controller
@@ -155,11 +156,15 @@ class CheckoutController extends Controller
         ]);
 
         foreach ($carts as $cart) {
+            $getProduct = Product::find($cart->product->id);
+            $getProduct->quantity -= $cart->qty;
+            $getProduct->save();
+
             TransactionDetail::create([
                 'checkout_date' => date('Y-m-d H:i:s'),
                 'transactions_id' => $transaction->id,
                 'products_id' => $cart->product->id,
-                'qty'       => $request->qty,
+                'qty'       => $cart->qty,
             ]);
         }
 
