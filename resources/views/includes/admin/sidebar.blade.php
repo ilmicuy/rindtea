@@ -26,6 +26,7 @@
                 </a>
             </li>
 
+            @hasanyrole('owner|produksi')
             <li class="menu-category">
                 <span class="">Product</span>
             </li>
@@ -36,24 +37,27 @@
                     <span>Product</span>
                 </a>
             </li>
+            @endhasanyrole
 
+            @hasrole('owner')
             <li class="{{ request()->routeIs('product.productTransactions') ? 'active' : '' }}">
                 <a href="{{ route('product.productTransactions') }}" class="link">
                     <i class="ti-package"></i>
                     <span>Product Transaction</span>
                 </a>
             </li>
+            @endhasrole
 
+            @hasanyrole('owner|marketing')
             <li class="{{ request()->routeIs('requestProduct.*') ? 'active' : '' }}">
-                <a href="{{ route('requestProduct.index') }}" class="link {{ request()->is('requestProduct.index') ? 'active' : '' }}">
+                <a href="{{ route('requestProduct.index') }}" class="link">
                     <i class="ti-package"></i>
                     <span>Request Product</span>
                 </a>
             </li>
+            @endhasanyrole
 
-
-
-            @hasanyrole('owner|keuangan')
+            @hasanyrole('owner|produksi|keuangan')
             <li class="menu-category">
                 <span class="">Bahan Baku</span>
             </li>
@@ -73,6 +77,7 @@
             </li>
             @endhasanyrole
 
+            @hasanyrole('owner|keuangan')
             <li class="menu-category">
                 <span class="">Transaction</span>
             </li>
@@ -82,9 +87,9 @@
                     <span>Transaction</span>
                 </a>
             </li>
+            @endhasanyrole
 
-
-            @hasanyrole('owner|marketing')
+            @hasanyrole('owner|marketing|produksi')
             <li class="{{ request()->routeIs('reviews.index') ? 'active' : '' }}">
                 <a href="{{ route('reviews.index') }}" class="link">
                     <i class="ti-package"></i>
@@ -103,16 +108,16 @@
                     <span>Cek Resi</span>
                 </a>
             </li>
+
+            @hasanyrole('owner')
             <li>
                 <a href="#" class="main-menu has-dropdown">
                     <i class="ti-desktop"></i>
                     <span>Landing Page</span>
                 </a>
-                <ul
-                    class="sub-menu {{ request()->is('herosection') || request()->is('about') || request()->is('menu') ? 'show' : '' }}">
+                <ul class="sub-menu {{ request()->is('herosection') || request()->is('about') || request()->is('menu') ? 'show' : '' }}">
                     <li>
-                        <a href="{{ route('herosection') }}"
-                            class="link {{ request()->is('herosection') ? 'active' : '' }}">
+                        <a href="{{ route('herosection') }}" class="link {{ request()->is('herosection') ? 'active' : '' }}">
                             <span>Hero Section</span>
                         </a>
                     </li>
@@ -128,6 +133,7 @@
                     </li>
                 </ul>
             </li>
+            @endhasanyrole
 
         </ul>
     </div>
