@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Http\Requests\CheckoutRequest;
 use App\Models\Product;
+use App\Models\ProductTransaction;
 use Carbon\Carbon;
 
 class CheckoutController extends Controller
@@ -148,7 +149,7 @@ class CheckoutController extends Controller
             'name'     => 'Ongkos Kirim (' . ucwords(str_replace('_', ' ', $request->courier)) . ')',
         ];
 
-        $transaction =  Transaction::create([
+        $transaction = Transaction::create([
             'checkout_date' => date('Y-m-d H:i:s'),
             'users_id' => Auth::user()->id,
             'total_price' => (int) $request->total_price,
@@ -157,19 +158,39 @@ class CheckoutController extends Controller
 
         foreach ($carts as $cart) {
             $getProduct = Product::find($cart->product->id);
-            $getProduct->quantity -= $cart->qty;
+            $oldQuantity = $getProduct->quantity;
+            $newQuantity = $oldQuantity - $cart->qty;
+
+            // Update product quantity
+            $getProduct->quantity = $newQuantity;
             $getProduct->save();
 
+            // Create transaction detail
             TransactionDetail::create([
                 'checkout_date' => date('Y-m-d H:i:s'),
                 'transactions_id' => $transaction->id,
                 'products_id' => $cart->product->id,
-                'qty'       => $cart->qty,
+                'qty' => $cart->qty,
+            ]);
+
+            // Log product transaction
+            ProductTransaction::create([
+                'product_id' => $cart->product->id,
+                'transaction_id' => $transaction->id,
+                'user_id' => Auth::user()->id,
+                'transaction_type' => 'sale',
+                'quantity' => $cart->qty,
+                'old_quantity' => $oldQuantity,
+                'new_quantity' => $newQuantity,
+                'transaction_date' => date('Y-m-d H:i:s'),
+                'description' => 'Product sold during transaction #' . $transaction->id,
             ]);
         }
 
+        // Clear the cart
         Cart::where('users_id', Auth::user()->id)->delete();
 
+        // Midtrans configuration
         Config::$serverKey = config('services.midtrans.serverKey');
         Config::$isProduction = config('services.midtrans.isProduction');
         Config::$isSanitized = config('services.midtrans.isSanitized');

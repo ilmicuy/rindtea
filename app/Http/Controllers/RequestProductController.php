@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ProductRequest;
+use App\Models\ProductTransaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RequestProductController extends Controller
 {
@@ -68,9 +70,6 @@ class RequestProductController extends Controller
     {
         $getRequestProduct = ProductRequest::findOrFail($request->id);
 
-        // dd($getRequestProduct->product->ingredients[0]->pivot);
-        // dd($getRequestProduct->product->ingredients);
-
         if($getRequestProduct->status != 'pending'){
             return response()->json([
                 'status' => 'error',
@@ -89,8 +88,25 @@ class RequestProductController extends Controller
                 $bahan->save();
             }
 
-            $getRequestProduct->product->quantity = $getRequestProduct->product->quantity + $qty_requested;
+            $oldProductQuantity = $getRequestProduct->product->quantity;
+            $newProductQuantity = $oldProductQuantity + $qty_requested;
+
+            // Update the main product quantity
+            $getRequestProduct->product->quantity = $newProductQuantity;
             $getRequestProduct->product->save();
+
+            // Log product transaction for the main product
+            ProductTransaction::create([
+                'product_id' => $getRequestProduct->product->id,
+                'transaction_id' => $getRequestProduct->id,
+                'user_id' => Auth::user()->id,
+                'transaction_type' => 'restock',
+                'quantity' => $qty_requested,
+                'old_quantity' => $oldProductQuantity,
+                'new_quantity' => $newProductQuantity,
+                'transaction_date' => Carbon::now(),
+                'description' => 'Product quantity increased for product request #' . $getRequestProduct->id,
+            ]);
 
             $getRequestProduct->status = 'success';
             $getRequestProduct->success_at = Carbon::now();

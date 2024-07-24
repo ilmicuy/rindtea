@@ -30,10 +30,17 @@
                 <span class="">Product</span>
             </li>
 
-            <li class="{{ request()->routeIs('product.*') ? 'active' : '' }}">
+            <li class="{{ request()->routeIs('product.*') && !request()->routeIs('product.productTransactions') ? 'active' : '' }}">
                 <a href="{{ route('product.index') }}" class="link">
                     <i class="ti-package"></i>
                     <span>Product</span>
+                </a>
+            </li>
+
+            <li class="{{ request()->routeIs('product.productTransactions') ? 'active' : '' }}">
+                <a href="{{ route('product.productTransactions') }}" class="link">
+                    <i class="ti-package"></i>
+                    <span>Product Transaction</span>
                 </a>
             </li>
 

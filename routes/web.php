@@ -111,6 +111,9 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::post('/product/update/{id}', [ProductController::class, 'update'])->name('product.update');
     Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
 
+    // product transaction logs
+    Route::get('/product-transactions', [ProductController::class, 'productTransactions'])->name('product.productTransactions');
+
     // transaction
     Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
     Route::get('/transaction/{id}', [TransactionController::class, 'edit'])->name('transaction.edit');

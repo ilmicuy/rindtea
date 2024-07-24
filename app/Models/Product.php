@@ -39,4 +39,12 @@ class Product extends Model
     {
         return $this->belongsToMany(Ingredient::class)->withPivot('qty_needed');
     }
+
+    /**
+     * Get the product transactions for the product.
+     */
+    public function productTransactions()
+    {
+        return $this->hasMany(ProductTransaction::class);
+    }
 }

@@ -7,7 +7,10 @@ use App\Http\Requests\admin\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\Ingredient;
 use App\Models\Product;
+use App\Models\ProductTransaction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 
@@ -60,15 +63,29 @@ class ProductController extends Controller
 
         $product->ingredients()->sync($bahanBakuData);
 
+        // Log initial product creation
+        ProductTransaction::create([
+            'product_id' => $product->id,
+            'transaction_id' => null, // No specific transaction ID for initial creation
+            'user_id' => Auth::user()->id,
+            'transaction_type' => 'initial',
+            'quantity' => 0,
+            'old_quantity' => null,
+            'new_quantity' => 0,
+            'transaction_date' => Carbon::now(),
+            'description' => 'Initial creation of product',
+        ]);
+
         return redirect()->route('product.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function productTransactions(Request $request)
     {
+        $productTransaction = ProductTransaction::paginate(10);
 
+        return view('pages.admin.product.productTransaction', [
+            'transactions' => $productTransaction
+        ]);
     }
 
     /**
