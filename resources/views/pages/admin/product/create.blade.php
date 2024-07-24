@@ -95,12 +95,12 @@
                                             autocomplete="name" required>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                {{-- <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="quantity" class="form-label">Quantity</label>
                                         <input type="number" class="form-control" id="quantity" name="quantity" required>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="quality" class="form-label">Quality</label>

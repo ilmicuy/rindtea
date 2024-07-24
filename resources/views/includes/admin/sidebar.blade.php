@@ -57,11 +57,11 @@
             </li>
             @endhasanyrole
 
-            <li class="menu-category">
-                <span class="">Utilities</span>
-            </li>
 
             @hasanyrole('owner|produksi')
+            <li class="menu-category">
+                <span class="">Product</span>
+            </li>
             <li>
                 <a href="{{ route('cekResi') }}" class="link {{ request()->is('cekResi') ? 'active' : '' }}">
                     <i class="ti-package"></i>
@@ -74,39 +74,47 @@
                     <span>Product</span>
                 </a>
             </li>
+            @endhasanyrole
+
+            @hasanyrole('owner|keuangan')
+            <li class="menu-category">
+                <span class="">Bahan Baku</span>
+            </li>
+            <li>
+                <a href="{{ route('ingredient.index') }}" class="link">
+                    <i class="ti-package"></i>
+                    <span>Manage Bahan Baku</span>
+                </a>
+            </li>
             <li>
                 <a href="{{ route('product') }}" class="link {{ request()->is('product') ? 'active' : '' }}">
                     <i class="ti-package"></i>
                     <span>Request Bahan Baku</span>
                 </a>
             </li>
-            @endhasanyrole
 
-            @hasanyrole('owner|marketing')
-            <li>
-                <a href="{{ route('product') }}" class="link {{ request()->is('product') ? 'active' : '' }}">
-                    <i class="ti-package"></i>
-                    <span>Request Product</span>
-                </a>
-            </li>
-            @endhasanyrole
 
-            @hasanyrole('owner|keuangan')
             <li>
                 <a href="{{ route('transaction') }}" class="link">
                     <i class="ti-package"></i>
                     <span>Transaction</span>
                 </a>
             </li>
-            <li>
-                <a href="{{ route('transaction') }}" class="link">
-                    <i class="ti-package"></i>
-                    <span>Add Bahan Baku</span>
-                </a>
-            </li>
             @endhasanyrole
 
+            <li class="menu-category">
+                <span class="">Transaction</span>
+            </li>
+
+
             @hasanyrole('owner|marketing')
+            <li>
+                <a href="{{ route('requestProduct.index') }}" class="link {{ request()->is('requestProduct.index') ? 'active' : '' }}">
+                    <i class="ti-package"></i>
+                    <span>Request Product</span>
+                </a>
+            </li>
+
             <li>
                 <a href="{{ route('reviews') }}" class="link">
                     <i class="ti-package"></i>
@@ -114,7 +122,6 @@
                 </a>
             </li>
             @endhasanyrole
-
         </ul>
     </div>
 </nav>

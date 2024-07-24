@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transactions', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->integer('users_id');
-            $table->string('transaction_status'); //UNPAID/PENDING/SUCCESS/FAILED
-            $table->integer('total_price');
-
-            $table->softDeletes();
+        Schema::create('ingredients', function (Blueprint $table) {
+            $table->id();
+            $table->string('nama_bahan_baku')->nullable();
+            $table->bigInteger('qty')->nullable();
+            $table->enum('satuan', [
+                'pcs',
+                'gram'
+            ])->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('ingredients');
     }
 };

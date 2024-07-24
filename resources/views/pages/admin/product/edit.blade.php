@@ -105,7 +105,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="quantity" class="form-label">Quantity</label>
-                                        <input type="number" class="form-control" id="quantity" name="quantity" required value="{{ $item->quantity }}">
+                                        <input type="number" class="form-control" id="quantity" name="quantity" disabled value="{{ $item->quantity }}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -159,6 +159,33 @@
                                     <button type="submit" class="btn btn-primary"> Save</button>
                                 </div>
                         </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Nama Bahan Baku</th>
+                                    <th>Kebutuhan</th>
+                                </tr>
+                            </thead>
+                            @forelse ($item->ingredients as $ingredient)
+                                <tr>
+                                    <td>{{ $ingredient->nama_bahan_baku }}</td>
+                                    <td>{{ $ingredient->pivot->qty_needed }} {{ $ingredient->satuan }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="2">
+                                        Tidak ada bahan baku.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </table>
                     </div>
                 </div>
             </div>

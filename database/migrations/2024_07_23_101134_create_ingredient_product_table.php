@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transactions', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->integer('users_id');
-            $table->string('transaction_status'); //UNPAID/PENDING/SUCCESS/FAILED
-            $table->integer('total_price');
+        Schema::create('ingredient_product', function (Blueprint $table) {
+            $table->uuid('product_id')->constrained();
+            $table->foreignId('ingredient_id')->constrained();
+            $table->primary(['product_id', 'ingredient_id']);
 
-            $table->softDeletes();
+            $table->bigInteger('qty_needed')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('ingredient_product');
     }
 };

@@ -34,4 +34,9 @@ class Product extends Model
     // {
     //     return $this->belongsTo(Category::class, 'categories_id', 'id');
     // }
+
+    public function ingredients()
+    {
+        return $this->belongsToMany(Ingredient::class)->withPivot('qty_needed');
+    }
 }

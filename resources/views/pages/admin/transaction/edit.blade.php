@@ -143,8 +143,12 @@
                             <div class="bg-white rounded-lg shadow-md">
                                 <div class="p-4">
                                     <h4 class="pb-2 font-semibold">Transaction Status </h4>
+
                                     <select id="transaction_status" name="transaction_status" class="form-control">
                                         <option value="pending" @if (old('transaction_status', $items->transaction->transaction_status) == 'pending') selected @endif>Pending
+                                        </option>
+                                        <option value="shipping" @if (old('transaction_status', $items->transaction->transaction_status) == 'shipping') selected @endif>
+                                            Shipping
                                         </option>
                                         <option value="completed" @if (old('transaction_status', $items->transaction->transaction_status) == 'completed') selected @endif>
                                             Completed
@@ -152,6 +156,8 @@
                                         <option value="failed" @if (old('transaction_status', $items->transaction->transaction_status) == 'failed') selected @endif>Failed
                                         </option>
                                     </select>
+                                    <br>
+                                    <input type="text" name="no_resi" class="form-control" placeholder="Masukkan No. Resi Pengiriman">
                                 </div>
                             </div>
                         </div>
@@ -203,3 +209,15 @@
         </form>
     </div>
 @endsection
+
+@push('js')
+<script>
+    $("select[name='transaction_status']").on('change', function() {
+        if($(this).val() == 'shipping') {
+            $("input[name='no_resi']").show();
+        }else{
+            $("input[name='no_resi']").hide();
+        }
+    });
+</script>
+@endpush
