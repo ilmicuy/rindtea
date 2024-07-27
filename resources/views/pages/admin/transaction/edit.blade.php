@@ -198,7 +198,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <a class="btn btn-secondary" href="{{ route('transaction') }}">
+                            <a class="btn btn-secondary" href="{{ route('transaction.index') }}">
                                 {{ __('Cancel') }}
                             </a>
                             <button type="submit" class="btn btn-primary"> Save</button>
