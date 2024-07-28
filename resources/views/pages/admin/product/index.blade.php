@@ -8,7 +8,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        @hasanyrole('owner|produksi')
+                        @hasanyrole('produksi')
                         <a href="{{ route('product.create') }}" class="mb-3 btn btn-primary">
                             Tambah Baru
                         </a>
