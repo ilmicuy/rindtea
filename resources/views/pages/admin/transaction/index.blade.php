@@ -1,4 +1,3 @@
-
 @extends('layouts.app-old')
 @section('content')
     <div class="main-content">
@@ -7,6 +6,15 @@
         </div>
         <div class="content-wrapper">
             <div class="col-md-12">
+                <!-- Total Transaction Card -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Transaction</h5>
+                        <p class="card-text">Rp.{{ number_format($totalTransaction) }}</p>
+                    </div>
+                </div>
+
+                <!-- Transaction Table -->
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
@@ -17,15 +25,16 @@
                                         <th>Tanggal Checkout</th>
                                         <th>Total Price</th>
                                         <th>Status Transaction</th>
+                                        @hasanyrole('marketing')
                                         <th>Aksi</th>
+                                        @endhasanyrole
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse  ($query as $key => $transaction)
+                                    @forelse ($query as $key => $transaction)
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($transaction->update_at)->format('d M Y H:i:s') }}
-                                            </td>
+                                            <td>{{ \Carbon\Carbon::parse($transaction->updated_at)->format('d M Y H:i:s') }}</td>
                                             <td>Rp.{{ number_format($transaction->total_price) }}</td>
                                             <td>
                                                 @php
@@ -48,20 +57,20 @@
                                                     }
                                                 @endphp
 
-                                                <span
-                                                    class="px-2 inline-flex leading-5 text-base font-semibold rounded-full {{ $badgeColor }} text-white">
+                                                <span class="px-2 inline-flex leading-5 text-base font-semibold rounded-full {{ $badgeColor }} text-white">
                                                     {{ $status }}
                                                 </span>
                                             </td>
 
+                                            @hasanyrole('marketing')
                                             <td>
                                                 <div class="btn-group">
-                                                    <a href="{{ route('transaction.edit', $transaction->id) }}"
-                                                        class="btn btn-primary">
+                                                    <a href="{{ route('transaction.edit', $transaction->id) }}" class="btn btn-primary">
                                                         Edit
                                                     </a>
                                                 </div>
                                             </td>
+                                            @endhasanyrole
                                         </tr>
                                     @empty
                                         <tr>

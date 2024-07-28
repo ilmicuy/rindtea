@@ -1,6 +1,7 @@
 @extends('layouts.app-old')
 @section('content')
 
+@hasanyrole('produksi')
 <!-- Modal Buat Request Product -->
 <div class="modal fade" id="buatIngredientModal" tabindex="-1" aria-labelledby="buatIngredientModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -38,6 +39,7 @@
         </div>
     </div>
 </div>
+@endhasanyrole
 
     <div class="main-content">
         <div class="title">
@@ -47,9 +49,12 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
+
+                        @hasanyrole('produksi')
                         <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#buatIngredientModal">
                             Tambah Bahan Baku Baru
                         </button>
+                        @endhasanyrole
 
                         <div class="table-responsive">
                             <table id="example2" class="table table-hover">

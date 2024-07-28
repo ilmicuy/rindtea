@@ -21,8 +21,11 @@ class TransactionController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
+        $totalTransaction = Transaction::sum('total_price');
+
         return view('pages.admin.transaction.index', [
-            'query' => $query
+            'query' => $query,
+            'totalTransaction' => $totalTransaction,
         ]);
     }
 

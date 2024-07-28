@@ -1,6 +1,7 @@
 @extends('layouts.app-old')
 @section('content')
 
+    @hasanyrole('marketing')
     <!-- Modal Buat Request Product -->
     <div class="modal fade" id="buatRequestProductModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -45,6 +46,7 @@
             </div>
         </div>
     </div>
+    @endhasanyrole
 
 
     <div class="main-content">
@@ -55,9 +57,11 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
+                        @hasanyrole('marketing')
                         <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#buatRequestProductModal">
                             Buat Request Product
                         </button>
+                        @endhasanyrole
 
                         {{-- <a href="{{ route('ingredient.create') }}" class="mb-3 btn btn-primary">
                             Buat Request Product
@@ -72,7 +76,9 @@
                                         <th>Quantity Permintaan</th>
                                         <th>Notes</th>
                                         <th>Status</th>
+                                        @hasanyrole('produksi')
                                         <th>Aksi</th>
+                                        @endhasanyrole
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -84,6 +90,8 @@
                                             <td>{{ $req->qty_requested }} pax</td>
                                             <td>{{ $req->notes }}</td>
                                             <td>{{ ucwords($req->status) }}</td>
+
+                                            @hasanyrole('produksi')
                                             <td width="100px">
                                                 @if ($req->status == 'pending')
                                                     <div class="d-flex justify-content-between">
@@ -107,6 +115,7 @@
                                                     </div>
                                                 @endif
                                             </td>
+                                            @endhasanyrole
                                         </tr>
                                     @empty
                                         <tr>

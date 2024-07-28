@@ -2,6 +2,7 @@
 @section('content')
 
 
+@hasanyrole('produksi')
 <!-- Modal Buat Request Product -->
 <div class="modal fade" id="buatRequestIngredientModal" tabindex="-1" aria-labelledby="buatRequestIngredientModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -41,7 +42,7 @@
         </div>
     </div>
 </div>
-
+@endhasanyrole
 
     <div class="main-content">
         <div class="title">
@@ -51,9 +52,11 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#buatRequestIngredientModal">
-                            Buat Request Bahan Baku
-                        </button>
+                        @hasanyrole('produksi')
+                            <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#buatRequestIngredientModal">
+                                Buat Request Bahan Baku
+                            </button>
+                        @endhasanyrole
                         <div class="table-responsive">
                             <table id="example2" class="table table-hover">
                                 <thead>
@@ -64,7 +67,9 @@
                                         <th>Quantity Permintaan</th>
                                         <th>Notes</th>
                                         <th>Status</th>
+                                        @hasanyrole('keuangan')
                                         <th>Aksi</th>
+                                        @endhasanyrole
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -76,6 +81,7 @@
                                             <td>{{ $req->qty_request }} {{ $req->ingredient->satuan }}</td>
                                             <td>{{ $req->notes }}</td>
                                             <td>{{ ucwords($req->status) }}</td>
+                                            @hasanyrole('keuangan')
                                             <td width="100px">
                                                 @if ($req->approved_at == null)
                                                     <div class="d-flex justify-content-between">
@@ -99,6 +105,7 @@
                                                     </div>
                                                 @endif
                                             </td>
+                                            @endhasanyrole
                                         </tr>
                                     @empty
                                         <tr>

@@ -8,9 +8,11 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
+                        @hasanyrole('owner|produksi')
                         <a href="{{ route('product.create') }}" class="mb-3 btn btn-primary">
                             Tambah Baru
                         </a>
+                        @endhasanyrole
                         <div class="table-responsive">
                             <table id="example2" class="table table-hover">
                                 <thead>
@@ -45,6 +47,7 @@
                                                         class="btn btn-primary btn-sm">
                                                         <i class="ti-pencil"></i>
                                                     </a>
+                                                    @hasanyrole('produksi')
                                                     <form id="deleteForm{{ $product->id }}"
                                                         action="{{ route('product.destroy', $product->id) }}"
                                                         method="POST">
@@ -55,6 +58,7 @@
                                                             <i class="ti-trash"></i>
                                                         </button>
                                                     </form>
+                                                    @endhasallroles
 
                                                 </div>
                                             </td>

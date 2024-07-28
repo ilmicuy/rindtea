@@ -122,25 +122,31 @@
                                                                 <input type="number" class="form-control" name="qty_needed" value="{{ $bahanBaku->pivot->qty_needed }}" required>
                                                             </div>
                                                         </div>
+                                                        @hasanyrole('produksi')
                                                         <div class="col-md-2">
                                                             <div class="form-group mb-3">
                                                                 <button type="button" class="btn btn-danger" data-repeater-delete>Delete</button>
                                                             </div>
                                                         </div>
+                                                        @endhasanyrole
                                                     </div>
                                                 </div>
                                                 @endforeach
                                             @endif
                                         </div>
-                                        <button type="button" class="btn btn-primary" data-repeater-create>Add Bahan Baku</button>
+                                        @hasanyrole('produksi')
+                                            <button type="button" class="btn btn-primary" data-repeater-create>Add Bahan Baku</button>
+                                        @endhasanyrole
                                     </div>
                                 </div>
-                                <div class="col-md-12 mt-5">
-                                    <a class="btn btn-secondary" href="{{ route('product.index') }}">
-                                        {{ __('Cancel') }}
-                                    </a>
-                                    <button type="submit" class="btn btn-primary"> Save</button>
-                                </div>
+                                @hasanyrole('produksi')
+                                    <div class="col-md-12 mt-5">
+                                        <a class="btn btn-secondary" href="{{ route('product.index') }}">
+                                            {{ __('Cancel') }}
+                                        </a>
+                                        <button type="submit" class="btn btn-primary"> Save</button>
+                                    </div>
+                                @endhasanyrole
                             </div>
                         </form>
                     </div>

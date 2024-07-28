@@ -16,7 +16,7 @@
                 </a>
             </li>
 
-            @hasanyrole('owner|produksi')
+            @hasanyrole('owner|produksi|marketing')
             <li class="menu-category">
                 <span>Product</span>
             </li>
@@ -67,7 +67,7 @@
             </li>
             @endhasanyrole
 
-            @hasanyrole('owner|keuangan')
+            @hasanyrole('owner|keuangan|marketing')
             <li class="menu-category">
                 <span>Transaction</span>
             </li>
