@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use App\Models\TransactionDetail;
+use App\Models\TransactionShipment;
+use App\Models\TransactionShipmentHistory;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -86,8 +89,10 @@ class TransactionController extends Controller
             ->where('transactions_id', $transactions_id)
             ->get();
 
+        $transaction = Transaction::find($transactions_id);
 
         return view('pages.admin.transaction.edit', [
+            'transaction' => $transaction,
             'items' => $items,
             'itemDetails' => $itemDetails
         ]);
@@ -99,13 +104,76 @@ class TransactionController extends Controller
     public function update(Request $request, string $id)
     {
         $data = $request->all();
-
         $item = Transaction::findOrFail($id);
-
         $item->update($data);
 
-        return redirect()->route('transaction.index');
+        if (!empty($data['no_resi'])) {
+            if ($item->transactionShipment()->exists()) {
+                foreach ($item->transactionShipment as $shipmentExisting) {
+                    if($shipmentExisting->awb == $data['no_resi']){
+                        $shipmentExisting->is_crawlable = true;
+                        $shipmentExisting->created_at = Carbon::now();
+                        $shipmentExisting->updated_at = Carbon::now();
+                    }else{
+                        $shipmentExisting->is_crawlable = false;
+                    }
+                    $shipmentExisting->save();
+                }
+            }
+
+            $shipment = TransactionShipment::where('awb', $data['no_resi'])->first();
+
+            if (!$shipment) {
+                $response = Http::get(env('BINDERBYTE_API_URL'), [
+                    'api_key' => env('BINDERBYTE_API_KEY'),
+                    'courier' => 'jne',
+                    'awb' => $data['no_resi'],
+                ]);
+
+                $resiData = $response->json();
+
+                if ($response->successful() && isset($resiData['data'])) {
+                    $summary = $resiData['data']['summary'];
+                    $detail = $resiData['data']['detail'];
+                    $history = $resiData['data']['history'];
+
+                    $shipment = TransactionShipment::updateOrCreate(
+                        ['awb' => $summary['awb']],
+                        [
+                            'transaction_id' => $id,
+                            'courier' => $summary['courier'],
+                            'service' => $summary['service'],
+                            'status' => $summary['status'],
+                            'date' => $summary['date'],
+                            'description' => $summary['desc'],
+                            'amount' => $summary['amount'],
+                            'weight' => $summary['weight'],
+                            'origin' => $detail['origin'],
+                            'destination' => $detail['destination'],
+                            'shipper' => $detail['shipper'],
+                            'receiver' => $detail['receiver']
+                        ]
+                    );
+
+                    foreach ($history as $event) {
+                        TransactionShipmentHistory::updateOrCreate(
+                            ['transaction_shipment_id' => $shipment->id, 'history_date' => $event['date']],
+                            ['description' => $event['desc'], 'location' => $event['location']]
+                        );
+                    }
+                } else {
+                    TransactionShipment::create([
+                        'transaction_id' => $id,
+                        'awb' => $data['no_resi'],
+                        'status' => 'PENDING_CRAWL',
+                    ]);
+                }
+            }
+        }
+
+        return redirect()->route('transaction.edit', $id);
     }
+
 
     /**
      * Remove the specified resource from storage.

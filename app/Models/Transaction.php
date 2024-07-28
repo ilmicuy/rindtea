@@ -37,4 +37,9 @@ class Transaction extends Model
     {
         return $this->belongsTo(Address::class, 'users_id', 'users_id');
     }
+
+    public function transactionShipment()
+    {
+        return $this->hasMany(TransactionShipment::class);
+    }
 }

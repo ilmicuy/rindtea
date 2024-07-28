@@ -157,7 +157,7 @@
                                         </option>
                                     </select>
                                     <br>
-                                    <input type="text" name="no_resi" class="form-control" placeholder="Masukkan No. Resi Pengiriman">
+                                    <input type="text" name="no_resi" class="form-control" style="{{ $transaction->transactionShipment()->latest()->first() ? '' : 'display: none;' }}" placeholder="Masukkan No. Resi Pengiriman" value="{{ $transaction->transactionShipment()->latest()->first()->awb ?? '' }}">
                                 </div>
                             </div>
                         </div>
@@ -167,36 +167,106 @@
 
                     <div class="card">
                         <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Product</th>
-                                            <th>Tanggal Checkout</th>
-                                            <th>Price / Item</th>
-                                            <th>Quantity</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($itemDetails as $key => $itemDetail)
-                                            <tr>
-                                                <td>{{ $key + 1 }}</td>
-                                                <th scope="row">
-                                                    <div class="d-flex align-items-center">
-                                                        <img src="{{ Storage::url($itemDetail->product->photos) }}"
-                                                            class="img-fluid me-5" style="width: 25px; height: 25px;"
-                                                            alt="">
-                                                    </div>
-                                                </th>
-                                                <td>{{ \Carbon\Carbon::parse($itemDetail->created_at)->format('d M Y H:i:s') }}
-                                                </td>
-                                                <td>Rp.{{ number_format($itemDetail->product->price) }}</td>
-                                                <td>{{ $itemDetail->qty }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link active" id="transaction-details-tab" data-toggle="tab" href="#transaction-details" role="tab" aria-controls="transaction-details" aria-selected="true">Transaction Details</a>
+                                </li>
+                                @if ($transaction->transactionShipment()->latest()->first())
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="shipping-details-tab" data-toggle="tab" href="#shipping-details" role="tab" aria-controls="shipping-details" aria-selected="false">Shipping Details</a>
+                                    </li>
+                                @endif
+                            </ul>
+                            <div class="tab-content" id="myTabContent">
+                                <!-- Transaction Details Tab -->
+                                <div class="tab-pane fade show active" id="transaction-details" role="tabpanel" aria-labelledby="transaction-details-tab">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Product</th>
+                                                    <th>Tanggal Checkout</th>
+                                                    <th>Price / Item</th>
+                                                    <th>Quantity</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($itemDetails as $key => $itemDetail)
+                                                    <tr>
+                                                        <td>{{ $key + 1 }}</td>
+                                                        <th scope="row">
+                                                            <div class="d-flex align-items-center">
+                                                                <img src="{{ Storage::url($itemDetail->product->photos) }}"
+                                                                    class="img-fluid me-5" style="width: 25px; height: 25px;" alt="">
+                                                            </div>
+                                                        </th>
+                                                        <td>{{ \Carbon\Carbon::parse($itemDetail->created_at)->format('d M Y H:i:s') }}</td>
+                                                        <td>Rp.{{ number_format($itemDetail->product->price) }}</td>
+                                                        <td>{{ $itemDetail->qty }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                @if ($transaction->transactionShipment()->latest()->first())
+                                <!-- Shipping Details Tab -->
+                                <div class="tab-pane fade" id="shipping-details" role="tabpanel" aria-labelledby="shipping-details-tab">
+                                    <div class="mt-3">
+                                        @if ($transaction->transactionShipment()->latest()->first())
+                                            <p><strong>AWB:</strong> {{ $transaction->transactionShipment()->latest()->first()->awb }}</p>
+                                            <p><strong>Courier:</strong> {{ $transaction->transactionShipment()->latest()->first()->courier }}</p>
+                                            <p><strong>Service:</strong> {{ $transaction->transactionShipment()->latest()->first()->service }}</p>
+                                            <p><strong>Status:</strong> {{ $transaction->transactionShipment()->latest()->first()->status }}</p>
+                                            <p><strong>Date:</strong> {{ $transaction->transactionShipment()->latest()->first()->date }}</p>
+                                            <p><strong>Description:</strong> {{ $transaction->transactionShipment()->latest()->first()->description }}</p>
+                                            <p><strong>Amount:</strong> {{ $transaction->transactionShipment()->latest()->first()->amount }}</p>
+                                            <p><strong>Weight:</strong> {{ $transaction->transactionShipment()->latest()->first()->weight }}</p>
+                                            <p><strong>Origin:</strong> {{ $transaction->transactionShipment()->latest()->first()->origin }}</p>
+                                            <p><strong>Destination:</strong> {{ $transaction->transactionShipment()->latest()->first()->destination }}</p>
+                                            <p><strong>Shipper:</strong> {{ $transaction->transactionShipment()->latest()->first()->shipper }}</p>
+                                            <p><strong>Receiver:</strong> {{ $transaction->transactionShipment()->latest()->first()->receiver }}</p>
+                                            <p><strong>Last Crawl At:</strong> {{ $transaction->transactionShipment()->latest()->first()->last_crawl_at }}</p>
+                                        @else
+                                            <p>No shipping details available.</p>
+                                        @endif
+                                    </div>
+
+                                    <div class="table-responsive mt-3">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Description</th>
+                                                    <th>Location</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if ($transaction->transactionShipment()->latest()->first())
+                                                    @forelse ($transaction->transactionShipment()->latest()->first()->transactionShipmentHistory as $history)
+                                                        <tr>
+                                                            <td>{{ $history->history_date }}</td>
+                                                            <td>{{ $history->description }}</td>
+                                                            <td>{{ $history->location }}</td>
+                                                        </tr>
+                                                    @empty
+                                                        <tr>
+                                                            <td colspan="3" class="text-center">Tidak ada history pengiriman</td>
+                                                        </tr>
+                                                    @endforelse
+                                                @else
+                                                    <tr>
+                                                        <td colspan="3">No shipping history available.</td>
+                                                    </tr>
+                                                @endif
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                @endif
+
                             </div>
                             <a class="btn btn-secondary" href="{{ route('transaction.index') }}">
                                 {{ __('Cancel') }}
@@ -204,6 +274,7 @@
                             <button type="submit" class="btn btn-primary"> Save</button>
                         </div>
                     </div>
+
                 </div>
             </div>
         </form>
