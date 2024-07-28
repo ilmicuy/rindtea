@@ -16,7 +16,7 @@ return new class extends Migration
             $table->uuid('transaction_id')->nullable();
             $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('cascade');
 
-            $table->string('awb')->unique();
+            $table->string('awb', 150)->unique();
             $table->string('courier')->nullable();
             $table->string('service')->nullable();
             $table->string('status')->nullable();
