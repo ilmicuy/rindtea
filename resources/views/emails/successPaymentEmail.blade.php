@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Terima Kasih atas Pesanan Anda di Rind Tea!</title>
+    <title>Pembayaran Anda Berhasil di Rind Tea!</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -56,7 +56,7 @@
             font-size: 24px;
             font-weight: bold;
             color: #ffffff;
-            background-color: #37ff00;
+            background-color: #ff0000;
             text-align: center;
             padding: 10px;
             border-radius: 5px;
@@ -67,20 +67,19 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Terima Kasih atas Pesanan Anda di Rind Tea!</h1>
+            <h1>Pembayaran Anda Berhasil di Rind Tea!</h1>
         </div>
         <div class="content">
-            <div class="label">Belum Lunas</div>
+            <div class="label">Lunas</div>
             <h2>Hai, {{ $user->name }}!</h2>
-            <p>Terimakasih telah melakukan pemesanan dengan nomor #{{ $transaction->id }} di website Rind Tea. Berikut adalah rincian pesanan Anda:</p>
+            <p>Terima kasih telah melakukan pembayaran pemesanan nomor #{{ $transaction->id }}. Berikut adalah rincian pesanan Anda:</p>
             <ul>
                 @foreach ($items as $item)
                     <li>{{ $item['name'] }} - {{ $item['quantity'] }} x Rp {{ number_format($item['price'], 0, ',', '.') }}</li>
                 @endforeach
             </ul>
             <p>Total Harga: Rp {{ number_format($transaction->total_price, 0, ',', '.') }}</p>
-            <p>Silahkan untuk melakukan pelunasan pada tombol dibawah ini:</p>
-            <a href="https://rindtea.biz.id/order-list-detail/{{ $transaction->id }}" target="_blank" class="button">Klik Untuk Bayar</a>
+            <p>Pesanan Anda sedang diproses dan akan segera kami kirim.</p>
             <p>Hormat Kami,<br>Tim Rind Tea</p>
         </div>
         <div class="footer">

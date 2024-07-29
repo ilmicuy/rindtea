@@ -244,12 +244,11 @@ class CheckoutController extends Controller
 
         $transaction = Transaction::findOrFail($order_id);
 
-        // $payment_method =
         $payment_status = 'PENDING';
 
         if ($status == 'capture') {
             if ($type == 'credit_card') {
-                if ($fraud == 'challange') {
+                if ($fraud == 'challenge') {
                     $payment_status = 'PENDING';
                 } else {
                     $payment_status = 'SUCCESS';
@@ -267,9 +266,21 @@ class CheckoutController extends Controller
             $payment_status = 'CANCELED';
         }
 
-        if($payment_status == 'SUCCESS'){
+        if ($payment_status == 'SUCCESS') {
             $transaction->paid_at = Carbon::now();
             $transaction->paid_payload = json_encode($notification);
+
+            // Send success payment email
+            $user = $transaction->user;
+            $items = TransactionDetail::where('transactions_id', $transaction->id)->get()->map(function ($item) {
+                return [
+                    'name' => $item->product->name,
+                    'quantity' => $item->qty,
+                    'price' => $item->product->price,
+                ];
+            });
+
+            Mail::to($user->email)->send(new \App\Mail\SuccessPaymentEmail($user, $transaction, $items));
         }
 
         $transaction->save();
