@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Inbox;
 use App\Models\Ingredient;
 use App\Models\IngredientRequest;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class RequestIngredientController extends Controller
 {
@@ -66,6 +70,22 @@ class RequestIngredientController extends Controller
             $getRequestIngredient->approved_at = Carbon::now();
         } else if ($request->action == 'cancel') {
             $getRequestIngredient->status = 'cancelled';
+        }
+
+        // TODO: Kirim email notifikasi
+        $getProduksiUser = User::role('produksi')->get();
+        $statusName = ($request->action == 'confirm' ? 'Disetujui' : 'Tidak Disetujui' );
+
+        foreach ($getProduksiUser as $user) {
+            Inbox::create([
+                'sender_id' => Auth::user()->id,
+                'receiver_id' => $user->id,
+                'message' => 'Request Bahan Baku ' . $getRequestIngredient->ingredient->nama_bahan_baku . ' sejumlah ' . $getRequestIngredient->qty_request . ' ' . $statusName,
+                'is_read' => false,
+            ]);
+
+            // Send email
+            Mail::to($user->email)->send(new \App\Mail\StatusEditNotificationEmail('request_bahan_baku', $getRequestIngredient, $statusName, $user));
         }
 
         $getRequestIngredient->save();

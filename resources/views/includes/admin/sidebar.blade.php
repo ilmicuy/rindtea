@@ -38,7 +38,7 @@
             </li>
             @endhasrole
 
-            @hasanyrole('owner|marketing')
+            @hasanyrole('owner|marketing|produksi')
             <li class="{{ request()->routeIs('requestProduct.*') ? 'active' : '' }}">
                 <a href="{{ route('requestProduct.index') }}" class="link">
                     <i class="fas fa-clipboard-list"></i>

@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Inbox;
 use App\Models\Product;
 use App\Models\ProductRequest;
 use App\Models\ProductTransaction;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class RequestProductController extends Controller
 {
@@ -113,6 +116,22 @@ class RequestProductController extends Controller
 
         }else if($request->action == 'cancel'){
             $getRequestProduct->status = 'cancelled';
+        }
+
+        // TODO: Kirim email notifikasi
+        $getMarketingUser = User::role('marketing')->get();
+        $statusName = ($request->action == 'confirm' ? 'Disetujui' : 'Tidak Disetujui');
+
+        foreach ($getMarketingUser as $user) {
+            Inbox::create([
+                'sender_id' => Auth::user()->id,
+                'receiver_id' => $user->id,
+                'message' => 'Request Produk ' . $getRequestProduct->product->name . ' sejumlah ' . $qty_requested . ' ' . $statusName,
+                'is_read' => false,
+            ]);
+
+            // Send email
+            Mail::to($user->email)->send(new \App\Mail\StatusEditNotificationEmail('request_product', $getRequestProduct, $statusName, $user));
         }
 
         $getRequestProduct->save();
