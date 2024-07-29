@@ -125,71 +125,74 @@ class TransactionController extends Controller
         }
 
         if (!empty($data['no_resi'])) {
-            if ($item->transactionShipment()->exists()) {
-                foreach ($item->transactionShipment as $shipmentExisting) {
-                    if($shipmentExisting->awb == $data['no_resi']){
-                        $shipmentExisting->is_crawlable = true;
-                        $shipmentExisting->created_at = Carbon::now();
-                        $shipmentExisting->updated_at = Carbon::now();
-                    }else{
-                        $shipmentExisting->is_crawlable = false;
-                    }
-                    $shipmentExisting->save();
-                }
-            }
+            // Always create or update a shipment record for this transaction
+            $response = Http::get(env('BINDERBYTE_API_URL'), [
+                'api_key' => env('BINDERBYTE_API_KEY'),
+                'courier' => 'jne',
+                'awb' => $data['no_resi'],
+            ]);
 
-            $shipment = TransactionShipment::where('awb', $data['no_resi'])->first();
+            $resiData = $response->json();
 
-            if (!$shipment) {
-                $response = Http::get(env('BINDERBYTE_API_URL'), [
-                    'api_key' => env('BINDERBYTE_API_KEY'),
-                    'courier' => 'jne',
-                    'awb' => $data['no_resi'],
-                ]);
+            if ($response->successful() && isset($resiData['data'])) {
+                $summary = $resiData['data']['summary'];
+                $detail = $resiData['data']['detail'];
+                $history = $resiData['data']['history'];
 
-                $resiData = $response->json();
+                $shipment = TransactionShipment::updateOrCreate(
+                    [
+                        'transaction_id' => $id,
+                        'awb' => $summary['awb']
+                    ],
+                    [
+                        'courier' => $summary['courier'],
+                        'service' => $summary['service'],
+                        'status' => $summary['status'],
+                        'date' => $summary['date'],
+                        'description' => $summary['desc'],
+                        'amount' => $summary['amount'],
+                        'weight' => $summary['weight'],
+                        'origin' => $detail['origin'],
+                        'destination' => $detail['destination'],
+                        'shipper' => $detail['shipper'],
+                        'receiver' => $detail['receiver'],
+                        'is_crawlable' => true,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]
+                );
 
-                if ($response->successful() && isset($resiData['data'])) {
-                    $summary = $resiData['data']['summary'];
-                    $detail = $resiData['data']['detail'];
-                    $history = $resiData['data']['history'];
-
-                    $shipment = TransactionShipment::updateOrCreate(
-                        ['awb' => $summary['awb']],
+                foreach ($history as $event) {
+                    TransactionShipmentHistory::updateOrCreate(
                         [
-                            'transaction_id' => $id,
-                            'courier' => $summary['courier'],
-                            'service' => $summary['service'],
-                            'status' => $summary['status'],
-                            'date' => $summary['date'],
-                            'description' => $summary['desc'],
-                            'amount' => $summary['amount'],
-                            'weight' => $summary['weight'],
-                            'origin' => $detail['origin'],
-                            'destination' => $detail['destination'],
-                            'shipper' => $detail['shipper'],
-                            'receiver' => $detail['receiver']
+                            'transaction_shipment_id' => $shipment->id,
+                            'history_date' => $event['date']
+                        ],
+                        [
+                            'description' => $event['desc'],
+                            'location' => $event['location']
                         ]
                     );
-
-                    foreach ($history as $event) {
-                        TransactionShipmentHistory::updateOrCreate(
-                            ['transaction_shipment_id' => $shipment->id, 'history_date' => $event['date']],
-                            ['description' => $event['desc'], 'location' => $event['location']]
-                        );
-                    }
-                } else {
-                    TransactionShipment::create([
-                        'transaction_id' => $id,
-                        'awb' => $data['no_resi'],
-                        'status' => 'PENDING_CRAWL',
-                    ]);
                 }
+            } else {
+                TransactionShipment::updateOrCreate(
+                    [
+                        'transaction_id' => $id,
+                        'awb' => $data['no_resi']
+                    ],
+                    [
+                        'status' => 'PENDING_CRAWL',
+                        'is_crawlable' => false,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]
+                );
             }
         }
 
         return redirect()->route('transaction.edit', $id);
     }
+
 
 
     /**

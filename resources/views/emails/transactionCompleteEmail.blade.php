@@ -42,7 +42,7 @@
         </div>
         <div class="content">
             <h2>Hai, {{ $user->name }}!</h2>
-            <p>Produk anda telah selesai dan tiba pada tujuan. Terima kasih telah membeli produk Rind Tea.</p>
+            <p>Pesanan anda dengan nomor #{{ $transaction->id }} anda telah selesai dan tiba pada tujuan. Terima kasih telah membeli produk Rind Tea.</p>
             <p>Hormat Kami,<br>Tim Rind Tea</p>
         </div>
         <div class="footer">

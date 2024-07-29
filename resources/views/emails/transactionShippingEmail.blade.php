@@ -56,7 +56,7 @@
         </div>
         <div class="content">
             <h2>Hai, {{ $user->name }}!</h2>
-            <p>Produk anda telah dikirim dengan Nomor Resi {{ $trackingNumber }}. Silakan cek status pengiriman melalui situs kami.</p>
+            <p>Pesanan anda dengan nomor #{{ $transaction->id }} telah dikirim dengan Nomor Resi {{ $trackingNumber }}. Silakan cek status pengiriman melalui situs kami.</p>
             <p>Hormat Kami,<br>Tim Rind Tea</p>
         </div>
         <div class="footer">
