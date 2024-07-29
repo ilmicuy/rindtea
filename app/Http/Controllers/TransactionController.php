@@ -9,6 +9,7 @@ use App\Models\TransactionShipmentHistory;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 
 class TransactionController extends Controller
 {
@@ -108,7 +109,20 @@ class TransactionController extends Controller
     {
         $data = $request->all();
         $item = Transaction::findOrFail($id);
+        $oldStatus = $item->transaction_status;
         $item->update($data);
+        $newStatus = $item->transaction_status;
+
+        if ($newStatus !== $oldStatus) {
+            $user = $item->user;
+            if ($newStatus === 'shipping') {
+                Mail::to($user->email)->send(new \App\Mail\TransactionShippingEmail($user, $item, $data['no_resi']));
+            } elseif ($newStatus === 'completed') {
+                Mail::to($user->email)->send(new \App\Mail\TransactionCompleteEmail($user, $item));
+            } elseif ($newStatus === 'failed') {
+                Mail::to($user->email)->send(new \App\Mail\TransactionFailedEmail($user, $item));
+            }
+        }
 
         if (!empty($data['no_resi'])) {
             if ($item->transactionShipment()->exists()) {
