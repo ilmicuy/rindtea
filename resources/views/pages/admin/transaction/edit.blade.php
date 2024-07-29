@@ -124,7 +124,7 @@
                                 <div class="p-4">
                                     <h4 class="pb-2 font-semibold">Nama Pembeli </h4>
                                     <div class="text-gray-900 dark:text-gray-100">
-                                        {{ $items->transaction->user->name }}
+                                        {{ $items->transaction->user->name }} ({{ $items->transaction->user->email }})
                                     </div>
                                 </div>
                             </div>
@@ -171,11 +171,11 @@
                                 <li class="nav-item" role="presentation">
                                     <a class="nav-link active" id="transaction-details-tab" data-toggle="tab" href="#transaction-details" role="tab" aria-controls="transaction-details" aria-selected="true">Transaction Details</a>
                                 </li>
-                                @if ($transaction->transactionShipment()->latest()->first())
+                                {{-- @if ($transaction->transactionShipment()->latest()->first()) --}}
                                     <li class="nav-item" role="presentation">
                                         <a class="nav-link" id="shipping-details-tab" data-toggle="tab" href="#shipping-details" role="tab" aria-controls="shipping-details" aria-selected="false">Shipping Details</a>
                                     </li>
-                                @endif
+                                {{-- @endif --}}
                             </ul>
                             <div class="tab-content" id="myTabContent">
                                 <!-- Transaction Details Tab -->
@@ -211,10 +211,25 @@
                                     </div>
                                 </div>
 
-                                @if ($transaction->transactionShipment()->latest()->first())
+                                {{-- @if ($transaction->transactionShipment()->latest()->first()) --}}
                                 <!-- Shipping Details Tab -->
                                 <div class="tab-pane fade" id="shipping-details" role="tabpanel" aria-labelledby="shipping-details-tab">
                                     <div class="mt-3">
+                                        <div class="form-group">
+                                          <label>Jenis Pengiriman Yang Dipilih</label>
+                                          <input type="text" class="form-control" value="{{ $transaction->shipment_courier }}" disabled>
+                                        </div>
+                                        <div class="form-group">
+                                          <label>Ongkos Kirim</label>
+                                          <input type="text" class="form-control" value="Rp.{{ number_format($transaction->shipment_cost, 0, 0, '.') }}" disabled>
+                                        </div>
+                                        @if ($transaction->addressChoosen)
+                                        <div class="form-group">
+                                          <label>Alamat Kirim</label>
+                                          <textarea rows="3" class="form-control" disabled>{{ $transaction->addressChoosen->address }}</textarea>
+                                        </div>
+                                        @endif
+                                        <hr>
                                         @if ($transaction->transactionShipment()->latest()->first())
                                             <p><strong>AWB:</strong> {{ $transaction->transactionShipment()->latest()->first()->awb }}</p>
                                             <p><strong>Courier:</strong> {{ $transaction->transactionShipment()->latest()->first()->courier }}</p>
@@ -230,7 +245,7 @@
                                             <p><strong>Receiver:</strong> {{ $transaction->transactionShipment()->latest()->first()->receiver }}</p>
                                             <p><strong>Last Crawl At:</strong> {{ $transaction->transactionShipment()->latest()->first()->last_crawl_at }}</p>
                                         @else
-                                            <p>No shipping details available.</p>
+                                            <p>No Shipping details available. (Nomor Resi / Pengiriman belum di-input)</p>
                                         @endif
                                     </div>
 
@@ -265,7 +280,7 @@
                                         </table>
                                     </div>
                                 </div>
-                                @endif
+                                {{-- @endif --}}
 
                             </div>
                             <a class="btn btn-secondary" href="{{ route('transaction.index') }}">

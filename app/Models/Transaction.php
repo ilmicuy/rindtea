@@ -19,6 +19,12 @@ class Transaction extends Model
         'transaction_status',
         'total_price',
         'snap_token',
+        'paid_at',
+        'paid_payload',
+        'payment_method',
+        'shipment_courier',
+        'shipment_cost',
+        'shipment_address_id',
     ];
 
     protected $hidden = [];
@@ -31,6 +37,11 @@ class Transaction extends Model
     public function transactionDetail()
     {
         return $this->hasMany(TransactionDetail::class, 'id', 'transaction_detail_id');
+    }
+
+    public function addressChoosen()
+    {
+        return $this->belongsTo(Address::class, 'shipment_address_id', 'id');
     }
 
     public function address()

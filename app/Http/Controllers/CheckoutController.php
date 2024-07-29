@@ -130,7 +130,9 @@ class CheckoutController extends Controller
 
         $items = [];
         $itemTotalPrice = 0;
-        $shippingFee = 0;
+
+        $shippingCourier = null;
+        $shippingCost = 0;
 
         foreach ($carts as $cart) {
             $items[] = [
@@ -143,11 +145,14 @@ class CheckoutController extends Controller
             $itemTotalPrice += $cart->qty * $cart->product->price;
         }
 
+        $shippingCourier = strtoupper(str_replace('_', ' ', $request->courier)) . '_' . $request->delivery_package;
+        $shippingCost = $request->total_price - $itemTotalPrice;
+
         $items[] = [
             'id'       => 'ongkir_' . $request->courier,
-            'price'    => $request->total_price - $itemTotalPrice,
+            'price'    => $shippingCost,
             'quantity' => 1,
-            'name'     => 'Ongkos Kirim (' . ucwords(str_replace('_', ' ', $request->courier)) . ')',
+            'name'     => 'Ongkos Kirim (' . $shippingCourier . ')',
         ];
 
         $transaction = Transaction::create([
@@ -155,6 +160,9 @@ class CheckoutController extends Controller
             'users_id' => Auth::user()->id,
             'total_price' => (int) $request->total_price,
             'transaction_status' => 'pending',
+            'shipment_courier' => $shippingCourier,
+            'shipment_cost' => $shippingCost,
+            'shipment_address_id' => $request->address_id,
         ]);
 
         foreach ($carts as $cart) {
