@@ -22,6 +22,7 @@ use App\Http\Requests\CheckoutRequest;
 use App\Models\Product;
 use App\Models\ProductTransaction;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class CheckoutController extends Controller
 {
@@ -189,6 +190,9 @@ class CheckoutController extends Controller
 
         // Clear the cart
         Cart::where('users_id', Auth::user()->id)->delete();
+
+        // Send the checkout email
+        Mail::to(Auth::user()->email)->send(new \App\Mail\CheckoutEmail(Auth::user(), $transaction, $items));
 
         // Midtrans configuration
         Config::$serverKey = config('services.midtrans.serverKey');
