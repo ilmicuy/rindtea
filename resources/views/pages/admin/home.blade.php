@@ -1,483 +1,161 @@
 @extends('layouts.app-old')
+
 @push('css')
     <link rel="stylesheet" href="{{ asset('admin') }}/vendor/chart.js/Chart.min.css">
 @endpush
+
 @section('content')
     <div class="main-content">
         <div class="title">
             Dashboard
         </div>
-        <div class="content-wrapper">
-            <div class="row same-height">
-                <div class="col-md-8">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Monthly Sales</h4>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="myChart" height="642" width="1388"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Statistics</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="progress-wrapper">
-                                <h4>Progress 25%</h4>
-                                <div class="progress progress-bar-small">
-                                    <div class="progress-bar progress-bar-small" style="width: 25%" role="progressbar"
-                                        aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
-                                    </div>
+
+        @hasanyrole('owner|keuangan')
+            <div class="content-wrapper">
+                <div class="row same-height">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Total Product</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="text-gray-900 dark:text-gray-100">
+                                    {{ $productCount }}
                                 </div>
                             </div>
-                            <div class="progress-wrapper">
-                                <h4>Progress 45%</h4>
-                                <div class="progress progress-bar-small">
-                                    <div class="progress-bar progress-bar-small bg-pink" style="width: 45%"
-                                        role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
-                                    </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Revenue</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="text-gray-900 dark:text-gray-100">
+                                    Rp.{{ number_format($revenue) }}
                                 </div>
                             </div>
-                            <canvas id="myChart2" height="842" width="1388"></canvas>
-
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="content-wrapper">
-            <div class="row same-height">
-                <div class="col-md-8">
-                    <div class="card">
-                        <div class="header-statistics">
-                            <h5>Monthly Statistics</h5>
-                            <p>Based On Major Browser</p>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table small-font table-striped table-hover table-sm">
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>Google Chrome</td>
-                                            <td>5120</td>
-                                            <td><i class="fa fa-caret-up text-success"></i></td>
-
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>Mozilla Firefox</td>
-                                            <td>4000</td>
-                                            <td><i class="fa fa-caret-up text-success"></i></td>
-
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>Safari</td>
-                                            <td>8800</td>
-                                            <td><i class="fa fa-caret-down text-danger"></i></td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>Opera Mini</td>
-                                            <td>4123</td>
-                                            <td><i class="fa fa-caret-up text-success"></i></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Pending Transactions</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="text-gray-900 dark:text-gray-100">
+                                    {{ $transactionPending }}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Interest</h4>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="myChart3" height="842" width="1388"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="content-wrapper">
-            <div class="row same-height">
-                <div class="col-md-4">
-                    <div class="card">
-                        <!-- <div class="float-label">
-                                    <h6>Sales</h6>
-                                    <h4>$1500</h4>
-                                </div> -->
-                        <div class="card-body">
-                            <div id="apex-chart"></div>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="card">
-                        <!-- <div class="float-label">
-                                    <h6>Profit</h6>
-                                    <h4>$500</h4>
-                                </div> -->
-                        <span></span>
 
-                        <div class="card-body">
-                            <div id="apex-chart-bar"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Activities</h4>
-                        </div>
-                        <div class="card-body">
-                            <ul class="timeline-xs">
-                                <li class="timeline-item success">
-                                    <div class="margin-left-15">
-                                        <div class="text-muted text-small">
-                                            2 minutes ago
-                                        </div>
-                                        <p>
-                                            <a class="text-info" href="">
-                                                Bambang
-                                            </a>
-                                            has completed his account.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="timeline-item">
-                                    <div class="margin-left-15">
-                                        <div class="text-muted text-small">
-                                            12:30
-                                        </div>
-                                        <p>
-                                            Staff Meeting
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="timeline-item danger">
-                                    <div class="margin-left-15">
-                                        <div class="text-muted text-small">
-                                            11:11
-                                        </div>
-                                        <p>
-                                            Completed new layout.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="timeline-item info">
-                                    <div class="margin-left-15">
-                                        <div class="text-muted text-small">
-                                            Thu, 12 Jun
-                                        </div>
-                                        <p>
-                                            Contacted
-                                            <a class="text-info" href="">
-                                                Microsoft
-                                            </a>
-                                            for license upgrades.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="timeline-item">
-                                    <div class="margin-left-15">
-                                        <div class="text-muted text-small">
-                                            Tue, 10 Jun
-                                        </div>
-                                        <p>
-                                            Started development new site
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="timeline-item">
-                                    <div class="margin-left-15">
-                                        <div class="text-muted text-small">
-                                            Sun, 11 Apr
-                                        </div>
-                                        <p>
-                                            Lunch with
-                                            <a class="text-info" href="">
-                                                Mba Inem
-                                            </a>
-                                            .
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="timeline-item warning">
-                                    <div class="margin-left-15">
-                                        <div class="text-muted text-small">
-                                            Wed, 25 Mar
-                                        </div>
-                                        <p>
-                                            server Maintenance.
-                                        </p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Chat</h4>
-                        </div>
-                        <div class="card-body small-padding">
-                            <div class="panel-discussion ps-chat">
-                                <ol class="discussion">
-                                    <li class="messages-date">
-                                        Sunday, Feb 9, 12:58
-                                    </li>
-                                    <li class="self">
-                                        <div class="message">
-                                            <div class="message-name">
-                                                Mas Bambang
-                                            </div>
-                                            <div class="message-text">
-                                                Hi, Mba Inem
-                                            </div>
-                                            <div class="message-avatar">
-                                                <img src="../assets/images/avatar1.png" alt="">
-                                            </div>
-                                        </div>
-                                        <div class="message">
-                                            <div class="message-name">
-                                                Mba Inem
-                                            </div>
-                                            <div class="message-text">
-                                                How are you?
-                                            </div>
-                                            <div class="message-avatar">
-                                                <img src="../assets/images/avatar1.png" alt="">
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="other">
-                                        <div class="message">
-                                            <div class="message-name">
-                                                Mba Inem
-                                            </div>
-                                            <div class="message-text">
-                                                Hi, i am good
-                                            </div>
-                                            <div class="message-avatar">
-                                                <img src="../assets/images/avatar2.png" alt="">
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="self">
-                                        <div class="message">
-                                            <div class="message-name">
-                                                Mas Bambang
-                                            </div>
-                                            <div class="message-text">
-                                                Glad to see you ;)
-                                            </div>
-                                            <div class="message-avatar">
-                                                <img src="../assets/images/avatar1.png" alt="">
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="messages-date">
-                                        Sunday, Feb 9, 13:10
-                                    </li>
-                                    <li class="other">
-                                        <div class="message">
-                                            <div class="message-name">
-                                                Mba Inem
-                                            </div>
-                                            <div class="message-text">
-                                                What do you think about my new Dashboard?
-                                            </div>
-                                            <div class="message-avatar">
-                                                <img src="../assets/images/avatar2.png" alt="">
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="messages-date">
-                                        Sunday, Feb 9, 15:28
-                                    </li>
-                                    <li class="other">
-                                        <div class="message">
-                                            <div class="message-name">
-                                                Mba Inem
-                                            </div>
-                                            <div class="message-text">
-                                                Alo...
-                                            </div>
-                                            <div class="message-avatar">
-                                                <img src="../assets/images/avatar2.png" alt="">
-                                            </div>
-                                        </div>
-                                        <div class="message">
-                                            <div class="message-name">
-                                                Mba Inem
-                                            </div>
-                                            <div class="message-text">
-                                                Are you there?
-                                            </div>
-                                            <div class="message-avatar">
-                                                <img src="../assets/images/avatar2.png" alt="">
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="self">
-                                        <div class="message">
-                                            <div class="message-name">
-                                                Mas Bambang
-                                            </div>
-                                            <div class="message-text">
-                                                Hi, i am here
-                                            </div>
-                                            <div class="message-avatar">
-                                                <img src="../assets/images/avatar1.png" alt="">
-                                            </div>
-                                        </div>
-                                        <div class="message">
-                                            <div class="message-name">
-                                                Mba Inem
-                                            </div>
-                                            <div class="message-text">
-                                                Your Dashboard is great
-                                            </div>
-                                            <div class="message-avatar">
-                                                <img src="../assets/images/avatar1.png" alt="">
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="messages-date">
-                                        Friday, Feb 7, 23:39
-                                    </li>
-                                    <li class="other">
-                                        <div class="message">
-                                            <div class="message-name">
-                                                Mba Inem
-                                            </div>
-                                            <div class="message-text">
-                                                How does the binding and digesting work in ReactJS?, Bang?
-                                            </div>
-                                            <div class="message-avatar">
-                                                <img src="../assets/images/avatar2.png" alt="">
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="self">
-                                        <div class="message">
-                                            <div class="message-name">
-                                                Mas Bambang
-                                            </div>
-                                            <div class="message-text">
-                                                oh that's your question?
-                                            </div>
-                                            <div class="message-avatar">
-                                                <img src="../assets/images/avatar1.png" alt="">
-                                            </div>
-                                        </div>
-                                        <div class="message">
-                                            <div class="message-name">
-                                                Mas Bambang
-                                            </div>
-                                            <div class="message-text">
-                                                little reduntant, no?
-                                            </div>
-                                            <div class="message-avatar">
-                                                <img src="../assets/images/avatar1.png" alt="">
-                                            </div>
-                                        </div>
-                                        <div class="message">
-                                            <div class="message-name">
-                                                Mas Bambang
-                                            </div>
-                                            <div class="message-text">
-                                                literally we get the question daily
-                                            </div>
-                                            <div class="message-avatar">
-                                                <img src="../assets/images/avatar1.png" alt="">
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ol>
+                <div class="row same-height mt-4">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Statistik Penjualan Bulanan</h4>
+                                <p>Berdasarkan Produk</p>
                             </div>
-                            <div class="message-bar">
-                                <div class="message-inner">
-                                    <a class="link icon-only" href="#"><i class="fa fa-camera"></i></a>
-                                    <div class="message-area">
-                                        <textarea placeholder="Message"></textarea>
-                                    </div>
-                                    <a class="link" href="#">
-                                        Send
-                                    </a>
+                            <div class="card-body">
+                                <canvas id="myChart" height="642" width="1388"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="header-statistics">
+                                <h5>Statistik Penjualan Bulanan</h5>
+                                <p>Bulan {{ \Carbon\Carbon::now()->translatedFormat('F Y') }}</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table small-font table-striped table-hover table-sm">
+                                        <tbody>
+                                            @foreach($salesStatistics as $index => $stat)
+                                            <tr>
+                                                <th scope="row">{{ $index + 1 }}</th>
+                                                <td>{{ $stat['product_name'] }}</td>
+                                                <td>{{ $stat['current_month_sales'] }}</td>
+                                                <td>
+                                                    @if($stat['trend'] === 'up')
+                                                    <i class="fa fa-caret-up text-success"></i>
+                                                    @elseif($stat['trend'] === 'down')
+                                                    <i class="fa fa-caret-down text-danger"></i>
+                                                    @else
+                                                    <i class="fa fa-minus text-secondary"></i>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @endhasanyrole
     </div>
 @endsection
 
 @push('js')
     <script src="{{ asset('admin') }}/vendor/chart.js/Chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <script src="{{ asset('admin') }}/assets/js/pages/index.min.js"></script>
+
+    <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var salesData = @json($salesData);
+
+        var labels = Object.keys(salesData);
+        var datasets = [];
+        var productNames = new Set();
+
+        // Collect all product names
+        Object.values(salesData).forEach(monthlyData => {
+            Object.values(monthlyData).forEach(product => {
+                productNames.add(product.name);
+            });
+        });
+
+        productNames = Array.from(productNames);
+
+        // Initialize datasets for each product
+        productNames.forEach(productName => {
+            datasets.push({
+                label: productName,
+                data: Array(labels.length).fill(0),
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            });
+        });
+
+        // Fill datasets with data
+        labels.forEach((month, monthIndex) => {
+            Object.values(salesData[month]).forEach(product => {
+                var productIndex = productNames.indexOf(product.name);
+                if (productIndex !== -1) {
+                    datasets[productIndex].data[monthIndex] = product.qty;
+                }
+            });
+        });
+
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: datasets
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
 @endpush
-{{-- <x-app-layout>
-    <x-slot name="header">
-        <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="mx-auto max-w-4xl sm:px-6 lg:px-4 ">
-            <div class="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("You're logged in!") }}
-                </div>
-            </div>
-        </div>
-        <div class="py-3">
-            <div class="mx-auto max-w-4xl sm:px-6 lg:px-4 pb-3 ">
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                    <a href="{{ route('product') }}" style="text-decoration: none">
-                        <div class="bg-white rounded-lg shadow-md">
-                            <div class="p-4">
-                                <h1 class="pb-2">Total Product</h1>
-                                <div class="text-gray-900 dark:text-gray-100">
-                                    {{ $product }}
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-
-                    <a href="{{ route('transaction') }}" style="text-decoration: none">
-                        <div class="bg-white rounded-lg shadow-md">
-                            <div class="p-4">
-                                <h1 class="pb-2">Revenue</h1>
-                                <div class="text-gray-900 dark:text-gray-100">
-                                    Rp.{{ number_format($revenue) }}
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-
-                    <a href="{{ route('transaction') }}" style="text-decoration: none">
-                        <div class="bg-white rounded-lg shadow-md">
-                            <div class="p-4">
-                                <h1 class="pb-2">Pending Transaction</h1>
-                                <div class="text-gray-900 dark:text-gray-100">
-                                    {{ $transactionPending }}
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</x-app-layout> --}}
