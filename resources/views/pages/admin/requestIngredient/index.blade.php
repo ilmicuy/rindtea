@@ -67,9 +67,7 @@
                                         <th>Quantity Permintaan</th>
                                         <th>Notes</th>
                                         <th>Status</th>
-                                        @hasanyrole('keuangan')
                                         <th>Aksi</th>
-                                        @endhasanyrole
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -81,9 +79,9 @@
                                             <td>{{ $req->qty_request }} {{ $req->ingredient->satuan }}</td>
                                             <td>{{ $req->notes }}</td>
                                             <td>{{ ucwords($req->status) }}</td>
-                                            @hasanyrole('keuangan')
                                             <td width="100px">
-                                                @if ($req->approved_at == null)
+                                                @hasanyrole('produksi')
+                                                @if ($req->status == 'processing')
                                                     <div class="d-flex justify-content-between">
                                                         <button class="btn btn-success btn-sm" onclick="statusEdit({{ $req->id }}, 'confirm')">
                                                             <i class="fa fa-check"></i>
@@ -104,8 +102,32 @@
 
                                                     </div>
                                                 @endif
+                                                @endhasanyrole
+
+                                                @hasanyrole('keuangan')
+                                                @if ($req->status == 'pending')
+                                                    <div class="d-flex justify-content-between">
+                                                        <button class="btn btn-success btn-sm" onclick="statusEdit({{ $req->id }}, 'processing')">
+                                                            <i class="fa fa-check"></i>
+                                                        </button>
+                                                        <button class="btn btn-danger btn-sm" onclick="statusEdit({{ $req->id }}, 'cancel')">
+                                                            <i class="fa fa-times"></i>
+                                                        </button>
+                                                        {{-- <form id="deleteForm{{ $ingredient->id }}"
+                                                            action="{{ route('ingredient.destroy', $ingredient->id) }}"
+                                                            method="POST">
+                                                            @method('delete')
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                                onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">
+                                                                <i class="ti-trash"></i>
+                                                            </button>
+                                                        </form> --}}
+
+                                                    </div>
+                                                @endif
+                                                @endhasanyrole
                                             </td>
-                                            @endhasanyrole
                                         </tr>
                                     @empty
                                         <tr>
@@ -153,7 +175,23 @@
 
 function statusEdit(id, status)
 {
-    if(status == 'confirm'){
+    if(status == 'processing'){
+
+        Swal.fire({
+            title: `Proses Penambahan Stok Bahan Baku?`,
+            html: `Apakah anda yakin ingin memproses penambahan bahan baku`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                confirmAction(id, 'processing');
+            }
+        });
+
+    } else if(status == 'confirm'){
 
         Swal.fire({
             title: `Konfirmasi Penambahan Stok Bahan Baku?`,
@@ -169,7 +207,7 @@ function statusEdit(id, status)
             }
         });
 
-    }else{
+    } else {
         Swal.fire({
             title: `Batal Request Penambahan Stok Bahan Baku?`,
             icon: "warning",
@@ -197,8 +235,21 @@ function confirmAction(id, action)
         },
         cache: false,
         success: function (response) {
+            let actionName = '';
+            switch(action){
+                case 'confirm':
+                    actionName = 'Konfirmasi';
+                    break;
+                case 'processing':
+                    actionName = 'Memproses';
+                    break;
+                default:
+                    actionName = 'Membatalkan';
+                    break;
+            }
+
             Swal.fire({
-                title: `Berhasil ${action == 'confirm' ? 'Konfirmasi' : 'Membatalkan' } Penambahan Stok Bahan Baku!`,
+                title: `Berhasil ${actionName} Penambahan Stok Bahan Baku!`,
                 icon: "success"
             }).then((result) => {
                 window.location.reload();

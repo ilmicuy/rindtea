@@ -76,9 +76,7 @@
                                         <th>Quantity Permintaan</th>
                                         <th>Notes</th>
                                         <th>Status</th>
-                                        @hasanyrole('produksi')
                                         <th>Aksi</th>
-                                        @endhasanyrole
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -91,9 +89,9 @@
                                             <td>{{ $req->notes }}</td>
                                             <td>{{ ucwords($req->status) }}</td>
 
-                                            @hasanyrole('produksi')
                                             <td width="100px">
-                                                @if ($req->status == 'pending')
+                                                @hasanyrole('marketing')
+                                                @if ($req->status == 'processing')
                                                     <div class="d-flex justify-content-between">
                                                         <button class="btn btn-success btn-sm" onclick="statusEdit({{ $req->id }}, 'confirm')">
                                                             <i class="fa fa-check"></i>
@@ -114,8 +112,32 @@
 
                                                     </div>
                                                 @endif
+                                                @endhasanyrole
+
+                                                @hasanyrole('produksi')
+                                                @if ($req->status == 'pending')
+                                                    <div class="d-flex justify-content-between">
+                                                        <button class="btn btn-success btn-sm" onclick="statusEdit({{ $req->id }}, 'processing')">
+                                                            <i class="fa fa-check"></i>
+                                                        </button>
+                                                        <button class="btn btn-danger btn-sm" onclick="statusEdit({{ $req->id }}, 'cancel')">
+                                                            <i class="fa fa-times"></i>
+                                                        </button>
+                                                        {{-- <form id="deleteForm{{ $ingredient->id }}"
+                                                            action="{{ route('ingredient.destroy', $ingredient->id) }}"
+                                                            method="POST">
+                                                            @method('delete')
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                                onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">
+                                                                <i class="ti-trash"></i>
+                                                            </button>
+                                                        </form> --}}
+
+                                                    </div>
+                                                @endif
+                                                @endhasanyrole
                                             </td>
-                                            @endhasanyrole
                                         </tr>
                                     @empty
                                         <tr>
@@ -141,8 +163,7 @@
 
 function statusEdit(id, status)
 {
-    if(status == 'confirm'){
-
+    if(status == 'processing'){
         $.ajax({
             type: 'GET',
             url: "/request-product/" + id,
@@ -188,8 +209,8 @@ function statusEdit(id, status)
 
                 }else{
                     Swal.fire({
-                        title: `Konfirmasi Penambahan Stok Produk?`,
-                        html: `Apakah anda yakin ingin menambahkan stok produk <b>"${data.request_product.product.name}"</b> sebanyak <b>${data.request_product.qty_requested} pax</b>`,
+                        title: `Proses penambahan Stok Produk?`,
+                        html: `Apakah anda yakin ingin memproses menambahkan stok produk <b>"${data.request_product.product.name}"</b> sebanyak <b>${data.request_product.qty_requested} pax</b>`,
                         icon: "warning",
                         showCancelButton: true,
                         confirmButtonColor: "#3085d6",
@@ -198,7 +219,7 @@ function statusEdit(id, status)
                     }).then((result) => {
 
                         if (result.isConfirmed) {
-                            confirmAction(id, 'confirm');
+                            confirmAction(id, 'processing');
                         }
                     });
                 }
@@ -209,6 +230,21 @@ function statusEdit(id, status)
             }
         });
 
+    }else if(status == 'confirm'){
+        Swal.fire({
+            title: `Konfirmasi Penambahan Stok Produk?`,
+            html: `Apakah anda yakin ingin menambahkan stok produk?"`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya"
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                confirmAction(id, 'confirm');
+            }
+        });
     }else{
         Swal.fire({
             title: `Batal Request Penambahan Stok Produk?`,
@@ -237,8 +273,21 @@ function confirmAction(id, action)
         },
         cache: false,
         success: function (response) {
+            let actionName = '';
+            switch(action){
+                case 'confirm':
+                    actionName = 'Konfirmasi';
+                    break;
+                case 'processing':
+                    actionName = 'Memproses';
+                    break;
+                default:
+                    actionName = 'Membatalkan';
+                    break;
+            }
+
             Swal.fire({
-                title: `Berhasil ${action == 'confirm' ? 'Konfirmasi' : 'Membatalkan' } Penambahan Stok Produk!`,
+                title: `Berhasil ${actionName} Penambahan Stok Produk!`,
                 icon: "success"
             }).then((result) => {
                 window.location.reload();

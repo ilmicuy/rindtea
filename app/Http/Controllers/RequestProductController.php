@@ -73,16 +73,17 @@ class RequestProductController extends Controller
     {
         $getRequestProduct = ProductRequest::findOrFail($request->id);
 
-        if($getRequestProduct->status != 'pending'){
+        if($getRequestProduct->status != 'pending' && $getRequestProduct->status != 'processing'){
             return response()->json([
                 'status' => 'error',
                 'message' => 'request product already done!'
             ], 422);
         }
 
-        if($request->action == 'confirm'){
+        $qty_requested = $getRequestProduct->qty_requested;
 
-            $qty_requested = $getRequestProduct->qty_requested;
+        if($request->action == 'confirm'){
+            $statusName = 'Disetujui';
 
             foreach($getRequestProduct->product->ingredients as $bahan) {
                 $bahanCost = $bahan->pivot->qty_needed * $qty_requested;
@@ -114,13 +115,16 @@ class RequestProductController extends Controller
             $getRequestProduct->status = 'success';
             $getRequestProduct->success_at = Carbon::now();
 
+        } else if ($request->action == 'processing') {
+            $statusName = 'Diproses';
+            $getRequestProduct->status = 'processing';
         }else if($request->action == 'cancel'){
+            $statusName = 'Tidak Disetujui';
             $getRequestProduct->status = 'cancelled';
         }
 
         // TODO: Kirim email notifikasi
         $getMarketingUser = User::role('marketing')->get();
-        $statusName = ($request->action == 'confirm' ? 'Disetujui' : 'Tidak Disetujui');
 
         foreach ($getMarketingUser as $user) {
             Inbox::create([

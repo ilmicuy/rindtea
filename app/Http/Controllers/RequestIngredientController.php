@@ -55,7 +55,7 @@ class RequestIngredientController extends Controller
     {
         $getRequestIngredient = IngredientRequest::findOrFail($request->id);
 
-        if($getRequestIngredient->status != 'pending') {
+        if($getRequestIngredient->status != 'pending' && $getRequestIngredient->status != 'processing') {
             return response()->json([
                 'status' => 'error',
                 'message' => 'request ingredient already done!'
@@ -63,18 +63,23 @@ class RequestIngredientController extends Controller
         }
 
         if ($request->action == 'confirm') {
+            $statusName = "Disetujui";
+
             $getRequestIngredient->ingredient->qty += $getRequestIngredient->qty_request;
             $getRequestIngredient->ingredient->save();
 
             $getRequestIngredient->status = 'success';
             $getRequestIngredient->approved_at = Carbon::now();
+        } else if ($request->action == 'processing') {
+            $statusName = "Diproses";
+            $getRequestIngredient->status = 'processing';
         } else if ($request->action == 'cancel') {
+            $statusName = "Tidak Disetujui";
             $getRequestIngredient->status = 'cancelled';
         }
 
         // TODO: Kirim email notifikasi
         $getProduksiUser = User::role('produksi')->get();
-        $statusName = ($request->action == 'confirm' ? 'Disetujui' : 'Tidak Disetujui' );
 
         foreach ($getProduksiUser as $user) {
             Inbox::create([
