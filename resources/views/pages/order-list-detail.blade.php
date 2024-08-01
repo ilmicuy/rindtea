@@ -39,7 +39,7 @@
                         <th scope="col">Product Name</th>
                         <th scope="col">Quantity</th>
                         <th scope="col">Price / Item</th>
-                        <th scope="col">Action</th>
+                        <th scope="col">Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -138,9 +138,31 @@
                             </div>
                             @endif
                             @else
-                            <p class="mt-4 badge bg-success" style="color:white mt-4 mb-0">
-                                Menunggu Konfirmasi Penjual
+
+                            @php
+                                $badgeClass = '';
+                                switch ($item->transaction->transaction_status) {
+                                    case 'completed':
+                                        $badgeClass = 'badge bg-success';
+                                        break;
+                                    case 'pending':
+                                        $badgeClass = 'badge bg-warning';
+                                        break;
+                                    case 'failed':
+                                        $badgeClass = 'badge bg-danger';
+                                        break;
+                                    default:
+                                        $badgeClass = 'badge bg-secondary';
+                                        break;
+                                }
+                            @endphp
+                            <p class="">
+                                <span class="mt-4 {{ $badgeClass }}">{{ $item->transaction->transaction_status }}</span>
                             </p>
+
+                            {{-- <p class=" badge bg-success" style="color:white mt-4 mb-0">
+                                Menunggu Konfirmasi Penjual
+                            </p> --}}
                             @endif
                         </td>
                     </tr>

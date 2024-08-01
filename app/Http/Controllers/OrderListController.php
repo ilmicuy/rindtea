@@ -14,7 +14,7 @@ class OrderListController extends Controller
      */
     public function index()
     {
-        $query = Transaction::with(['transactionDetail'])            
+        $query = Transaction::with(['transactionDetail'])
             ->orderBy('created_at', 'desc')
             ->where('users_id', Auth::user()->id)
             ->get();
@@ -54,7 +54,7 @@ class OrderListController extends Controller
             'transaction' => $transactions_id
         ]);
     }
-    
+
 
     /**
      * Show the form for editing the specified resource.
