@@ -7,7 +7,11 @@
 @section('content')
     <div class="main-content">
         <div class="title">
+        @hasanyrole('owner|keuangan')
             Dashboard
+        @elsehasanyrole('marketing|produksi')
+            Selamat Datang
+        @endhasanyrole
         </div>
 
         @hasanyrole('owner|keuangan')
