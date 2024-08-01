@@ -169,6 +169,51 @@
                     @endforeach
                 </tbody>
             </table>
+
+            @if ($transaction->transactionShipment()->latest()->first())
+                <div>
+                    <hr>
+                    <h2 style="text-align: center;">Detail Pengiriman</h2>
+
+                    <div class="shipping-detail" style="margin-bottom: 20px;">
+                        <p><strong>Nomor Resi:</strong> {{ $transaction->transactionShipment()->latest()->first()->awb }}</p>
+                        <p><strong>Kurir:</strong> {{ $transaction->transactionShipment()->latest()->first()->courier }}</p>
+                        <p><strong>Layanan:</strong> {{ $transaction->transactionShipment()->latest()->first()->service }}</p>
+                        <p><strong>Status:</strong> {{ $transaction->transactionShipment()->latest()->first()->status }}</p>
+                        <p><strong>Tanggal Kirim:</strong> {{ $transaction->transactionShipment()->latest()->first()->date }}</p>
+                        <p><strong>Deskripsi:</strong> {{ $transaction->transactionShipment()->latest()->first()->description }}</p>
+                        <p><strong>Amount:</strong> {{ $transaction->transactionShipment()->latest()->first()->amount }}</p>
+                        <p><strong>Weight:</strong> {{ $transaction->transactionShipment()->latest()->first()->weight }}</p>
+                        <p><strong>Pengirim:</strong> {{ $transaction->transactionShipment()->latest()->first()->origin }}</p>
+                        <p><strong>Destinasi:</strong> {{ $transaction->transactionShipment()->latest()->first()->destination }}</p>
+                        <p><strong>Shipper:</strong> {{ $transaction->transactionShipment()->latest()->first()->shipper }}</p>
+                        <p><strong>Receiver:</strong> {{ $transaction->transactionShipment()->latest()->first()->receiver }}</p>
+                    </div>
+
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="25%">Tanggal Status</th>
+                                <th>Deskripsi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($transaction->transactionShipment()->latest()->first()->transactionShipmentHistory as $history)
+                                <tr>
+                                    <td>{{ $history->history_date }}</td>
+                                    <td>{{ $history->description }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="2" class="text-center">Tidak ada history pengiriman</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            @endif
+
         </div>
     </div>
 </div>
