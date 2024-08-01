@@ -41,12 +41,20 @@ class RequestIngredientController extends Controller
      */
     public function store(Request $request)
     {
-        IngredientRequest::create([
+        $getRequestIngredient = IngredientRequest::create([
             'ingredient_id' => $request->pilih_bahan_baku,
             'qty_request' => $request->qty_request,
             'notes' => $request->notes,
             'status' => 'pending'
         ]);
+
+        // TODO: Kirim email notifikasi
+        $getKeuanganUser = User::role('keuangan')->get();
+
+        foreach ($getKeuanganUser as $user) {
+            // Send email
+            Mail::to($user->email)->send(new \App\Mail\RequestCreateNotificationEmail('request_bahan_baku', $getRequestIngredient, $user));
+        }
 
         return redirect(route('requestIngredient.index'));
     }

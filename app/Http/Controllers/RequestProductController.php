@@ -59,12 +59,20 @@ class RequestProductController extends Controller
 
     public function store(Request $request)
     {
-        ProductRequest::create([
+        $getRequestProduct = ProductRequest::create([
             'product_id' => $request->pilih_product,
             'qty_requested' => $request->qty_requested,
             'notes' => $request->notes,
             'status' => 'pending'
         ]);
+
+        // TODO: Kirim email notifikasi
+        $getProduksiUser = User::role('produksi')->get();
+
+        foreach ($getProduksiUser as $user) {
+            // Send email
+            Mail::to($user->email)->send(new \App\Mail\RequestCreateNotificationEmail('request_product', $getRequestProduct, $user));
+        }
 
         return redirect(route('requestProduct.index'));
     }
