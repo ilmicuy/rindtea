@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Http;
 use App\Http\Requests\CheckoutRequest;
 use App\Models\Product;
 use App\Models\ProductTransaction;
+use App\Services\FonnteService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 
@@ -202,6 +203,26 @@ class CheckoutController extends Controller
         // Send the checkout email
         Mail::to(Auth::user()->email)->send(new \App\Mail\CheckoutEmail(Auth::user(), $transaction, $items));
 
+        if(Auth::user()->phone_number != null){
+            //Whatsapp Message
+            $whatsappMessage = "*Terima Kasih atas Pesanan Anda di Rind Tea!*" . "\n\n" .
+            "Hai, " . Auth::user()->name . "!" . "\n" .
+            "Terimakasih telah melakukan pemesanan dengan nomor #" . $transaction->id . " di website Rind Tea. Berikut adalah rincian pesanan Anda:" . "\n\n";
+
+            foreach ($items as $item) {
+                $whatsappMessage .= "- *" . $item['name'] . "* - " . $item['quantity'] . " x Rp " . number_format($item['price'], 0, ',', '.') . "\n";
+            }
+
+            $whatsappMessage .= "\n*Total Harga:* Rp " . number_format($transaction->total_price, 0, ',', '.') . "\n" .
+            "*Ongkos Kirim:* Rp " . number_format($shippingCost, 0, ',', '.') . " (" . $shippingCourier . ")" . "\n\n" .
+            "Silahkan untuk melakukan pelunasan dengan mengunjungi tautan berikut:" . "\n" .
+            "https://rindtea.biz.id/order-list-detail/" . $transaction->id . "\n\n" .
+            "_Hormat Kami,_\n" .
+            "*Tim Rind Tea*";
+            $fonnteService = new FonnteService();
+            $fonnteService->sendMessage(Auth::user()->phone_number, $whatsappMessage);
+        }
+
         // Midtrans configuration
         Config::$serverKey = config('services.midtrans.serverKey');
         Config::$isProduction = config('services.midtrans.isProduction');
@@ -287,6 +308,29 @@ class CheckoutController extends Controller
                     'price' => $item->product->price,
                 ];
             });
+
+            // Send WhatsApp message if phone number exists
+            if ($user->phone_number) {
+                // Prepare the WhatsApp message
+                $whatsappMessage = "*Pembayaran Anda Berhasil di Rind Tea!*" . "\n\n" .
+                "_Lunas_" . "\n\n" .
+                "Hai, " . $user->name . "!" . "\n" .
+                    "Terima kasih telah melakukan pembayaran pemesanan nomor #" . $transaction->id . ". Berikut adalah rincian pesanan Anda:" . "\n\n";
+
+                foreach ($items as $item) {
+                    $whatsappMessage .= "- *" . $item['name'] . "* - " . $item['quantity'] . " x Rp " . number_format($item['price'], 0, ',', '.') . "\n";
+                }
+
+                $whatsappMessage .= "\n*Total Harga:* Rp " . number_format($transaction->total_price, 0, ',', '.') . "\n\n" .
+                "Pesanan Anda sedang diproses dan akan segera kami kirim." . "\n\n" .
+                "_Hormat Kami,_\n" .
+                "*Tim Rind Tea*" . "\n\n" .
+                "&copy; " . date('Y') . " Rind Tea. All rights reserved.";
+
+                // Send the WhatsApp message using FonnteService
+                $fonnteService = new FonnteService();
+                $fonnteService->sendMessage($user->phone_number, $whatsappMessage);
+            }
 
             Mail::to($user->email)->send(new \App\Mail\SuccessPaymentEmail($user, $transaction, $items));
         }

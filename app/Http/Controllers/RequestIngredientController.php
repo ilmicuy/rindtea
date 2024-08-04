@@ -6,6 +6,7 @@ use App\Models\Inbox;
 use App\Models\Ingredient;
 use App\Models\IngredientRequest;
 use App\Models\User;
+use App\Services\FonnteService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,6 +42,7 @@ class RequestIngredientController extends Controller
      */
     public function store(Request $request)
     {
+        // Create a new IngredientRequest
         $getRequestIngredient = IngredientRequest::create([
             'ingredient_id' => $request->pilih_bahan_baku,
             'qty_request' => $request->qty_request,
@@ -48,25 +50,40 @@ class RequestIngredientController extends Controller
             'status' => 'pending'
         ]);
 
-        // TODO: Kirim email notifikasi
+        // Get users with 'keuangan' role
         $getKeuanganUser = User::role('keuangan')->get();
 
         foreach ($getKeuanganUser as $user) {
             // Send email
             Mail::to($user->email)->send(new \App\Mail\RequestCreateNotificationEmail('request_bahan_baku', $getRequestIngredient, $user));
+
+            // Send WhatsApp notification
+            if ($user->phone_number) {
+                // Prepare the WhatsApp message
+                $whatsappMessage = "*Request Bahan Baku Baru*" . "\n\n" .
+                "Halo " . $user->name . "," . "\n\n" .
+                "Terdapat *Request Bahan Baku* untuk *" . $getRequestIngredient->ingredient->nama_bahan_baku . "* dengan jumlah *" . $getRequestIngredient->qty_request . "*. Mohon untuk segera menanggapi request ini." . "\n\n" .
+                "Terima Kasih.";
+
+                // Send the WhatsApp message using FonnteService (or your preferred service)
+                $fonnteService = new FonnteService(); // Replace with your service
+                $fonnteService->sendMessage($user->phone_number, $whatsappMessage);
+            }
         }
 
+        // Redirect to the request ingredient index page
         return redirect(route('requestIngredient.index'));
     }
+
 
     public function statusEdit(Request $request)
     {
         $getRequestIngredient = IngredientRequest::findOrFail($request->id);
 
-        if($getRequestIngredient->status != 'pending' && $getRequestIngredient->status != 'processing') {
+        if ($getRequestIngredient->status != 'pending' && $getRequestIngredient->status != 'processing') {
             return response()->json([
                 'status' => 'error',
-                'message' => 'request ingredient already done!'
+                'message' => 'Request ingredient already done!'
             ], 422);
         }
 
@@ -78,18 +95,19 @@ class RequestIngredientController extends Controller
 
             $getRequestIngredient->status = 'success';
             $getRequestIngredient->approved_at = Carbon::now();
-        } else if ($request->action == 'processing') {
+        } elseif ($request->action == 'processing') {
             $statusName = "Diproses";
             $getRequestIngredient->status = 'processing';
-        } else if ($request->action == 'cancel') {
+        } elseif ($request->action == 'cancel') {
             $statusName = "Tidak Disetujui";
             $getRequestIngredient->status = 'cancelled';
         }
 
-        // TODO: Kirim email notifikasi
+        // Get users with 'produksi' role
         $getProduksiUser = User::role('produksi')->get();
 
         foreach ($getProduksiUser as $user) {
+            // Create an inbox message
             Inbox::create([
                 'sender_id' => Auth::user()->id,
                 'receiver_id' => $user->id,
@@ -99,16 +117,30 @@ class RequestIngredientController extends Controller
 
             // Send email
             Mail::to($user->email)->send(new \App\Mail\StatusEditNotificationEmail('request_bahan_baku', $getRequestIngredient, $statusName, $user));
+
+            // Send WhatsApp message
+            if ($user->phone_number) {
+                // Prepare the WhatsApp message
+                $whatsappMessage = "*Status Update untuk Request Bahan Baku*" . "\n\n" .
+                "Halo " . $user->name . "," . "\n\n" .
+                "Request Bahan Baku untuk *" . $getRequestIngredient->ingredient->nama_bahan_baku . "* dengan jumlah *" . $getRequestIngredient->qty_request . "* telah *" . $statusName . "*." . "\n\n" .
+                "Terima Kasih.";
+
+                // Send the WhatsApp message using FonnteService (or your preferred service)
+                $fonnteService = new FonnteService(); // Replace with your service
+                $fonnteService->sendMessage($user->phone_number, $whatsappMessage);
+            }
         }
 
+        // Save the updated request ingredient status
         $getRequestIngredient->save();
 
         return response()->json([
             'status' => 'success',
-            'message' => 'successfully ' . $request->action . ' product request!'
+            'message' => 'Successfully ' . $request->action . ' product request!'
         ]);
-
     }
+
 
     /**
      * Display the specified resource.

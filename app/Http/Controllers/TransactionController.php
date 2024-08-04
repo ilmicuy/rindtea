@@ -6,6 +6,7 @@ use App\Models\Transaction;
 use App\Models\TransactionDetail;
 use App\Models\TransactionShipment;
 use App\Models\TransactionShipmentHistory;
+use App\Services\FonnteService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -115,12 +116,42 @@ class TransactionController extends Controller
 
         if ($newStatus !== $oldStatus) {
             $user = $item->user;
+
+            $fonnteService = new FonnteService(); // Replace with your service
+            // Email and WhatsApp notification based on the transaction status
             if ($newStatus === 'shipping') {
                 Mail::to($user->email)->send(new \App\Mail\TransactionShippingEmail($user, $item, $data['no_resi']));
+
+                // WhatsApp message for shipping
+                $whatsappMessage = "*Produk Anda Telah Dikirim*" . "\n\n" .
+                "Hai, " . $user->name . "!" . "\n\n" .
+                "Pesanan anda dengan nomor #" . $item->id . " telah dikirim dengan Nomor Resi " . $data['no_resi'] . ". Silakan cek status pengiriman melalui situs kami." . "\n\n" .
+                "Hormat Kami,\n" .
+                "*Tim Rind Tea*";
+
+                $fonnteService->sendMessage($user->phone_number, $whatsappMessage);
             } elseif ($newStatus === 'completed') {
                 Mail::to($user->email)->send(new \App\Mail\TransactionCompleteEmail($user, $item));
+
+                // WhatsApp message for completed
+                $whatsappMessage = "*Produk Anda Telah Tiba*" . "\n\n" .
+                "Hai, " . $user->name . "!" . "\n\n" .
+                "Pesanan anda dengan nomor #" . $item->id . " telah selesai dan tiba pada tujuan. Terima kasih telah membeli produk Rind Tea." . "\n\n" .
+                "Hormat Kami,\n" .
+                "*Tim Rind Tea*";
+
+                $fonnteService->sendMessage($user->phone_number, $whatsappMessage);
             } elseif ($newStatus === 'failed') {
                 Mail::to($user->email)->send(new \App\Mail\TransactionFailedEmail($user, $item));
+
+                // WhatsApp message for failed
+                $whatsappMessage = "*Pemesanan Produk Anda Gagal*" . "\n\n" .
+                "Hai, " . $user->name . "!" . "\n\n" .
+                "Pemesanan produk anda dengan nomor #" . $item->id . " gagal dilakukan. Silakan coba lagi atau hubungi tim support kami." . "\n\n" .
+                "Hormat Kami,\n" .
+                "*Tim Rind Tea*";
+
+                $fonnteService->sendMessage($user->phone_number, $whatsappMessage);
             }
         }
 
@@ -192,6 +223,7 @@ class TransactionController extends Controller
 
         return redirect()->route('transaction.edit', $id);
     }
+
 
 
 

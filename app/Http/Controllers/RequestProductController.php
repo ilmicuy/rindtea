@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\ProductRequest;
 use App\Models\ProductTransaction;
 use App\Models\User;
+use App\Services\FonnteService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -59,6 +60,7 @@ class RequestProductController extends Controller
 
     public function store(Request $request)
     {
+        // Create a new ProductRequest
         $getRequestProduct = ProductRequest::create([
             'product_id' => $request->pilih_product,
             'qty_requested' => $request->qty_requested,
@@ -66,34 +68,49 @@ class RequestProductController extends Controller
             'status' => 'pending'
         ]);
 
-        // TODO: Kirim email notifikasi
+        // Get users with 'produksi' role
         $getProduksiUser = User::role('produksi')->get();
 
         foreach ($getProduksiUser as $user) {
             // Send email
             Mail::to($user->email)->send(new \App\Mail\RequestCreateNotificationEmail('request_product', $getRequestProduct, $user));
+
+            // Send WhatsApp notification
+            if ($user->phone_number) {
+                // Prepare the WhatsApp message
+                $whatsappMessage = "*Request Produk Baru*" . "\n\n" .
+                "Halo " . $user->name . "," . "\n\n" .
+                "Terdapat *Request Produk* untuk *" . $getRequestProduct->product->name . "* dengan jumlah *" . $getRequestProduct->qty_requested . "*. Mohon untuk segera menanggapi request ini." . "\n\n" .
+                "Terima Kasih.";
+
+                // Send the WhatsApp message using FonnteService (or your preferred service)
+                $fonnteService = new FonnteService(); // Replace with your service
+                $fonnteService->sendMessage($user->phone_number, $whatsappMessage);
+            }
         }
 
+        // Redirect to the request product index page
         return redirect(route('requestProduct.index'));
     }
+
 
     public function statusEdit(Request $request)
     {
         $getRequestProduct = ProductRequest::findOrFail($request->id);
 
-        if($getRequestProduct->status != 'pending' && $getRequestProduct->status != 'processing'){
+        if ($getRequestProduct->status != 'pending' && $getRequestProduct->status != 'processing') {
             return response()->json([
                 'status' => 'error',
-                'message' => 'request product already done!'
+                'message' => 'Request product already done!'
             ], 422);
         }
 
         $qty_requested = $getRequestProduct->qty_requested;
 
-        if($request->action == 'confirm'){
+        if ($request->action == 'confirm') {
             $statusName = 'Disetujui';
 
-            foreach($getRequestProduct->product->ingredients as $bahan) {
+            foreach ($getRequestProduct->product->ingredients as $bahan) {
                 $bahanCost = $bahan->pivot->qty_needed * $qty_requested;
 
                 $bahan->qty -= $bahanCost;
@@ -122,16 +139,15 @@ class RequestProductController extends Controller
 
             $getRequestProduct->status = 'success';
             $getRequestProduct->success_at = Carbon::now();
-
-        } else if ($request->action == 'processing') {
+        } elseif ($request->action == 'processing') {
             $statusName = 'Diproses';
             $getRequestProduct->status = 'processing';
-        }else if($request->action == 'cancel'){
+        } elseif ($request->action == 'cancel') {
             $statusName = 'Tidak Disetujui';
             $getRequestProduct->status = 'cancelled';
         }
 
-        // TODO: Kirim email notifikasi
+        // Get users with 'marketing' role
         $getMarketingUser = User::role('marketing')->get();
 
         foreach ($getMarketingUser as $user) {
@@ -144,13 +160,27 @@ class RequestProductController extends Controller
 
             // Send email
             Mail::to($user->email)->send(new \App\Mail\StatusEditNotificationEmail('request_product', $getRequestProduct, $statusName, $user));
+
+            // Send WhatsApp notification
+            if ($user->phone_number) {
+                // Prepare the WhatsApp message
+                $whatsappMessage = "*Status Update untuk Request Produk*" . "\n\n" .
+                    "Halo " . $user->name . "," . "\n\n" .
+                    "Request Produk untuk *" . $getRequestProduct->product->name . "* dengan jumlah *" . $qty_requested . "* telah *" . $statusName . "*." . "\n\n" .
+                    "Terima Kasih.";
+
+                // Send the WhatsApp message using FonnteService (or your preferred service)
+                $fonnteService = new FonnteService(); // Replace with your service
+                $fonnteService->sendMessage($user->phone_number, $whatsappMessage);
+            }
         }
 
+        // Save the updated request product status
         $getRequestProduct->save();
 
         return response()->json([
             'status' => 'success',
-            'message' => 'successfully '. $request->action . ' product request!'
+            'message' => 'Successfully ' . $request->action . ' product request!'
         ]);
     }
 }
