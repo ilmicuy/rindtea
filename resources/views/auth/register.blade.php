@@ -15,6 +15,10 @@
                         :value="old('email')" autocomplete="username" placeholder="Your Email" />
                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
 
+                    <x-text-input id="phone_number" class="login-input" type="tel" name="phone_number"
+                        :value="old('phone_number')" autocomplete="phone_number" placeholder="Contoh: 08123456789" />
+                    <x-input-error :messages="$errors->get('phone_number')" class="mt-2" />
+
                     <x-text-input id="password" class="login-input" type="password"
                         name="password" autocomplete="current-password" placeholder="Your Password" />
                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
