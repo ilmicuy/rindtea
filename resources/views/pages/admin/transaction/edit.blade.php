@@ -223,6 +223,17 @@
                                           <label>Ongkos Kirim</label>
                                           <input type="text" class="form-control" value="Rp.{{ number_format($transaction->shipment_cost, 0, 0, '.') }}" disabled>
                                         </div>
+
+
+                                        @if ($transaction->addressChoosen->latitude != null && $transaction->addressChoosen->longitude != null)
+                                            <div class="form-group">
+                                            <label>Kordinat Pengiriman</label>
+                                            <input type="text" class="form-control" value="{{ $transaction->addressChoosen->latitude }}, {{ $transaction->addressChoosen->longitude }}" disabled>
+                                            </div>
+
+                                            <div id="map" style="width: 100%; height: 400px;"></div>
+                                        @endif
+
                                         @if ($transaction->addressChoosen)
                                         <div class="form-group">
                                           <label>Alamat Kirim</label>
@@ -297,6 +308,25 @@
 @endsection
 
 @push('js')
+
+@if ($transaction->addressChoosen->latitude != null && $transaction->addressChoosen->longitude != null)
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCCfRlVGUObDiUnSXJl7cS0GJw5yHJNSX8&callback=initMap" async defer></script>
+    <script>
+        function initMap() {
+            var latitude = {{ $transaction->addressChoosen->latitude }};
+            var longitude = {{ $transaction->addressChoosen->longitude }};
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: {lat: latitude, lng: longitude}
+            });
+            var marker = new google.maps.Marker({
+                position: {lat: latitude, lng: longitude},
+                map: map
+            });
+        }
+    </script>
+@endif
+
 <script>
     $("select[name='transaction_status']").on('change', function() {
         if($(this).val() == 'shipping') {
