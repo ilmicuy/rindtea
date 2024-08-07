@@ -14,6 +14,7 @@ class ProductRequest extends Model
         'qty_requested',
         'notes',
         'status',
+        'approved_by_owner',
         'success_at'
     ];
 

@@ -13,6 +13,7 @@ class IngredientRequest extends Model
         'ingredient_id',
         'qty_request',
         'approved_at',
+        'approved_by_owner',
         'status',
         'created_at',
         'updated_at',

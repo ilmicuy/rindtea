@@ -78,7 +78,17 @@
                                             <td>{{ $req->ingredient->qty }} {{ $req->ingredient->satuan }}</td>
                                             <td>{{ $req->qty_request }} {{ $req->ingredient->satuan }}</td>
                                             <td>{{ $req->notes }}</td>
-                                            <td>{{ ucwords($req->status) }}</td>
+                                            <td>
+                                                @if ($req->status == "pending")
+                                                    @if ($req->approved_by_owner == null)
+                                                        Pending Approval Owner
+                                                    @else
+                                                        {{ ucwords($req->status) }}
+                                                    @endif
+                                                @else
+                                                    {{ ucwords($req->status) }}
+                                                @endif
+                                            </td>
                                             <td width="100px">
                                                 @hasanyrole('produksi')
                                                 @if ($req->status == 'processing')
@@ -106,26 +116,30 @@
 
                                                 @hasanyrole('keuangan')
                                                 @if ($req->status == 'pending')
-                                                    <div class="d-flex justify-content-between">
-                                                        <button class="btn btn-success btn-sm" onclick="statusEdit({{ $req->id }}, 'processing')">
-                                                            <i class="fa fa-check"></i>
-                                                        </button>
-                                                        <button class="btn btn-danger btn-sm" onclick="statusEdit({{ $req->id }}, 'cancel')">
-                                                            <i class="fa fa-times"></i>
-                                                        </button>
-                                                        {{-- <form id="deleteForm{{ $ingredient->id }}"
-                                                            action="{{ route('ingredient.destroy', $ingredient->id) }}"
-                                                            method="POST">
-                                                            @method('delete')
-                                                            @csrf
-                                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                                onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">
-                                                                <i class="ti-trash"></i>
+                                                    @if ($req->approved_by_owner != null)
+                                                        <div class="d-flex justify-content-between">
+                                                            <button class="btn btn-success btn-sm" onclick="statusEdit({{ $req->id }}, 'processing')">
+                                                                <i class="fa fa-check"></i>
                                                             </button>
-                                                        </form> --}}
-
-                                                    </div>
+                                                            <button class="btn btn-danger btn-sm" onclick="statusEdit({{ $req->id }}, 'cancel')">
+                                                                <i class="fa fa-times"></i>
+                                                            </button>
+                                                        </div>
+                                                    @endif
                                                 @endif
+                                                @endhasanyrole
+
+                                                @hasanyrole('owner')
+                                                    @if ($req->approved_by_owner == null && $req->status == 'pending')
+                                                        <div class="d-flex justify-content-between">
+                                                            <button class="btn btn-success btn-sm" onclick="statusEdit({{ $req->id }}, 'owner_approval')">
+                                                                <i class="fa fa-check"></i>
+                                                            </button>
+                                                            <button class="btn btn-danger btn-sm" onclick="statusEdit({{ $req->id }}, 'owner_approval_cancel')">
+                                                                <i class="fa fa-times"></i>
+                                                            </button>
+                                                        </div>
+                                                    @endif
                                                 @endhasanyrole
                                             </td>
                                         </tr>
@@ -207,6 +221,38 @@ function statusEdit(id, status)
             }
         });
 
+    } else if(status == 'owner_approval'){
+
+        Swal.fire({
+            title: `Setujui Penambahan Stok Bahan Baku?`,
+            html: `Apakah anda yakin ingin menyetujui request bahan baku`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                confirmAction(id, 'owner_approval');
+            }
+        });
+
+    } else if(status == 'owner_approval_cancel'){
+
+        Swal.fire({
+            title: `Batalkan Penambahan Stok Bahan Baku?`,
+            html: `Apakah anda yakin ingin membatalkan request bahan baku`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                confirmAction(id, 'owner_approval_cancel');
+            }
+        });
+
     } else {
         Swal.fire({
             title: `Batal Request Penambahan Stok Bahan Baku?`,
@@ -242,6 +288,12 @@ function confirmAction(id, action)
                     break;
                 case 'processing':
                     actionName = 'Memproses';
+                    break;
+                case 'owner_approval':
+                    actionName = 'Menyetujui Request';
+                    break;
+                case 'owner_approval_cancel':
+                    actionName = 'Menolak Request';
                     break;
                 default:
                     actionName = 'Membatalkan';

@@ -99,6 +99,12 @@ class RequestIngredientController extends Controller
         } elseif ($request->action == 'processing') {
             $statusName = "Diproses";
             $getRequestIngredient->status = 'processing';
+        } elseif ($request->action == 'owner_approval') {
+            $statusName = "Disetujui Oleh Owner";
+            $getRequestIngredient->approved_by_owner = Carbon::now();
+        } elseif ($request->action == 'owner_approval_cancel') {
+            $statusName = "Tidak Disetujui Oleh Owner";
+            $getRequestIngredient->status = 'cancelled';
         } elseif ($request->action == 'cancel') {
             $statusName = "Tidak Disetujui";
             $getRequestIngredient->status = 'cancelled';

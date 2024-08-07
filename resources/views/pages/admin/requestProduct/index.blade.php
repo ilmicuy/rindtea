@@ -98,7 +98,17 @@
                                             {{-- <td>{{ $req->product->quantity }}</td> --}}
                                             <td>{{ $req->qty_requested }} pax</td>
                                             <td>{{ $req->notes }}</td>
-                                            <td>{{ ucwords($req->status) }}</td>
+                                            <td>
+                                                @if ($req->status == "pending")
+                                                    @if ($req->approved_by_owner == null)
+                                                        Pending Approval Owner
+                                                    @else
+                                                        {{ ucwords($req->status) }}
+                                                    @endif
+                                                @else
+                                                    {{ ucwords($req->status) }}
+                                                @endif
+                                            </td>
 
                                             <td width="100px">
                                                 @hasanyrole('marketing')
@@ -127,26 +137,41 @@
 
                                                 @hasanyrole('produksi')
                                                 @if ($req->status == 'pending')
-                                                    <div class="d-flex justify-content-between">
-                                                        <button class="btn btn-success btn-sm" onclick="statusEdit({{ $req->id }}, 'processing')">
-                                                            <i class="fa fa-check"></i>
-                                                        </button>
-                                                        <button class="btn btn-danger btn-sm" onclick="statusEdit({{ $req->id }}, 'cancel')">
-                                                            <i class="fa fa-times"></i>
-                                                        </button>
-                                                        {{-- <form id="deleteForm{{ $ingredient->id }}"
-                                                            action="{{ route('ingredient.destroy', $ingredient->id) }}"
-                                                            method="POST">
-                                                            @method('delete')
-                                                            @csrf
-                                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                                onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">
-                                                                <i class="ti-trash"></i>
+                                                    @if ($req->approved_by_owner != null)
+                                                        <div class="d-flex justify-content-between">
+                                                            <button class="btn btn-success btn-sm" onclick="statusEdit({{ $req->id }}, 'processing')">
+                                                                <i class="fa fa-check"></i>
                                                             </button>
-                                                        </form> --}}
+                                                            <button class="btn btn-danger btn-sm" onclick="statusEdit({{ $req->id }}, 'cancel')">
+                                                                <i class="fa fa-times"></i>
+                                                            </button>
+                                                            {{-- <form id="deleteForm{{ $ingredient->id }}"
+                                                                action="{{ route('ingredient.destroy', $ingredient->id) }}"
+                                                                method="POST">
+                                                                @method('delete')
+                                                                @csrf
+                                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">
+                                                                    <i class="ti-trash"></i>
+                                                                </button>
+                                                            </form> --}}
 
-                                                    </div>
+                                                        </div>
+                                                    @endif
                                                 @endif
+                                                @endhasanyrole
+
+                                                @hasanyrole('owner')
+                                                    @if ($req->approved_by_owner == null && $req->status == 'pending')
+                                                        <div class="d-flex justify-content-between">
+                                                            <button class="btn btn-success btn-sm" onclick="statusEdit({{ $req->id }}, 'owner_approval')">
+                                                                <i class="fa fa-check"></i>
+                                                            </button>
+                                                            <button class="btn btn-danger btn-sm" onclick="statusEdit({{ $req->id }}, 'owner_approval_cancel')">
+                                                                <i class="fa fa-times"></i>
+                                                            </button>
+                                                        </div>
+                                                    @endif
                                                 @endhasanyrole
                                             </td>
                                         </tr>
@@ -256,7 +281,39 @@ function statusEdit(id, status)
                 confirmAction(id, 'confirm');
             }
         });
-    }else{
+        } else if(status == 'owner_approval'){
+
+        Swal.fire({
+            title: `Setujui Penambahan Stok Produk?`,
+            html: `Apakah anda yakin ingin menyetujui request produk`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                confirmAction(id, 'owner_approval');
+            }
+        });
+
+    } else if(status == 'owner_approval_cancel'){
+
+        Swal.fire({
+            title: `Batalkan Penambahan Stok Produk?`,
+            html: `Apakah anda yakin ingin membatalkan request produk`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                confirmAction(id, 'owner_approval_cancel');
+            }
+        });
+
+    } else{
         Swal.fire({
             title: `Batal Request Penambahan Stok Produk?`,
             icon: "warning",

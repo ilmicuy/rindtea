@@ -151,6 +151,12 @@ class RequestProductController extends Controller
         } elseif ($request->action == 'processing') {
             $statusName = 'Diproses';
             $getRequestProduct->status = 'processing';
+        } elseif ($request->action == 'owner_approval') {
+            $statusName = "Disetujui Oleh Owner";
+            $getRequestProduct->approved_by_owner = Carbon::now();
+        } elseif ($request->action == 'owner_approval_cancel') {
+            $statusName = "Tidak Disetujui Oleh Owner";
+            $getRequestProduct->status = 'cancelled';
         } elseif ($request->action == 'cancel') {
             $statusName = 'Tidak Disetujui';
             $getRequestProduct->status = 'cancelled';
