@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Inbox;
 use App\Models\IngredientRequest;
+use App\Models\Product;
 use App\Models\ProductRequest;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -40,10 +41,19 @@ class ViewServiceProvider extends ServiceProvider
                 $getIngredientRequest = IngredientRequest::where('status', 'pending')->count();
             }
 
+            $products = Product::all();
+            $lowStockProducts = $products->filter(function ($product) {
+                return $product->quantity < 10;
+            });
+
+            $hasLowStock = $lowStockProducts->isNotEmpty();
+
             $view->with('inboxes', $inboxes)
             ->with('unreadInboxes', $unreadInboxes)
             ->with('getProductRequest', $getProductRequest)
-            ->with('getIngredientRequest', $getIngredientRequest);
+            ->with('getIngredientRequest', $getIngredientRequest)
+            ->with('lowStockProducts', $lowStockProducts)
+            ->with('hasLowStock', $hasLowStock);
         });
     }
 }

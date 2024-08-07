@@ -54,6 +54,17 @@
             Request Product
         </div>
         <div class="content-wrapper">
+            @if ($hasLowStock)
+                <div class="alert alert-danger">
+                    <h4 class="alert-heading">Produk Hampir Habis! (stok dibawah 10)</h4>
+                    Mohon untuk melakukan request produk berikut:
+                    <ul style="margin-left: 1.2em;">
+                        @foreach ($lowStockProducts as $product)
+                            <li>{{ $product->name }} - Stok: {{ $product->quantity }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">

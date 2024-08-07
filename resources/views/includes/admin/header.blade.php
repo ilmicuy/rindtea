@@ -43,8 +43,8 @@
             <div class="notification dropdown">
                 <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="far fa-bell"></i>
-                    @if ($getProductRequest + $getIngredientRequest != 0)
-                    <span class="badge">{{ $getProductRequest + $getIngredientRequest }}</span>
+                    @if ($getProductRequest + $getIngredientRequest + $hasLowStock != 0)
+                    <span class="badge">{{ $getProductRequest + $getIngredientRequest + $hasLowStock }}</span>
                     @endif
                 </a>
                 <ul class="dropdown-menu medium">
@@ -79,6 +79,25 @@
                                 <div class="time">Harap segera tanggapi</div>
                             </div>
                         </a>
+                        @endif
+
+                        @if ($hasLowStock)
+                            <a href="{{ route('requestProduct.index') }}">
+                                <div class="message-icon text-danger">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="message-content">
+                                    <div class="body">
+                                        Ada beberapa produk dengan stok hampir habis (di bawah 10):
+                                        @php
+                                            $lowStockString = $lowStockProducts->map(function ($product) {
+                                                return $product->name . ' (Stok: ' . $product->quantity . ')';
+                                            })->implode(', ');
+                                        @endphp
+                                        {{ $lowStockString }}
+                                    </div>
+                                </div>
+                            </a>
                         @endif
                     </li>
                 </ul>

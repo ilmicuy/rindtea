@@ -21,9 +21,17 @@ class RequestProductController extends Controller
 
         $products = Product::all();
 
+        $lowStockProducts = Product::all()->filter(function ($product) {
+            return $product->quantity < 10;
+        });
+
+        $hasLowStock = $lowStockProducts->isNotEmpty();
+
         return view('pages.admin.requestProduct.index', [
             'products' => $products,
             'productRequest' => $requestProduct,
+            'hasLowStock' => $hasLowStock,
+            'lowStockProducts' => $lowStockProducts,
         ]);
     }
 

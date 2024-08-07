@@ -23,8 +23,16 @@ class ProductController extends Controller
     {
         $query = Product::paginate(10);
 
+        $lowStockProducts = Product::all()->filter(function ($product) {
+            return $product->quantity < 10;
+        });
+
+        $hasLowStock = $lowStockProducts->isNotEmpty();
+
         return view('pages.admin.product.index', [
-            'query' => $query
+            'query' => $query,
+            'hasLowStock' => $hasLowStock,
+            'lowStockProducts' => $lowStockProducts,
         ]);
     }
 
