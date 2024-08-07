@@ -51,7 +51,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        {{ $inbox->links() }}
+                        {{ $inbox->links('pagination::bootstrap-4')  }}
                     </div>
                 </div>
             </div>

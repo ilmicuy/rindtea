@@ -139,7 +139,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        {{ $ingredientRequest->links() }}
+                        {{ $ingredientRequest->links('pagination::bootstrap-4')  }}
                     </div>
                 </div>
             </div>

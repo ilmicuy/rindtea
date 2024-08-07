@@ -82,7 +82,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        {{ $query->links() }}
+                        {{ $query->links('pagination::bootstrap-4')  }}
                     </div>
                 </div>
             </div>

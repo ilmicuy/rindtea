@@ -39,7 +39,7 @@
                 @endforeach
 
                 <div class="pagination-container">
-                    {{ $products->links() }}
+                    {{ $products->links('pagination::bootstrap-4')  }}
                 </div>
             </div>
         </div>

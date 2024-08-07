@@ -104,7 +104,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        {{ $ingredients->links() }}
+                        {{ $ingredients->links('pagination::bootstrap-4')  }}
                     </div>
                 </div>
             </div>

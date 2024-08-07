@@ -149,7 +149,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        {{ $productRequest->links() }}
+                        {{ $productRequest->links('pagination::bootstrap-4')  }}
                     </div>
                 </div>
             </div>
