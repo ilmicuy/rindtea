@@ -124,6 +124,11 @@
                                 <label class="courier-label ml-2" for="inlineRadio4">Lokal Kurir</label>
                             </div>
 
+                            <div class="shipping-option d-flex align-items-center">
+                                <input class="courier-code" type="radio" name="courier" id="inlineRadio4" value="ambil_ditempat">
+                                <label class="courier-label ml-2" for="inlineRadio4">Ambil Ditempat</label>
+                            </div>
+
 
                             <!-- <div class="">
                                 <a href="{{ route('delivery') }}" id="btn-lokal-kurir">Lokal Kurir</a>
@@ -234,6 +239,8 @@
 
             $('.courier-code').click(function() {
                 let courier = $(this).val();
+                console.log(courier);
+
                 let weight = $('#weight').val();
                 let addressID = $('.delivery-address:checked').val();
 
@@ -280,6 +287,28 @@
                                 var newTotalPrice = originalTotalPrice - currentShippingCost + lokal_kurir_price;
 
                                 $(".shipping-cost .rupiah").attr('data-price', lokal_kurir_price).text(rupiah(lokal_kurir_price));
+
+                                $(".total-amount .rupiah").attr('data-price', newTotalPrice).text(rupiah(
+                                newTotalPrice));
+
+                                $("input[name='total_price']").val(newTotalPrice);
+                            }else if(courier == 'ambil_ditempat'){
+                                $('.available-services').show();
+                                $('.available-services').html(`
+                                    <table>
+                                        <tr>
+                                            <th>Biaya Ambil Di Tempat</th>
+                                            <td>${rupiah(0)}</td>
+                                        </tr>
+                                    </table>
+                                `);
+
+                                var originalTotalPrice = parseFloat($(".total-amount .rupiah").attr('data-price')) || 0;
+                                var currentShippingCost = parseFloat($(".shipping-cost .rupiah").attr('data-price')) || 0;
+
+                                var newTotalPrice = originalTotalPrice - currentShippingCost;
+
+                                $(".shipping-cost .rupiah").attr('data-price', 0).text(rupiah(0));
 
                                 $(".total-amount .rupiah").attr('data-price', newTotalPrice).text(rupiah(
                                 newTotalPrice));

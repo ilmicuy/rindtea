@@ -66,6 +66,11 @@ class CheckoutController extends Controller
                 'tarif_lokal_kurir_per_km' => $tarif_lokal_kurir,
                 'total' => $total
             ]);
+        } else if($courier == 'ambil_ditempat'){
+            return response()->json([
+                'status' => 'success',
+                'total' => 0
+            ]);
         }else{
             $response = Http::withHeaders([
                 'key' => env('API_ONGKIR_KEY')
