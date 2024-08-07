@@ -117,6 +117,24 @@
         var datasets = [];
         var productNames = new Set();
 
+        var colors = [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+        ];
+
+        var borderColors = [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+        ];
+
         // Collect all product names
         Object.values(salesData).forEach(monthlyData => {
             Object.values(monthlyData).forEach(product => {
@@ -127,12 +145,12 @@
         productNames = Array.from(productNames);
 
         // Initialize datasets for each product
-        productNames.forEach(productName => {
+        productNames.forEach((productName, index) => {
             datasets.push({
                 label: productName,
                 data: Array(labels.length).fill(0),
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: colors[index % colors.length],
+                borderColor: borderColors[index % borderColors.length],
                 borderWidth: 1
             });
         });
@@ -161,5 +179,6 @@
                 }
             }
         });
+
     </script>
 @endpush
