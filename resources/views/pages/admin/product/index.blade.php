@@ -36,7 +36,9 @@
                                         <th>Country Of Origin</th>
                                         <th>Weight</th>
                                         <th>Photo</th>
+                                        @unlessrole('owner')
                                         <th>Aksi</th>
+                                        @endunlessrole
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -52,6 +54,7 @@
                                             <td><img src="{{ Storage::url($product->photos) }}" style="max-width: 50px;"
                                                     class="img-fluid">
                                             </td>
+                                            @unlessrole('owner')
                                             <td width="100px">
                                                 <div class="d-flex justify-content-between">
                                                     <a href="{{ route('product.edit', $product->id) }}"
@@ -73,6 +76,7 @@
 
                                                 </div>
                                             </td>
+                                            @endunlessrole
                                         </tr>
                                     @empty
                                         <tr>
