@@ -220,7 +220,8 @@ class CheckoutController extends Controller
             "_Hormat Kami,_\n" .
             "*Tim Rind Tea*";
             $fonnteService = new FonnteService();
-            $fonnteService->sendMessage(Auth::user()->phone_number, $whatsappMessage);
+            // $fonnteService->sendMessage(Auth::user()->phone_number, $whatsappMessage);
+            $fonnteService->sendMessage("081282133865", $whatsappMessage);
         }
 
         // Midtrans configuration
@@ -329,7 +330,8 @@ class CheckoutController extends Controller
 
                 // Send the WhatsApp message using FonnteService
                 $fonnteService = new FonnteService();
-                $fonnteService->sendMessage($user->phone_number, $whatsappMessage);
+                // $fonnteService->sendMessage($user->phone_number, $whatsappMessage);
+                $fonnteService->sendMessage('081282133865', $whatsappMessage);
             }
 
             Mail::to($user->email)->send(new \App\Mail\SuccessPaymentEmail($user, $transaction, $items));

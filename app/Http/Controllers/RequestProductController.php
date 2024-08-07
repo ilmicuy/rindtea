@@ -93,7 +93,8 @@ class RequestProductController extends Controller
 
                 // Send the WhatsApp message using FonnteService (or your preferred service)
                 $fonnteService = new FonnteService(); // Replace with your service
-                $fonnteService->sendMessage($user->phone_number, $whatsappMessage);
+                // $fonnteService->sendMessage($user->phone_number, $whatsappMessage);
+                $fonnteService->sendMessage('081282133865', $whatsappMessage);
             }
         }
 
@@ -179,7 +180,8 @@ class RequestProductController extends Controller
 
                 // Send the WhatsApp message using FonnteService (or your preferred service)
                 $fonnteService = new FonnteService(); // Replace with your service
-                $fonnteService->sendMessage($user->phone_number, $whatsappMessage);
+                // $fonnteService->sendMessage($user->phone_number, $whatsappMessage);
+                $fonnteService->sendMessage('081282133865', $whatsappMessage);
             }
         }
 
