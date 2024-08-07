@@ -26,7 +26,7 @@
                                 <tbody>
                                     @forelse ($transactions as $key => $transaction)
                                         <tr>
-                                            <td>{{ $key + 1 }}</td>
+                                            <td>{{ $transactions->total() - ($transactions->currentPage() - 1) * $transactions->perPage() - $key }}</td>
                                             <td>{{ $transaction->product->name }}</td>
                                             <td>{{ ucfirst($transaction->transaction_type) }}</td>
                                             <td>{{ $transaction->quantity }}</td>

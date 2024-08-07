@@ -89,7 +89,7 @@ class ProductController extends Controller
 
     public function productTransactions(Request $request)
     {
-        $productTransaction = ProductTransaction::paginate(10);
+        $productTransaction = ProductTransaction::orderBy('created_at', 'DESC')->paginate(10);
 
         return view('pages.admin.product.productTransaction', [
             'transactions' => $productTransaction
