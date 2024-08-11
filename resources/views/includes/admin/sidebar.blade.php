@@ -62,10 +62,17 @@
                 </a>
             </li>
 
-            <li class="{{ request()->routeIs('requestIngredient.*') ? 'active' : '' }}">
+            <li class="{{ request()->routeIs('requestIngredient.index') ? 'active' : '' }}">
                 <a href="{{ route('requestIngredient.index') }}" class="link">
                     <i class="fas fa-cube"></i>
                     <span>Request Bahan Baku</span>
+                </a>
+            </li>
+
+            <li class="{{ request()->routeIs('requestIngredient.logs') ? 'active' : '' }}">
+                <a href="{{ route('requestIngredient.logs') }}" class="link">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Log Request Bahan Baku</span>
                 </a>
             </li>
             @endhasanyrole

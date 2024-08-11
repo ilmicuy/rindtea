@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Inbox;
 use App\Models\Ingredient;
 use App\Models\IngredientRequest;
+use App\Models\IngredientTransaction;
 use App\Models\User;
 use App\Services\FonnteService;
 use Carbon\Carbon;
@@ -62,6 +63,27 @@ class RequestIngredientController extends Controller
             'status' => 'pending'
         ]);
 
+        // Log the ingredient request as an IngredientTransaction
+        $ingredient = Ingredient::findOrFail($request->pilih_bahan_baku);
+
+        $oldQuantity = $ingredient->qty;
+        $newQuantity = $oldQuantity - $request->qty_request;
+
+        IngredientTransaction::create([
+            'ingredient_id' => $ingredient->id,
+            'ingredient_request_id' => $getRequestIngredient->id,
+            'user_id' => Auth::user()->id,
+            'transaction_type' => 'request',
+            'quantity' => $request->qty_request,
+            'old_quantity' => $oldQuantity,
+            'new_quantity' => $newQuantity,
+            'transaction_date' => Carbon::now(),
+            'description' => 'Requested ' . $request->qty_request . ' of ' . $ingredient->nama_bahan_baku,
+        ]);
+
+        // Update the ingredient quantity (if applicable)
+        $ingredient->update(['qty' => $newQuantity]);
+
         // Get users with 'keuangan' role
         $getKeuanganUser = User::role('keuangan')->get();
 
@@ -86,6 +108,14 @@ class RequestIngredientController extends Controller
 
         // Redirect to the request ingredient index page
         return redirect(route('requestIngredient.index'));
+    }
+
+
+    public function logs(Request $request)
+    {
+        $ingredientTransactions = IngredientTransaction::with(['ingredient', 'user'])->paginate(10);
+
+        return view('pages.admin.requestIngredient.ingredientTransaction', compact('ingredientTransactions'));
     }
 
 

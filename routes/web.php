@@ -138,6 +138,8 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::post('/request-bahan-baku/store', [RequestIngredientController::class, 'store'])->name('requestIngredient.store');
     Route::post('/request-bahan-baku/status-edit', [RequestIngredientController::class, 'statusEdit'])->name('requestIngredient.statusEdit');
 
+    Route::get('/request-bahan-baku/logs', [RequestIngredientController::class, 'logs'])->name('requestIngredient.logs');
+
     // request product
     Route::get('/request-product', [RequestProductController::class, 'index'])->name('requestProduct.index');
     Route::post('/request-product/store', [RequestProductController::class, 'store'])->name('requestProduct.store');
