@@ -62,8 +62,8 @@ Route::group(['middleware' => ['auth', 'redirect_to_admin']], function () {
     Route::get('/order-list', [OrderListController::class, 'index'])->name('order');
     Route::get('/order-list-detail/{transactions_id}', [OrderListController::class, 'show'])->name('order.detail');
 
-    Route::post('/review/store', [CustomerReviewController::class, 'store'])->name('review.store');
-    Route::post('/review/update/{id}', [CustomerReviewController::class, 'update'])->name('review.update');
+    // Route::post('/review/store', [CustomerReviewController::class, 'store'])->name('review.store');
+    // Route::post('/review/update/{id}', [CustomerReviewController::class, 'update'])->name('review.update');
 
     Route::get('/address', [AddressController::class, 'index'])->name('address');
     Route::post('/address/store', [AddressController::class, 'store'])->name('address.store');
@@ -124,8 +124,8 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::post('/cek-resi', [TransactionController::class, 'cekResiProcess'])->name('cekResiProcess');
 
     // reviews
-    Route::get('/reviews', [CustomerReviewController::class, 'index'])->name('reviews.index');
-    Route::get('/reviews/{id}', [CustomerReviewController::class, 'edit'])->name('reviews.edit');
+    // Route::get('/reviews', [CustomerReviewController::class, 'index'])->name('reviews.index');
+    // Route::get('/reviews/{id}', [CustomerReviewController::class, 'edit'])->name('reviews.edit');
 
     // bahan baku
     Route::get('/ingredient', [IngredientController::class, 'index'])->name('ingredient.index');

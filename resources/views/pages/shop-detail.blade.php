@@ -70,8 +70,8 @@
                         <div class="mb-3 nav nav-tabs" id="nav-tab" role="tablist">
                             <button class="nav-link active" id="nav-about-tab" data-bs-target="#nav-about" type="button"
                                 role="tab" aria-controls="nav-about" aria-selected="true">Description</button>
-                            <button class="nav-link" id="nav-missions-tab" data-bs-target="#nav-missions" type="button"
-                                role="tab" aria-controls="nav-missions" aria-selected="false">Reviews</button>
+                            {{-- <button class="nav-link" id="nav-missions-tab" data-bs-target="#nav-missions" type="button"
+                                role="tab" aria-controls="nav-missions" aria-selected="false">Reviews</button> --}}
                         </div>
                     </nav>
                     <div class="tab-content" id="nav-tabContent">
@@ -101,7 +101,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane" id="nav-missions" role="tabpanel" aria-labelledby="nav-missions-tab">
+                        {{-- <div class="tab-pane" id="nav-missions" role="tabpanel" aria-labelledby="nav-missions-tab">
                             @foreach ($review as $item)
                                 <div class="d-flex">
                                     <img src="{{ asset('img/avatar.jpg') }}" class="p-3 img-fluid rounded-circle"
@@ -128,7 +128,7 @@
                                 </div>
                                 <hr>
                             @endforeach
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>

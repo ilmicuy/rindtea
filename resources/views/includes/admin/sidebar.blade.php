@@ -82,14 +82,14 @@
             </li>
             @endhasanyrole
 
-            @hasanyrole('owner|marketing|produksi')
+            {{-- @hasanyrole('owner|marketing|produksi')
             <li class="{{ request()->routeIs('reviews.index') ? 'active' : '' }}">
                 <a href="{{ route('reviews.index') }}" class="link">
                     <i class="fas fa-star"></i>
                     <span>Reviews</span>
                 </a>
             </li>
-            @endhasanyrole
+            @endhasanyrole --}}
 
             <li class="menu-category">
                 <span>Tools</span>

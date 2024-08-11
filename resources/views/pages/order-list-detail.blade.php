@@ -1,7 +1,5 @@
 @extends('layouts.home')
 
-
-
 @section('content')
 <!-- Single Page Header start -->
 <div class="single-page-header">
@@ -13,7 +11,6 @@
     </ol>
 </div>
 <!-- Single Page Header End -->
-
 
 <!-- Order List Page Start -->
 <div class="py-5 container-fluid">
@@ -67,7 +64,7 @@
                             <p class="mt-4 mb-0">Rp.{{ number_format($item->product->price) }}</p>
                         </td>
                         <td>
-                            @php
+                            {{-- @php
                             $review = \App\Models\CustomerReview::with(['transaction', 'product'])
                             ->where('products_id', $item->product->id)
                             ->where('users_id', Auth::user()->id)
@@ -137,7 +134,7 @@
                                 </div>
                             </div>
                             @endif
-                            @else
+                            @else --}}
 
                             @php
                                 $badgeClass = '';
@@ -163,7 +160,7 @@
                             {{-- <p class=" badge bg-success" style="color:white mt-4 mb-0">
                                 Menunggu Konfirmasi Penjual
                             </p> --}}
-                            @endif
+                            {{-- @endif --}}
                         </td>
                     </tr>
                     @endforeach
@@ -219,7 +216,6 @@
 </div>
 <!-- Cart Page End -->
 @endsection
-
 
 @push('myscript')
 <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>

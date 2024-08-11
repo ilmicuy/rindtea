@@ -56,9 +56,9 @@
                         <x-nav-link :href="route('transaction')" :active="request()->routeIs('transaction*')">
                             {{ __('Transaction') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('reviews')" :active="request()->routeIs('reviews*')">
+                        {{-- <x-nav-link :href="route('reviews')" :active="request()->routeIs('reviews*')">
                             {{ __('Reviews') }}
-                        </x-nav-link>
+                        </x-nav-link> --}}
                         <x-nav-link :href="route('home')">
                             {{ __('Home') }}
                         </x-nav-link>
@@ -153,9 +153,9 @@
                     <x-responsive-nav-link :href="route('transaction')" :active="request()->routeIs('transaction*')">
                         {{ __('Transaction') }}
                     </x-responsive-nav-link>
-                    <x-responsive-nav-link :href="route('reviews')" :active="request()->routeIs('reviews*')">
+                    {{-- <x-responsive-nav-link :href="route('reviews')" :active="request()->routeIs('reviews*')">
                         {{ __('Reviews') }}
-                    </x-responsive-nav-link>
+                    </x-responsive-nav-link> --}}
 
                     <x-responsive-nav-link :href="route('profile.edit')">
                         {{ __('Profile') }}
