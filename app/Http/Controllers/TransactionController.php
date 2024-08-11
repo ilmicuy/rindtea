@@ -129,8 +129,11 @@ class TransactionController extends Controller
                 "Hormat Kami,\n" .
                 "*Tim Rind Tea*";
 
-                // $fonnteService->sendMessage($user->phone_number, $whatsappMessage);
-                $fonnteService->sendMessage('081282133865', $whatsappMessage);
+                if($user->phone_number != null){
+                    $fonnteService->sendMessage($user->phone_number, $whatsappMessage);
+                }
+                // DISABLE TEMPORARY
+                // $fonnteService->sendMessage('081282133865', $whatsappMessage);
             } elseif ($newStatus === 'completed') {
                 Mail::to($user->email)->send(new \App\Mail\TransactionCompleteEmail($user, $item));
 
@@ -141,8 +144,11 @@ class TransactionController extends Controller
                 "Hormat Kami,\n" .
                 "*Tim Rind Tea*";
 
-                // $fonnteService->sendMessage($user->phone_number, $whatsappMessage);
-                $fonnteService->sendMessage('081282133865', $whatsappMessage);
+                if ($user->phone_number != null) {
+                    $fonnteService->sendMessage($user->phone_number, $whatsappMessage);
+                }
+                // DISABLE TEMPORARY
+                // $fonnteService->sendMessage('081282133865', $whatsappMessage);
             } elseif ($newStatus === 'failed') {
                 Mail::to($user->email)->send(new \App\Mail\TransactionFailedEmail($user, $item));
 
@@ -153,8 +159,11 @@ class TransactionController extends Controller
                 "Hormat Kami,\n" .
                 "*Tim Rind Tea*";
 
-                // $fonnteService->sendMessage($user->phone_number, $whatsappMessage);
-                $fonnteService->sendMessage('081282133865', $whatsappMessage);
+                if ($user->phone_number != null) {
+                    $fonnteService->sendMessage($user->phone_number, $whatsappMessage);
+                }
+                // DISABLE TEMPORARY
+                // $fonnteService->sendMessage('081282133865', $whatsappMessage);
             }
         }
 
