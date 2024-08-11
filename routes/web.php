@@ -114,6 +114,8 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
 
     // product transaction logs
     Route::get('/product-transactions', [ProductController::class, 'productTransactions'])->name('product.productTransactions');
+    // web.php
+    Route::get('/product-transaction/download-pdf', [ProductController::class, 'downloadPdf'])->name('product.downloadPdf');
 
     // transaction
     Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');

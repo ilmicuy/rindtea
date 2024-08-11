@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Ingredient;
 use App\Models\Product;
 use App\Models\ProductTransaction;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -114,6 +115,17 @@ class ProductController extends Controller
             'categories' => $categories,
             'ingredients' => $bahanBaku
         ]);
+    }
+
+    public function downloadPdf()
+    {
+        $transactions = ProductTransaction::with(['product', 'user'])->get();
+
+        // Load the view for the PDF
+        $pdf = PDF::loadView('pages.admin.product.productTransactionPdf', compact('transactions'));
+
+        // Stream the PDF back to the user for download
+        return $pdf->download('product_transaction_log.pdf');
     }
 
     /**
