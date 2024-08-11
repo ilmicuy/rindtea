@@ -53,6 +53,18 @@
                                         <input type="file" class="form-control" id="photos" name="photos" required>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="opsi_pengiriman" class="form-label">Opsi Pengiriman</label><br>
+                                        <label>
+                                            <input type="checkbox" name="opsi_pengiriman[]" value="Regular" required> Regular
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" name="opsi_pengiriman[]" value="Instant" required> Instant
+                                        </label>
+                                    </div>
+                                </div>
+
                                 <div class="col-md-12">
                                     <div class="form-group mb-3">
                                         <label for="thumb_description" class="form-label">Description</label>

@@ -62,6 +62,10 @@ class ProductController extends Controller
         $data['photos'] = $request->file('photos')->store('assets/product', 'public');
         $data['quantity'] = 0;
 
+        if ($request->has('opsi_pengiriman')) {
+            $data['opsi_pengiriman'] = json_encode($request->opsi_pengiriman);
+        }
+
         $product = Product::create($data);
 
         $bahanBakuData = [];
@@ -71,7 +75,7 @@ class ProductController extends Controller
 
         $product->ingredients()->sync($bahanBakuData);
 
-        // Log initial product creation
+        // Log the initial product creation
         ProductTransaction::create([
             'product_id' => $product->id,
             'transaction_id' => null, // No specific transaction ID for initial creation
@@ -117,32 +121,39 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, $id)
     {
+        // Retrieve all form data
         $data = $request->all();
 
+        // Generate a slug from the product name
         $data['slug'] = Str::slug($request->name);
+
+        // Handle file upload if a new photo is provided
         if ($request->hasFile('photos')) {
             $data['photos'] = $request->file('photos')->store('assets/product', 'public');
         }
 
-        $item = Product::findOrFail($id);
+        // Handle the opsi_pengiriman field, encode it as JSON
+        if ($request->has('opsi_pengiriman')) {
+            $data['opsi_pengiriman'] = json_encode($request->opsi_pengiriman);
+        }
 
+        // Find the product by its ID and update it with the new data
+        $item = Product::findOrFail($id);
         $item->update($data);
 
-
+        // Prepare the ingredients data for syncing
         $bahanBakuData = [];
         foreach ($request->list_bahan_baku as $bahan_baku) {
             $bahanBakuData[$bahan_baku['bahan_baku']] = ['qty_needed' => $bahan_baku['qty_needed']];
-
-            // $bahanBakuData[] = [
-            //     'ingredient_id' => $bahan_baku['bahan_baku'],
-            //     'qty_needed' => $bahan_baku['qty_needed']
-            // ];
         }
 
+        // Sync the ingredients with the product
         $item->ingredients()->sync($bahanBakuData);
 
-        return redirect()->route('product.edit', $id);
+        // Redirect back to the edit page with a success message
+        return redirect()->route('product.edit', $id)->with('success', 'Product updated successfully.');
     }
+
 
     /**
      * Remove the specified resource from storage.

@@ -43,6 +43,28 @@
                                             name="country_of_origin" required value="{{ $item->country_of_origin }}">
                                     </div>
                                 </div>
+
+                                <!-- Shipping Options -->
+                                <div class="col-md-12">
+                                    <div class="form-group mb-3">
+                                        <label for="opsi_pengiriman" class="form-label">Opsi Pengiriman</label><br>
+                                        @php
+                                            $opsiPengiriman = json_decode($item->opsi_pengiriman, true) ?? [];
+                                        @endphp
+                                        <label>
+                                            <input type="checkbox" name="opsi_pengiriman[]" value="Regular"
+                                                {{ in_array('Regular', $opsiPengiriman) ? 'checked' : '' }}>
+                                            Regular
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" name="opsi_pengiriman[]" value="Instant"
+                                                {{ in_array('Instant', $opsiPengiriman) ? 'checked' : '' }}>
+                                            Instant
+                                        </label>
+                                    </div>
+                                </div>
+
+
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="price" class="form-label">Price</label>

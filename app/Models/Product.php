@@ -20,12 +20,11 @@ class Product extends Model
         'quantity',
         'quality',
         'thumb_description',
-        // 'short_description',
-        // 'long_description',
-        'price' ,
+        'price',
         'weight',
         'check',
-        'country_of_origin'
+        'country_of_origin',
+        'opsi_pengiriman',
     ];
 
     protected $hidden = [];

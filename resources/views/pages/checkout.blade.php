@@ -12,7 +12,6 @@
 </div>
 <!-- Single Page Header End -->
 
-
 <!-- Checkout Page Start -->
 <div class="checkout-page">
     <div class="container">
@@ -34,17 +33,18 @@
                         @php
                         $total = 0;
                         $weight = 0;
-                        $is_local_courier_only = false;
+                        $only_instant_shipping = false;
                         @endphp
                         @foreach ($checkouts as $checkout)
                         @php
                         $weight = $checkout->product->weight * $checkout->qty;
                         $total = $checkout->product->price * $checkout->qty;
 
-                        if($checkout->product->is_local_courier_only){
-                        $is_local_courier_only = true;
-                        }
+                        $opsiPengiriman = json_decode($checkout->product->opsi_pengiriman, true);
 
+                        if (count($opsiPengiriman) === 1 && in_array('Instant', $opsiPengiriman)) {
+                            $only_instant_shipping = true;
+                        }
                         @endphp
                         <tr>
                             <input type="hidden" id="weight" name="weight" value="{{ $weight }}">
@@ -62,18 +62,17 @@
                             <td class="product-total">
                                 <p class="rupiah" data-price="{{ $total }}"></p>
                             </td>
-
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
+
                 <!-- Shipping and Total Section -->
                 <div class="checkout-summary">
                     <div class="shipping-section">
                         <div class="shipping-header">
                             <h5 class="shipping-title"><i class='bx bx-map'></i> Delivery Address</h5>
-                            <a href="{{ route('address') }}" class="btn btn-outline-secondary btn-sm">Add a new
-                                address</a>
+                            <a href="{{ route('address') }}" class="btn btn-outline-secondary btn-sm">Add a new address</a>
                         </div>
                         <div class="address-list">
                             <div class="row">
@@ -104,7 +103,7 @@
                         </div>
                         <h5 class="shipping-title"><i class='bx bxs-truck'></i> Delivery Service</h5>
                         <div class="courier-options d-flex justify-content-start">
-                            @if($is_local_courier_only == false)
+                            @if(!$only_instant_shipping)
                             <div class="shipping-option d-flex align-items-center mr-4">
                                 <input class="courier-code" type="radio" name="courier" id="inlineRadio1" value="jne">
                                 <label class="courier-label ml-2" for="inlineRadio1">JNE</label>
@@ -125,25 +124,20 @@
                             </div>
 
                             <div class="shipping-option d-flex align-items-center">
-                                <input class="courier-code" type="radio" name="courier" id="inlineRadio4" value="ambil_ditempat">
-                                <label class="courier-label ml-2" for="inlineRadio4">Ambil Ditempat</label>
+                                <input class="courier-code" type="radio" name="courier" id="inlineRadio5" value="ambil_ditempat">
+                                <label class="courier-label ml-2" for="inlineRadio5">Ambil Ditempat</label>
                             </div>
-
-
-                            <!-- <div class="">
-                                <a href="{{ route('delivery') }}" id="btn-lokal-kurir">Lokal Kurir</a>
-                            </div> -->
-
                         </div>
+
                         <div class="available-services-container">
                             <p>Available services:</p>
-                            @if($is_local_courier_only)
-                                <p>Produk ini hanya menerima pengiriman Lokal Kurir</p>
+                            @if($only_instant_shipping)
+                                <p>Produk ini hanya menerima pengiriman Lokal Kurir atau Ambil Ditempat</p>
                             @else
                                 <ul class="available-services" style="display: none;"></ul>
                             @endif
-
                         </div>
+
                         <div class="shipping-cost">
                             <h3>Shipping fee</h3>
                             <p class="rupiah" data-price="0"></p>
@@ -171,26 +165,14 @@
 
                     </div>
                 </div>
-                <!-- <div class="payment-options">
-                        <h3>Payment Option</h3>
-                        <div class="payment-option">
-                            <input type="checkbox" class="checkbox" id="payment-option" name="Transfer"
-                                value="Transfer">
-                            <label class="label" for="Transfer-1">Direct Bank Transfer</label>
-                        </div>
-                        <div class="payment-option">
-                            <input type="checkbox" class="checkbox" id="payment-option" name="cod" value="cod">
-                            <label class="label" for="Delivery-1">Cash On Delivery</label>
-                        </div>
-                    </div> -->
                 <div class="place-order">
                     <button type="submit" class="btn-submit" id="">Checkout</button>
                 </div>
-
             </div>
         </form>
     </div>
 </div>
+
 <div class="modal" id="modal-showmap">
     <div class="modal-container">
         <a href="#" class="close-icon" data-dismiss="modal"><i data-feather="x"></i></a>
@@ -201,10 +183,10 @@
 </div>
 <!-- Checkout Page End -->
 @endsection
+
 @push('myscript')
 <script>
     $("#frmCheckout").submit(function(event) {
-        // var address = $(".homeRadio").is(":checked");
         var address = $("input[name='address_id']:checked").val();
         var courier = $(".courier-code").is(":checked");
 
@@ -221,12 +203,10 @@
         }
     });
 
-
-
     $(function() {
         $.ajaxSetup({
             headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                'X-CSRF-TOKEN': $('meta[name="csrf-token']").attr('content')
             }
         });
 
@@ -239,12 +219,8 @@
 
             $('.courier-code').click(function() {
                 let courier = $(this).val();
-                console.log(courier);
-
                 let weight = $('#weight').val();
                 let addressID = $('.delivery-address:checked').val();
-
-                let totalPriceInput = $("input[name='total_price']").val();
 
                 if (addressID) {
                     $.ajax({
@@ -257,9 +233,7 @@
                             _token: $('meta[name="csrf-token"]').attr('content')
                         },
                         success: function(result) {
-                            // console.log(lokal_kurir);
                             if(courier == 'lokal_kurir'){
-                                // total_price =
                                 let lokal_kurir_price = result.total;
 
                                 $('.available-services').show();
@@ -281,16 +255,12 @@
                                 `);
 
                                 var originalTotalPrice = parseFloat($(".total-amount .rupiah").attr('data-price')) || 0;
-
                                 var currentShippingCost = parseFloat($(".shipping-cost .rupiah").attr('data-price')) || 0;
 
                                 var newTotalPrice = originalTotalPrice - currentShippingCost + lokal_kurir_price;
 
                                 $(".shipping-cost .rupiah").attr('data-price', lokal_kurir_price).text(rupiah(lokal_kurir_price));
-
-                                $(".total-amount .rupiah").attr('data-price', newTotalPrice).text(rupiah(
-                                newTotalPrice));
-
+                                $(".total-amount .rupiah").attr('data-price', newTotalPrice).text(rupiah(newTotalPrice));
                                 $("input[name='total_price']").val(newTotalPrice);
                             }else if(courier == 'ambil_ditempat'){
                                 $('.available-services').show();
@@ -309,10 +279,7 @@
                                 var newTotalPrice = originalTotalPrice - currentShippingCost;
 
                                 $(".shipping-cost .rupiah").attr('data-price', 0).text(rupiah(0));
-
-                                $(".total-amount .rupiah").attr('data-price', newTotalPrice).text(rupiah(
-                                newTotalPrice));
-
+                                $(".total-amount .rupiah").attr('data-price', newTotalPrice).text(rupiah(newTotalPrice));
                                 $("input[name='total_price']").val(newTotalPrice);
                             }else{
                                 $('.available-services').show();
@@ -327,17 +294,12 @@
                     alert('Please select a delivery address first.');
                 }
 
-
-                if(courier == 'lokal_kurir') {
+                if(courier == 'lokal_kurir' || courier == 'ambil_ditempat') {
                     $('.available-services').hide();
                     $('.available-services').html('');
-                }else{
-                    // console.log(courier);
                 }
-
             });
         });
-
     });
 </script>
 @endpush
