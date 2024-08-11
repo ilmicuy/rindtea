@@ -131,21 +131,18 @@ class CheckoutController extends Controller
     public function store(Request $request)
     {
         $carts = Cart::with(['product', 'user'])
-            ->where('users_id', Auth::user()->id)
+        ->where('users_id', Auth::user()->id)
             ->get();
 
         $items = [];
         $itemTotalPrice = 0;
 
-        $shippingCourier = null;
-        $shippingCost = 0;
-
         foreach ($carts as $cart) {
             $items[] = [
                 'id'       => 'item' . $cart->id,
-                'price'    => $cart->product->price, // Assuming the product model has a 'price' attribute
+                'price'    => $cart->product->price,
                 'quantity' => $cart->qty,
-                'name'     => $cart->product->name, // Assuming the product model has a 'name' attribute
+                'name'     => $cart->product->name,
             ];
 
             $itemTotalPrice += $cart->qty * $cart->product->price;
@@ -176,11 +173,9 @@ class CheckoutController extends Controller
             $oldQuantity = $getProduct->quantity;
             $newQuantity = $oldQuantity - $cart->qty;
 
-            // Update product quantity
             $getProduct->quantity = $newQuantity;
             $getProduct->save();
 
-            // Create transaction detail
             TransactionDetail::create([
                 'checkout_date' => date('Y-m-d H:i:s'),
                 'transactions_id' => $transaction->id,
@@ -188,7 +183,6 @@ class CheckoutController extends Controller
                 'qty' => $cart->qty,
             ]);
 
-            // Log product transaction
             ProductTransaction::create([
                 'product_id' => $cart->product->id,
                 'transaction_id' => $transaction->id,
@@ -202,34 +196,26 @@ class CheckoutController extends Controller
             ]);
         }
 
-        // Clear the cart
         Cart::where('users_id', Auth::user()->id)->delete();
 
-        // Send the checkout email
+        // Send checkout email to the user
         Mail::to(Auth::user()->email)->send(new \App\Mail\CheckoutEmail(Auth::user(), $transaction, $items));
 
-        if(Auth::user()->phone_number != null){
-            //Whatsapp Message
-            $whatsappMessage = "*Terima Kasih atas Pesanan Anda di Rind Tea!*" . "\n\n" .
-            "Hai, " . Auth::user()->name . "!" . "\n" .
-            "Terimakasih telah melakukan pemesanan dengan nomor #" . $transaction->id . " di website Rind Tea. Berikut adalah rincian pesanan Anda:" . "\n\n";
+        // Send new order email to the marketing team
+        try{
+            Mail::to('marketingrindtea@gmail.com')->send(new \App\Mail\NewOrderEmail($transaction, $items));
+        }catch(Exception $e){}
 
-            foreach ($items as $item) {
-                $whatsappMessage .= "- *" . $item['name'] . "* - " . $item['quantity'] . " x Rp " . number_format($item['price'], 0, ',', '.') . "\n";
-            }
+        // Send WhatsApp message to marketing team
+        $whatsappMessage = "Notifikasi Order Baru\n\n" .
+        "Order ID: #" . $transaction->id . "\n" .
+        "Total Harga: Rp " . number_format($transaction->total_price, 0, ',', '.') . "\n\n" .
+        "Silahkan Cek Email/Login Untuk Detail Lebih Lanjut.";
 
-            $whatsappMessage .= "\n*Total Harga:* Rp " . number_format($transaction->total_price, 0, ',', '.') . "\n" .
-            "*Ongkos Kirim:* Rp " . number_format($shippingCost, 0, ',', '.') . " (" . $shippingCourier . ")" . "\n\n" .
-            "Silahkan untuk melakukan pelunasan dengan mengunjungi tautan berikut:" . "\n" .
-            "https://rindtea.biz.id/order-list-detail/" . $transaction->id . "\n\n" .
-            "_Hormat Kami,_\n" .
-            "*Tim Rind Tea*";
-            $fonnteService = new FonnteService();
-            // $fonnteService->sendMessage(Auth::user()->phone_number, $whatsappMessage);
-            $fonnteService->sendMessage("081282133865", $whatsappMessage);
-        }
+        $fonnteService = new FonnteService();
+        $fonnteService->sendMessage("081282133865", $whatsappMessage);
 
-        // Midtrans configuration
+        // Midtrans configuration and transaction initiation
         Config::$serverKey = config('services.midtrans.serverKey');
         Config::$isProduction = config('services.midtrans.isProduction');
         Config::$isSanitized = config('services.midtrans.isSanitized');
@@ -245,7 +231,10 @@ class CheckoutController extends Controller
                 'email' => Auth::user()->email,
             ],
             'enable_payments' => [
-                'gopay', 'permata_va', 'shoppepay', 'bank_transfer'
+                'gopay',
+                'permata_va',
+                'shoppepay',
+                'bank_transfer'
             ],
             'item_details' => $items,
             'vtweb' => []
@@ -262,6 +251,7 @@ class CheckoutController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
 
     public function callback(Request $request)
     {
