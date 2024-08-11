@@ -47,6 +47,18 @@
         </div>
         <div class="content-wrapper">
             <div class="col-md-12">
+                @if ($hasLowStock)
+                    <div class="alert alert-danger">
+                        <h4 class="alert-heading">Bahan Baku Hampir Habis!</h4>
+                        Mohon untuk melakukan pengadaan bahan baku berikut:
+                        <ul style="margin-left: 1.2em;">
+                            @foreach ($lowStockIngredients as $ingredient)
+                                <li>{{ $ingredient->nama_bahan_baku }} - Stok: {{ $ingredient->qty }} {{ $ingredient->satuan }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <div class="card">
                     <div class="card-body">
 

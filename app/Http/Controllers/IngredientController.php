@@ -12,12 +12,25 @@ class IngredientController extends Controller
      */
     public function index(Request $request)
     {
+        // Paginate ingredients
         $ingredients = Ingredient::paginate(10);
 
+        // Filter low stock ingredients based on 'pcs' and 'gram' units
+        $lowStockIngredients = Ingredient::all()->filter(function ($ingredient) {
+            return ($ingredient->satuan == 'pcs' && $ingredient->qty < 50) ||
+                ($ingredient->satuan == 'gram' && $ingredient->qty < 1000);
+        });
+
+        // Check if there are any low stock ingredients
+        $hasLowStock = $lowStockIngredients->isNotEmpty();
+
         return view('pages.admin.ingredient.index', [
-            'ingredients' => $ingredients
+            'ingredients' => $ingredients,
+            'hasLowStock' => $hasLowStock,
+            'lowStockIngredients' => $lowStockIngredients,
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.

@@ -23,11 +23,23 @@ class RequestIngredientController extends Controller
 
         $bahanBaku = Ingredient::all();
 
+        // Filter low stock ingredients
+        $lowStockIngredients = $bahanBaku->filter(function ($ingredient) {
+            return ($ingredient->satuan == 'pcs' && $ingredient->qty < 50) ||
+                ($ingredient->satuan == 'gram' && $ingredient->qty < 1000);
+        });
+
+        // Check if there are any low stock ingredients
+        $hasLowStock = $lowStockIngredients->isNotEmpty();
+
         return view('pages.admin.requestIngredient.index', [
             'ingredients' => $bahanBaku,
             'ingredientRequest' => $requestBahanBaku,
+            'hasLowStock' => $hasLowStock,
+            'lowStockIngredients' => $lowStockIngredients,
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.
