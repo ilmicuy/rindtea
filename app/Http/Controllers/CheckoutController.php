@@ -340,6 +340,9 @@ class CheckoutController extends Controller
             }
 
             Mail::to($user->email)->send(new \App\Mail\SuccessPaymentEmail($user, $transaction, $items));
+
+            // Sementara
+            Mail::to('rindteasemarang@gmail.com')->send(new \App\Mail\SuccessPaymentEmail($user, $transaction, $items));
         }
 
         $transaction->save();
