@@ -67,7 +67,7 @@ class RequestIngredientController extends Controller
         $ingredient = Ingredient::findOrFail($request->pilih_bahan_baku);
 
         $oldQuantity = $ingredient->qty;
-        $newQuantity = $oldQuantity - $request->qty_request;
+        $newQuantity = $oldQuantity + $request->qty_request;
 
         IngredientTransaction::create([
             'ingredient_id' => $ingredient->id,
@@ -82,7 +82,7 @@ class RequestIngredientController extends Controller
         ]);
 
         // Update the ingredient quantity (if applicable)
-        $ingredient->update(['qty' => $newQuantity]);
+        // $ingredient->update(['qty' => $newQuantity]);
 
         // Get users with 'keuangan' role
         $getKeuanganUser = User::role('keuangan')->get();
