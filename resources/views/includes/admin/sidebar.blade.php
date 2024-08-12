@@ -114,7 +114,7 @@
                 </a>
             </li>
 
-            @hasanyrole('owner')
+            {{-- @hasanyrole('owner')
             <li>
                 <a href="#" class="main-menu has-dropdown">
                     <i class="fas fa-globe"></i>
@@ -138,7 +138,7 @@
                     </li>
                 </ul>
             </li>
-            @endhasanyrole
+            @endhasanyrole --}}
 
         </ul>
     </div>
