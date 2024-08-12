@@ -22,4 +22,9 @@ class ProductRequest extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public function logs()
+    {
+        return $this->morphMany(TransactionLog::class, 'loggable');
+    }
 }

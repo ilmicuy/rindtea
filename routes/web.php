@@ -23,6 +23,7 @@ use App\Http\Controllers\InboxController;
 use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\RequestIngredientController;
 use App\Http\Controllers\RequestProductController;
+use App\Http\Controllers\TransactionLogsController;
 
 Route::group(['middleware' => ['redirect_to_admin']], function() {
     Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -121,6 +122,12 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
     Route::get('/transaction/{id}', [TransactionController::class, 'edit'])->name('transaction.edit');
     Route::post('/transaction/update/{id}', [TransactionController::class, 'update'])->name('transaction.update');
+
+    // Transaction Logs
+    Route::get('/transaction-logs', [TransactionLogsController::class, 'transactionLogs'])->name('transactionLogs.index');
+    Route::get('/transaction-logs/download-pdf', [TransactionLogsController::class, 'downloadPdf'])->name('transactionLogs.downloadPdf');
+
+
     // TEMPORARY: Cek Resi Route
     Route::get('/cek-resi', [TransactionController::class, 'cekResi'])->name('cekResi');
     Route::post('/cek-resi', [TransactionController::class, 'cekResiProcess'])->name('cekResiProcess');

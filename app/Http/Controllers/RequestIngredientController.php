@@ -6,6 +6,7 @@ use App\Models\Inbox;
 use App\Models\Ingredient;
 use App\Models\IngredientRequest;
 use App\Models\IngredientTransaction;
+use App\Models\TransactionLog;
 use App\Models\User;
 use App\Services\FonnteService;
 use Carbon\Carbon;
@@ -81,6 +82,17 @@ class RequestIngredientController extends Controller
             'description' => 'Requested ' . $request->qty_request . ' of ' . $ingredient->nama_bahan_baku,
         ]);
 
+        // Log the request to the transaction logs
+        TransactionLog::create([
+            'loggable_id' => $getRequestIngredient->id,
+            'loggable_type' => IngredientRequest::class,
+            'user_id' => Auth::user()->id,
+            'request_type' => 'request_ingredient',
+            'quantity' => $request->qty_request,
+            'request_date' => Carbon::now(),
+            'description' => 'Requested ' . $request->qty_request . ' of ' . $ingredient->nama_bahan_baku,
+        ]);
+
         // Update the ingredient quantity (if applicable)
         // $ingredient->update(['qty' => $newQuantity]);
 
@@ -130,6 +142,8 @@ class RequestIngredientController extends Controller
             ], 422);
         }
 
+        $statusName = '';
+
         if ($request->action == 'confirm') {
             $statusName = "Disetujui";
 
@@ -138,6 +152,17 @@ class RequestIngredientController extends Controller
 
             $getRequestIngredient->status = 'success';
             $getRequestIngredient->approved_at = Carbon::now();
+
+            // Log the approval action
+            TransactionLog::create([
+                'loggable_id' => $getRequestIngredient->id,
+                'loggable_type' => IngredientRequest::class,
+                'user_id' => Auth::user()->id,
+                'request_type' => 'request_ingredient',
+                'quantity' => $getRequestIngredient->qty_request,
+                'request_date' => Carbon::now(),
+                'description' => 'Approved request for ' . $getRequestIngredient->qty_request . ' of ' . $getRequestIngredient->ingredient->nama_bahan_baku,
+            ]);
         } elseif ($request->action == 'processing') {
             $statusName = "Diproses";
             $getRequestIngredient->status = 'processing';
@@ -150,6 +175,17 @@ class RequestIngredientController extends Controller
         } elseif ($request->action == 'cancel') {
             $statusName = "Tidak Disetujui";
             $getRequestIngredient->status = 'cancelled';
+
+            // Log the cancellation action
+            TransactionLog::create([
+                'loggable_id' => $getRequestIngredient->id,
+                'loggable_type' => IngredientRequest::class,
+                'user_id' => Auth::user()->id,
+                'request_type' => 'request_ingredient',
+                'quantity' => $getRequestIngredient->qty_request,
+                'request_date' => Carbon::now(),
+                'description' => 'Cancelled request for ' . $getRequestIngredient->qty_request . ' of ' . $getRequestIngredient->ingredient->nama_bahan_baku,
+            ]);
         }
 
         // Get users with 'produksi' role
@@ -177,8 +213,7 @@ class RequestIngredientController extends Controller
 
                 // Send the WhatsApp message using FonnteService (or your preferred service)
                 $fonnteService = new FonnteService(); // Replace with your service
-                // $fonnteService->sendMessage($user->phone_number, $whatsappMessage);
-                $fonnteService->sendMessage('081282133865', $whatsappMessage);
+                $fonnteService->sendMessage($user->phone_number, $whatsappMessage);
             }
         }
 
@@ -190,6 +225,7 @@ class RequestIngredientController extends Controller
             'message' => 'Successfully ' . $request->action . ' product request!'
         ]);
     }
+
 
 
     /**

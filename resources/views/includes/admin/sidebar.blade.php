@@ -87,6 +87,13 @@
                     <span>Transaction</span>
                 </a>
             </li>
+
+            <li class="{{ request()->routeIs('transactionLogs.*') ? 'active' : '' }}">
+                <a href="{{ route('transactionLogs.index') }}" class="link">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <span>Transaction Log</span>
+                </a>
+            </li>
             @endhasanyrole
 
             {{-- @hasanyrole('owner|marketing|produksi')

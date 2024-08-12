@@ -23,4 +23,9 @@ class IngredientRequest extends Model
     {
         return $this->belongsTo(Ingredient::class);
     }
+
+    public function logs()
+    {
+        return $this->morphMany(TransactionLog::class, 'loggable');
+    }
 }
