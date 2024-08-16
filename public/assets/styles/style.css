@@ -563,7 +563,7 @@ body {
 /* Product */
 .products .row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
   gap: 1.5rem;
   margin-top: 4rem;
 }
@@ -1002,7 +1002,7 @@ body {
 
         .product-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
             gap: 1.5rem;
         }
 
@@ -1249,7 +1249,7 @@ footer .credit a {
   color: var(--text-color);
 }
 .checkout-page.container{
-    margin-bottom: 2rem !important; 
+    margin-bottom: 2rem !important;
 }
 
 .checkout-page .title {
