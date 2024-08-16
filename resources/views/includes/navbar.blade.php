@@ -2,10 +2,10 @@
     <a href="/" class="navbar-logo">Rind <span>Tea</span></a>
     <div class="navbar-nav">
         <a href="/">Home</a>
-        <a href="#about">Tentang Kami</a>
-        <a href="#menu">Menu</a>
-        <a href="#products">Produk</a>
-        <a href="#contact">Kontak</a>
+        <a href="{{ request()->routeIs('home') ? '#about' : route('home') . '#about' }}">Tentang Kami</a>
+        <a href="{{ request()->routeIs('home') ? '#menu' : route('home') . '#menu' }}">Menu</a>
+        <a href="{{ request()->routeIs('home') ? '#products' : route('home') . '#products' }}">Produk</a>
+        <a href="{{ request()->routeIs('home') ? '#contact' : route('home') . '#contact' }}">Kontak</a>
     </div>
     <div class="navbar-extra">
         <a href="{{ route('shop') }}"><svg xmlns="http://www.w3.org/2000/svg" width="23" height="23"
@@ -75,9 +75,9 @@
     </div>
 
     <!-- Search -->
-    <div class="search-form">
+    {{-- <div class="search-form">
         <input type="search" id="search-box" placeholder="Cari..." />
         <label for="search-box"><i data-feather="search"></i></label>
-    </div>
+    </div> --}}
 
 </nav>
