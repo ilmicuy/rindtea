@@ -2,7 +2,7 @@
 @section('content')
     <div class="main-content">
         <div class="title">
-            Product Transaction History
+            Produk Transaction History
         </div>
         <div class="content-wrapper">
             <div class="col-md-12">
@@ -15,7 +15,7 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Product Name</th>
+                                        <th>Produk Name</th>
                                         <th>Transaction Type</th>
                                         <th>Role</th>
                                         <th>Quantity</th>

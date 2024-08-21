@@ -3,7 +3,7 @@
 
 
 @hasanyrole('produksi')
-<!-- Modal Buat Request Product -->
+<!-- Modal Buat Request Produk -->
 <div class="modal fade" id="buatRequestIngredientModal" tabindex="-1" aria-labelledby="buatRequestIngredientModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -26,11 +26,11 @@
                         </select>
                     </div>
                     <div class="form-group mb-4">
-                        <label>Quantity Permintaan</label>
+                        <label>Jumlah Permintaan</label>
                         <input type="number" name="qty_request" class="form-control" min="1" value="1">
                     </div>
                     <div class="form-group">
-                        <label>Notes</label>
+                        <label>Catatan</label>
                         <textarea name="notes" class="form-control" rows="3"></textarea>
                     </div>
                 </form>
@@ -74,10 +74,11 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
+                                        <th>Kode Request</th>
                                         <th>Nama Bahan Baku</th>
                                         <th>Stok Tersedia</th>
-                                        <th>Quantity Permintaan</th>
-                                        <th>Notes</th>
+                                        <th>Jumlah Permintaan</th>
+                                        <th>Catatan</th>
                                         <th>Status</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -86,6 +87,7 @@
                                     @forelse  ($ingredientRequest as $key => $req)
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
+                                            <td>{{ $req->kode_request_bahan_baku }}</td>
                                             <td>{{ $req->ingredient->nama_bahan_baku }}</td>
                                             <td>{{ $req->ingredient->qty }} {{ $req->ingredient->satuan }}</td>
                                             <td>{{ $req->qty_request }} {{ $req->ingredient->satuan }}</td>
@@ -188,7 +190,7 @@
         }
 
         if (qtyRequest === '' || isNaN(qtyRequest) || parseInt(qtyRequest) < 1) {
-            alert('Quantity Permintaan must be at least 1.');
+            alert('Jumlah Permintaan must be at least 1.');
             return;
         }
 

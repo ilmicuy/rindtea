@@ -20,7 +20,7 @@
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Total Product</h4>
+                                <h4>Total Produk</h4>
                             </div>
                             <div class="card-body">
                                 <div class="text-gray-900 dark:text-gray-100">
@@ -32,7 +32,7 @@
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Revenue</h4>
+                                <h4>Pendapatan</h4>
                             </div>
                             <div class="card-body">
                                 <div class="text-gray-900 dark:text-gray-100">
@@ -44,7 +44,7 @@
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Pending Transactions</h4>
+                                <h4>Transaksi Pending</h4>
                             </div>
                             <div class="card-body">
                                 <div class="text-gray-900 dark:text-gray-100">

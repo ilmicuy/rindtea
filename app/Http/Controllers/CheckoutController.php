@@ -159,6 +159,7 @@ class CheckoutController extends Controller
         ];
 
         $transaction = Transaction::create([
+            'kode_transaksi' => (new Transaction)->generateKodeTransaksi(),
             'checkout_date' => date('Y-m-d H:i:s'),
             'users_id' => Auth::user()->id,
             'total_price' => (int) $request->total_price,

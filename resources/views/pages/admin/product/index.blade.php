@@ -7,7 +7,7 @@
 @section('content')
     <div class="main-content">
         <div class="title">
-            Product
+            Produk
         </div>
         <div class="content-wrapper">
             <div class="col-md-12">
@@ -34,13 +34,14 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama</th>
-                                        <th>Price</th>
-                                        <th>Quantity</th>
-                                        <th>Quality</th>
-                                        <th>Country Of Origin</th>
-                                        <th>Weight</th>
-                                        <th>Photo</th>
+                                        <th>Kode Produk</th>
+                                        <th>Nama Produk</th>
+                                        <th>Harga</th>
+                                        <th>Jumlah</th>
+                                        <th>Kualitas</th>
+                                        <th>Asal</th>
+                                        <th>Berat</th>
+                                        <th>Gambar</th>
                                         @unlessrole('owner')
                                         <th>Aksi</th>
                                         @endunlessrole
@@ -50,6 +51,7 @@
                                     @forelse  ($query as $key => $product)
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
+                                            <td>{{ $product->kode_produk }}</td>
                                             <td>{{ $product->name }}</td>
                                             <td>Rp.{{ number_format($product->price) }}</td>
                                             <td>{{ $product->quantity }} Pcs</td>

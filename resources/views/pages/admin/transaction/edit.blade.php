@@ -63,7 +63,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>No</th>
-                                                    <th>Product</th>
+                                                    <th>Produk</th>
                                                     <th>Tanggal Checkout</th>
                                                     <th>Price / Item</th>
                                                     <th>Quantity</th>
@@ -185,7 +185,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>No</th>
-                                                    <th>Product</th>
+                                                    <th>Produk</th>
                                                     <th>Tanggal Checkout</th>
                                                     <th>Price / Item</th>
                                                     <th>Quantity</th>

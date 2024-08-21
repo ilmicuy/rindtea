@@ -22,6 +22,7 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
+                                        <th>Kode Transaksi</th>
                                         <th>Tanggal Checkout</th>
                                         <th>Total Price</th>
                                         <th>Status Transaction</th>
@@ -34,6 +35,7 @@
                                     @forelse ($query as $key => $transaction)
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
+                                            <td>{{ $transaction->kode_transaksi }}</td>
                                             <td>{{ \Carbon\Carbon::parse($transaction->updated_at)->format('d M Y H:i:s') }}</td>
                                             <td>Rp.{{ number_format($transaction->total_price) }}</td>
                                             <td>

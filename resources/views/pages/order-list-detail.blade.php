@@ -32,8 +32,8 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Product</th>
-                        <th scope="col">Product Name</th>
+                        <th scope="col">Produk</th>
+                        <th scope="col">Produk Name</th>
                         <th scope="col">Quantity</th>
                         <th scope="col">Price / Item</th>
                         <th scope="col">Status</th>

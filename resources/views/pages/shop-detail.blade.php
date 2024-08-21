@@ -10,7 +10,7 @@
         </ol>
     </div>
 
-    <!-- Single Product Start -->
+    <!-- Single Produk Start -->
     <div class="single-product">
         <div class="container">
             <div class="product-wrapper">
@@ -135,7 +135,7 @@
         </div>
     </div>
 
-    <!-- Single Product End -->
+    <!-- Single Produk End -->
 @endsection
 
 

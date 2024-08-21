@@ -46,6 +46,7 @@ class IngredientController extends Controller
     public function store(Request $request)
     {
         Ingredient::create([
+            'kode_bahan_baku' => (new Ingredient)->generateKodeBahanBaku(),
             'nama_bahan_baku' => $request->nama_bahan_baku,
             'qty' => abs($request->qty),
             'satuan' => $request->satuan,

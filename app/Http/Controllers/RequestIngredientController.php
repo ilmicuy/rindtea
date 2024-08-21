@@ -21,7 +21,7 @@ class RequestIngredientController extends Controller
      */
     public function index(Request $request)
     {
-        $requestBahanBaku = IngredientRequest::paginate(10);
+        $requestBahanBaku = IngredientRequest::orderBy('created_at', 'DESC')->paginate(10);
 
         $bahanBaku = Ingredient::all();
 
@@ -58,6 +58,7 @@ class RequestIngredientController extends Controller
     {
         // Create a new IngredientRequest
         $getRequestIngredient = IngredientRequest::create([
+            'kode_request_bahan_baku' => (new IngredientRequest)->generateKodeRequestBahanBaku(),
             'ingredient_id' => $request->pilih_bahan_baku,
             'qty_request' => $request->qty_request,
             'notes' => $request->notes,

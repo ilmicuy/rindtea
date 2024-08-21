@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Product Transaction Log</title>
+    <title>Produk Transaction Log</title>
     <style>
         body {
             font-family: sans-serif;
@@ -22,12 +22,12 @@
     </style>
 </head>
 <body>
-    <h1>Product Transaction Log</h1>
+    <h1>Produk Transaction Log</h1>
     <table>
         <thead>
             <tr>
                 <th>No</th>
-                <th>Product Name</th>
+                <th>Produk Name</th>
                 <th>Transaction Type</th>
                 <th>Role</th>
                 <th>Quantity</th>

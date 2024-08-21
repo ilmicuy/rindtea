@@ -2,12 +2,12 @@
 @section('content')
 
     @hasanyrole('marketing')
-    <!-- Modal Buat Request Product -->
+    <!-- Modal Buat Request Produk -->
     <div class="modal fade" id="buatRequestProductModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Buat Request Product</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Buat Request Produk</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -17,9 +17,9 @@
                     <form action="{{ route('requestProduct.store') }}" id="buatRequestProductForm" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group mb-4">
-                          <label>Pilih Product</label>
-                          <select class="form-control" name="pilih_product">
-                                <option value="">== Pilih Product ==</option>
+                          <label>Pilih Produk</label>
+                          <select class="form-control" name="pilih_product" required>
+                                <option value="">== Pilih Produk ==</option>
                                 @foreach ($products as $product)
                                     <option value="{{ $product->id }}">{{ $product->name }}</option>
                                 @endforeach
@@ -27,12 +27,12 @@
                         </div>
 
                         <div class="form-group mb-4">
-                          <label>Quantity Permintaan</label>
-                          <input type="number" name="qty_requested" class="form-control" min="1" value="1">
+                          <label>Jumlah Permintaan</label>
+                          <input type="number" name="qty_requested" class="form-control" min="1" value="1" required>
                         </div>
 
                         <div class="form-group">
-                          <label>Notes</label>
+                          <label>Catatan</label>
                           <textarea name="notes" class="form-control" rows="3"></textarea>
                         </div>
                     </form>
@@ -51,7 +51,7 @@
 
     <div class="main-content">
         <div class="title">
-            Request Product
+            Request Produk
         </div>
         <div class="content-wrapper">
             @if ($hasLowStock)
@@ -70,22 +70,23 @@
                     <div class="card-body">
                         @hasanyrole('marketing')
                         <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#buatRequestProductModal">
-                            Buat Request Product
+                            Buat Request Produk
                         </button>
                         @endhasanyrole
 
                         {{-- <a href="{{ route('ingredient.create') }}" class="mb-3 btn btn-primary">
-                            Buat Request Product
+                            Buat Request Produk
                         </a> --}}
                         <div class="table-responsive">
                             <table id="example2" class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th>No</th>
+                                        <th>Kode Request</th>
                                         <th>Nama Produk</th>
                                         {{-- <th>Stok Tersedia</th> --}}
-                                        <th>Quantity Permintaan</th>
-                                        <th>Notes</th>
+                                        <th>Jumlah Permintaan</th>
+                                        <th>Catatan</th>
                                         <th>Status</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -94,6 +95,7 @@
                                     @forelse  ($productRequest as $key => $req)
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
+                                            <td>{{ $req->kode_request_produk }}</td>
                                             <td>{{ $req->product->name }}</td>
                                             {{-- <td>{{ $req->product->quantity }}</td> --}}
                                             <td>{{ $req->qty_requested }} pax</td>

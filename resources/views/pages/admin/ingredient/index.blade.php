@@ -2,7 +2,7 @@
 @section('content')
 
 @hasanyrole('produksi')
-<!-- Modal Buat Request Product -->
+<!-- Modal Buat Request Produk -->
 <div class="modal fade" id="buatIngredientModal" tabindex="-1" aria-labelledby="buatIngredientModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -73,8 +73,9 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
+                                        <th>Kode Bahan Baku</th>
                                         <th>Nama Bahan Baku</th>
-                                        <th>Quantity</th>
+                                        <th>Jumlah</th>
                                         <th>Satuan</th>
                                         {{-- <th>Aksi</th> --}}
                                     </tr>
@@ -83,6 +84,7 @@
                                     @forelse  ($ingredients as $key => $ingredient)
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
+                                            <td>{{ $ingredient->kode_bahan_baku }}</td>
                                             <td>{{ $ingredient->nama_bahan_baku }}</td>
                                             <td>{{ $ingredient->qty }}</td>
                                             <td>{{ $ingredient->satuan }}</td>

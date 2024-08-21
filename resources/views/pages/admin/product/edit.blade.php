@@ -2,7 +2,7 @@
 @section('content')
     <div class="main-content">
         <div class="title">
-            Edit Product
+            Edit Produk
         </div>
         <div class="content-wrapper">
             <div class="col-md-12">
@@ -13,7 +13,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label for="name" class="form-label">Product Name</label>
+                                        <label for="name" class="form-label">Produk Name</label>
                                         <input type="text" class="form-control" id="name" name="name"
                                             autocomplete="name" required value="{{ $item->name }}">
                                     </div>

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +16,7 @@ class Transaction extends Model
 
 
     protected $fillable = [
+        'kode_transaksi',
         'users_id',
         'transaction_status',
         'total_price',
@@ -28,6 +30,28 @@ class Transaction extends Model
     ];
 
     protected $hidden = [];
+
+    public function generateKodeTransaksi()
+    {
+        // Get the last Ingredient code from the database
+        $lastTransaksi = self::latest('kode_transaksi')->first();
+
+        // Extract the numeric part from the last kode_produk (e.g., TRX-20240822-0001 -> 1)
+        if ($lastTransaksi) {
+            $lastNumber = intval(substr($lastTransaksi->kode_transaksi, 13));
+        } else {
+            $lastNumber = 0;
+        }
+
+        // Increment the number by 1
+        $newNumber = $lastNumber + 1;
+
+        // Format the new number with leading zeros (e.g., 1 -> 0001)
+        $newKodeTransaksi = 'TRX-' . Carbon::now()->format('Ymd') . '-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+
+        return $newKodeTransaksi;
+    }
+
 
     public function user()
     {

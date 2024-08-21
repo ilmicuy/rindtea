@@ -51,7 +51,7 @@
                             </x-dropdown>
                         </div>
                         <x-nav-link :href="route('product')" :active="request()->routeIs('product*')">
-                            {{ __('Product') }}
+                            {{ __('Produk') }}
                         </x-nav-link>
                         <x-nav-link :href="route('transaction')" :active="request()->routeIs('transaction*')">
                             {{ __('Transaction') }}
@@ -148,7 +148,7 @@
                         {{ __('Category') }}
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('product')" :active="request()->routeIs('product*')">
-                        {{ __('Product') }}
+                        {{ __('Produk') }}
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('transaction')" :active="request()->routeIs('transaction*')">
                         {{ __('Transaction') }}

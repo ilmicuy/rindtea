@@ -22,7 +22,7 @@
                                                 <th>No</th>
                                                 <th>Tanggal Review</th>
                                                 <th>Nama User</th>
-                                                <th>Product</th>
+                                                <th>Produk</th>
                                                 <th>Rating</th>
                                                 <th>Aksi</th>
                                             </tr>

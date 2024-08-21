@@ -59,6 +59,7 @@ class ProductController extends Controller
     {
         $data = $request->all();
 
+        $data['kode_produk'] = (new Product)->generateKodeProduk();  // Generate the product code
         $data['slug'] = Str::slug($request->name);
         $data['photos'] = $request->file('photos')->store('assets/product', 'public');
         $data['quantity'] = 0;

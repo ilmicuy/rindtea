@@ -61,7 +61,7 @@
         </div>
     </section>
 
-    <!-- Product -->
+    <!-- Produk -->
     <section class="products" id="products">
         <h2>Produk <span>Kami</span></h2>
         <p>

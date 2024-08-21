@@ -10,6 +10,7 @@ class IngredientRequest extends Model
     use HasFactory;
 
     public $fillable = [
+        'kode_request_bahan_baku',
         'ingredient_id',
         'qty_request',
         'approved_at',
@@ -18,6 +19,27 @@ class IngredientRequest extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function generateKodeRequestBahanBaku()
+    {
+        // Get the last Ingredient code from the database
+        $lastRequestIngredient = self::latest('kode_request_bahan_baku')->first();
+
+        // Extract the numeric part from the last kode_produk (e.g., REQ-ING-0001 -> 1)
+        if ($lastRequestIngredient) {
+            $lastNumber = intval(substr($lastRequestIngredient->kode_request_bahan_baku, 8));
+        } else {
+            $lastNumber = 0;
+        }
+
+        // Increment the number by 1
+        $newNumber = $lastNumber + 1;
+
+        // Format the new number with leading zeros (e.g., 1 -> 0001)
+        $newKodeRequestBahanBaku = 'REQ-ING-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+
+        return $newKodeRequestBahanBaku;
+    }
 
     public function ingredient()
     {

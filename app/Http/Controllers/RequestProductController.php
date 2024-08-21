@@ -17,7 +17,7 @@ class RequestProductController extends Controller
 {
     public function index(Request $request)
     {
-        $requestProduct = ProductRequest::paginate(10);
+        $requestProduct = ProductRequest::orderBy('created_at', 'DESC')->paginate(10);
 
         $products = Product::all();
 
@@ -68,8 +68,15 @@ class RequestProductController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'pilih_product' => 'required|exists:products,id',
+            'qty_requested' => 'required|integer|min:1',
+            'notes' => 'nullable|string|max:255',
+        ]);
+
         // Create a new ProductRequest
         $getRequestProduct = ProductRequest::create([
+            'kode_request_produk' => (new ProductRequest)->generateKodeRequestProduk(),
             'product_id' => $request->pilih_product,
             'qty_requested' => $request->qty_requested,
             'notes' => $request->notes,

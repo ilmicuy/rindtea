@@ -21,31 +21,23 @@
 
             @hasanyrole('owner|produksi|marketing')
             <li class="menu-category">
-                <span>Product</span>
+                <span>Produk</span>
             </li>
 
             <li class="{{ request()->routeIs('product.*') && !request()->routeIs('product.productTransactions') ? 'active' : '' }}">
                 <a href="{{ route('product.index') }}" class="link">
                     <i class="fas fa-box"></i>
-                    <span>Product</span>
+                    <span>Produk</span>
                 </a>
             </li>
             @endhasanyrole
 
-            @hasrole('owner')
-            <li class="{{ request()->routeIs('product.productTransactions') ? 'active' : '' }}">
-                <a href="{{ route('product.productTransactions') }}" class="link">
-                    <i class="fas fa-exchange-alt"></i>
-                    <span>Product Transaction</span>
-                </a>
-            </li>
-            @endhasrole
 
             @hasanyrole('owner|marketing|produksi')
             <li class="{{ request()->routeIs('requestProduct.*') ? 'active' : '' }}">
                 <a href="{{ route('requestProduct.index') }}" class="link">
                     <i class="fas fa-clipboard-list"></i>
-                    <span>Request Product</span>
+                    <span>Request Produk</span>
                 </a>
             </li>
             @endhasanyrole
@@ -70,23 +62,34 @@
             </li>
             @endhasanyrole
 
-            @hasanyrole('owner')
+
+            @hasrole('owner')
+            <li class="menu-category">
+                <span>Laporan</span>
+            </li>
+            <li class="{{ request()->routeIs('product.productTransactions') ? 'active' : '' }}">
+                <a href="{{ route('product.productTransactions') }}" class="link">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Laporan Transaksi Produk</span>
+                </a>
+            </li>
             <li class="{{ request()->routeIs('requestIngredient.logs') ? 'active' : '' }}">
                 <a href="{{ route('requestIngredient.logs') }}" class="link">
                     <i class="fas fa-exchange-alt"></i>
-                    <span>Log Request Bahan Baku</span>
+                    <span>Laporan Transaksi Bahan Baku</span>
                 </a>
             </li>
-            @endhasanyrole
+            @endhasrole
+
 
             @hasanyrole('owner|keuangan|marketing')
             <li class="menu-category">
-                <span>Transaction</span>
+                <span>Transaksi</span>
             </li>
             <li class="{{ request()->routeIs('transaction.*') ? 'active' : '' }}">
                 <a href="{{ route('transaction.index') }}" class="link">
                     <i class="fas fa-money-bill-wave"></i>
-                    <span>Transaction</span>
+                    <span>Transaksi</span>
                 </a>
             </li>
 
@@ -108,7 +111,7 @@
             @endhasanyrole --}}
 
             <li class="menu-category">
-                <span>Tools</span>
+                <span>Alat</span>
             </li>
             <li class="{{ request()->routeIs('cekResi') ? 'active' : '' }}">
                 <a href="{{ route('cekResi') }}" class="link">
@@ -119,7 +122,7 @@
             <li class="{{ request()->routeIs('inbox.*') ? 'active' : '' }}">
                 <a href="{{ route('inbox.index') }}" class="link">
                     <i class="fas fa-envelope"></i>
-                    <span>Inbox</span>
+                    <span>Pesan</span>
                 </a>
             </li>
 
