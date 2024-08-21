@@ -349,6 +349,12 @@ function confirmAction(id, action)
                 case 'processing':
                     actionName = 'Memproses';
                     break;
+                case 'owner_approval':
+                    actionName = 'Menyetujui';
+                    break;
+                case 'owner_approval_cancel':
+                    actionName = 'Membatalkan';
+                    break;
                 default:
                     actionName = 'Membatalkan';
                     break;

@@ -56,7 +56,7 @@ class AddressController extends Controller
             $newAddress = Address::create($validated);
         });
 
-        return redirect()->route('checkout');
+        return redirect()->route('checkout')->with('success', true);
     }
 
     /**

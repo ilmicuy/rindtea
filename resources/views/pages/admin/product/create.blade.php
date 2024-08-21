@@ -50,7 +50,9 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="photos" class="form-label">Image</label>
-                                        <input type="file" class="form-control" id="photos" name="photos" required>
+                                        <input type="file" class="form-control" id="photos" name="photos" required accept=".png, .jpg, .jpeg">
+                                        <small class="text-danger">(png & jpg, max 5 mb)</small>
+                                        <div id="file-error" class="text-danger mt-1"></div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -138,6 +140,25 @@
             hide: function (deleteElement) {
                 if(confirm('Are you sure you want to delete this element?')) {
                     $(this).slideUp(deleteElement);
+                }
+            }
+        });
+
+        document.getElementById('photos').addEventListener('change', function() {
+            const allowedTypes = ['image/png', 'image/jpeg'];
+            const maxSize = 5 * 1024 * 1024; // 5 MB in bytes
+            const file = this.files[0];
+            const errorDiv = document.getElementById('file-error');
+
+            if (file) {
+                if (!allowedTypes.includes(file.type)) {
+                    errorDiv.textContent = 'Please upload an image file (png or jpg).';
+                    this.value = ''; // Clear the input
+                } else if (file.size > maxSize) {
+                    errorDiv.textContent = 'File size must be less than 5 MB.';
+                    this.value = ''; // Clear the input
+                } else {
+                    errorDiv.textContent = ''; // Clear any error messages
                 }
             }
         });

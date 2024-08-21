@@ -22,10 +22,10 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">Products</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Quantity</th>
+                            <th scope="col">Produk</th>
+                            <th scope="col">Nama Produk</th>
+                            <th scope="col">Harga</th>
+                            <th scope="col">Jumlah</th>
                             <th scope="col">Total</th>
                         </tr>
                     </thead>
@@ -186,6 +186,14 @@
 
 @push('myscript')
 <script>
+    @if(session('success'))
+        Swal.fire({
+            title: 'Alamat berhasil ditambahkan!',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    @endif
+
     $("#frmCheckout").submit(function(event) {
         var address = $("input[name='address_id']:checked").val();
         var courier = $(".courier-code").is(":checked");

@@ -1,4 +1,9 @@
 @extends('layouts.app-old')
+
+@push('css')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+@endpush
+
 @section('content')
     <div class="main-content">
         <div class="title">
@@ -95,3 +100,21 @@
         </div>
     </div>
 @endsection
+
+
+@push('js')
+<!-- Include SweetAlert CSS and JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        @if(session('success'))
+            Swal.fire({
+                title: 'Success!',
+                text: "{{ session('success') }}",
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+        @endif
+    });
+</script>
+@endpush

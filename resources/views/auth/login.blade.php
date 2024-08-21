@@ -1,4 +1,9 @@
 @extends('layouts.home')
+
+@push('css')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+@endpush
+
 @section('content')
     <section class="login" id="login">
         <div class="inner-page">
@@ -8,14 +13,14 @@
                     @csrf
                     <x-text-input id="email" class="login-input" type="email" name="email" :value="old('email')" autofocus
                         autocomplete="username" placeholder="Your Email" />
-                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                    {{-- <x-input-error :messages="$errors->get('email')" class="mt-2" /> --}}
 
                     <div class="password-container" style="display: flex; align-items: center;">
                         <x-text-input id="password" class="login-input" type="password" name="password"
                             autocomplete="current-password" placeholder="Your Password" style="flex: 1;" />
                         <span id="togglePassword" class="toggle-password" style="cursor: pointer; margin-left: 10px;">Show</span>
                     </div>
-                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                    {{-- <x-input-error :messages="$errors->get('password')" class="mt-2" /> --}}
 
                     <button class="login-button" type="submit">Submit</button>
                 </form>
@@ -24,6 +29,8 @@
     </section>
 
     @push('myscript')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         const togglePassword = document.querySelector('#togglePassword');
         const password = document.querySelector('#password');
@@ -35,6 +42,19 @@
 
             // toggle the text
             this.textContent = this.textContent === 'Show' ? 'Hide' : 'Show';
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            @if(session('errors'))
+                Swal.fire({
+                    title: 'Email atau Password Salah!',
+                    // text: "{{ session('errors') }}",
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            @endif
         });
     </script>
     @endpush

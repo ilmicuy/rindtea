@@ -54,6 +54,13 @@
             });
         });
 
+        @if(session('successLogin'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Pendaftaran Akun Berhasil!',
+            });
+        @endif
+
         @if(session('error'))
             Swal.fire({
                 icon: 'error',

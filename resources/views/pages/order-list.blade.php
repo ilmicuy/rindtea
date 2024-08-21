@@ -26,7 +26,7 @@
                             <th scope="col">Pesanan Dibuat</th>
                             <th scope="col">Total Harga</th>
                             <th scope="col">Status Transaksi</th>
-                            <th scope="col">Action</th>
+                            <th scope="col">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -89,7 +89,7 @@ class ProductController extends Controller
             'description' => 'Initial creation of product',
         ]);
 
-        return redirect()->route('product.index');
+        return redirect()->route('product.index')->with('success', 'Berhasil Tambah Produk!');
     }
 
     public function productTransactions(Request $request)

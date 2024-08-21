@@ -2,13 +2,13 @@
 
 
 @section('content')
-    
+
     <!-- Single Page Header start -->
     <div class="single-page-header">
         <h1 class="page-title">Keranjang</h1>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item"><a href="#">Pages</a></li>
+            {{-- <li class="breadcrumb-item"><a href="#">Pages</a></li> --}}
             <li class="breadcrumb-item active">Keranjang</li>
         </ol>
     </div>
@@ -22,12 +22,12 @@
                 <table class="">
                     <thead>
                         <tr>
-                            <th scope="col">Products</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Quantity</th>
+                            <th scope="col">Produk</th>
+                            <th scope="col">Nama Produk</th>
+                            <th scope="col">Harga</th>
+                            <th scope="col">Jumlah</th>
                             <th scope="col">Total</th>
-                            <th scope="col">Action</th>
+                            <th scope="col">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -76,7 +76,7 @@
                         <h5 class="">Total</h5>
                         <p class="rupiah" data-price="{{ $subtotal }}"></p>
                     </div>
-                    <a href="{{ route('checkout') }}" class="checkout-button" type="button">Proceed to Checkout</a>
+                    <a href="{{ route('checkout') }}" class="checkout-button" type="button">Proses Checkout</a>
                 </div>
             @endif
         </div>

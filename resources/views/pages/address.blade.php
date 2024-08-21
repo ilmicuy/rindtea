@@ -22,7 +22,7 @@
     <h1 class="page-title">Alamat</h1>
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/">Home</a></li>
-        <li class="breadcrumb-item"><a href="#">Pages</a></li>
+        <li class="breadcrumb-item"><a href="/checkout">Checkout</a></li>
         <li class="breadcrumb-item active">Alamat</li>
     </ol>
 </div>
@@ -30,13 +30,13 @@
 <section class="login" id="login">
     <div class="inner-page">
         <div class="login-container">
-            @if ($errors->any())
+            {{-- @if ($errors->any())
             @foreach ($errors->all() as $error)
             <div class="py-3 w-full rounded-3xl bg-red-500 text-white">
                 {{ $error }}
             </div>
             @endforeach
-            @endif
+            @endif --}}
             <form method="POST" action="{{ route('address.store') }}">
                 @csrf
                 <div>
@@ -49,11 +49,11 @@
 
                 <div>
                     <x-text-input id="fullname" class="login-input" type="text" name="fullname" :value="old('fullname')" autofocus autocomplete="fullname" placeholder="Nama Lengkap" />
-                    <x-input-error :messages="$errors->get('fullname')" class="mt-2" />
+                    {{-- <x-input-error :messages="$errors->get('fullname')" class="mt-2" /> --}}
                 </div>
                 <div>
                     <x-text-input id="phone" class="login-input" type="number" name="phone" :value="old('phone')" autofocus autocomplete="phone" placeholder="No Telepon" />
-                    <x-input-error :messages="$errors->get('nohp')" class="mt-2" />
+                    {{-- <x-input-error :messages="$errors->get('nohp')" class="mt-2" /> --}}
                 </div>
                 <div>
                     <select id="province_id" class="login-input" name="province_id" autofocus autocomplete="province_id">
@@ -62,7 +62,7 @@
                         <option value="{{ $province['province_id'] }}">{{ $province['province'] }}</option>
                         @endforeach
                     </select>
-                    <x-input-error :messages="$errors->get('province_id')" class="mt-2" />
+                    {{-- <x-input-error :messages="$errors->get('province_id')" class="mt-2" /> --}}
                 </div>
 
                 <input type="hidden" name="province_name">
@@ -73,7 +73,7 @@
                         <option value="{{ $city['city_id'] }}">{{ $city['city_name'] }}</option>
                         @endforeach
                     </select>
-                    <x-input-error :messages="$errors->get('regency_id')" class="mt-2" />
+                    {{-- <x-input-error :messages="$errors->get('regency_id')" class="mt-2" /> --}}
                 </div>
 
                 <input type="hidden" name="regency_name">
@@ -92,11 +92,11 @@
                     </div> --}}
                 <div>
                     <x-text-input id="postcode" class="login-input" type="number" name="postcode" :value="old('postcode')" autofocus autocomplete="postcode" placeholder="Kode Pos" />
-                    <x-input-error :messages="$errors->get('postcode')" class="mt-2" />
+                    {{-- <x-input-error :messages="$errors->get('postcode')" class="mt-2" /> --}}
                 </div>
                 <div>
                     <textarea id="address" class="login-input" name="address" autofocus autocomplete="address" placeholder="Masukkan Alamat">{{ old('address') }}</textarea>
-                    <x-input-error :messages="$errors->get('address')" class="mt-2" />
+                    {{-- <x-input-error :messages="$errors->get('address')" class="mt-2" /> --}}
                 </div>
 
                 <div>
@@ -112,7 +112,10 @@
                 </div>
 
 
-                <button class="login-button" type="submit">Submit</button>
+                <div>
+                    <button onclick="window.location='/checkout';" type="button" class="login-button" style="background-color: #a63639 !important;">Cancel</button>
+                    <button class="login-button" type="submit">Submit</button>
+                </div>
             </form>
         </div>
     </div>
@@ -123,6 +126,26 @@
 @endsection
 @push('myscript')
 <script>
+    @if($errors->any())
+        let errorMessages = '';
+        @foreach ($errors->all() as $error)
+            errorMessages += `<li style="list-style-position: inside;
+padding-left: 0;">{{ ucwords($error) }}</li>`;
+        @endforeach
+
+        Swal.fire({
+            title: 'Terjadi Kesalahan!',
+            html: `
+                <ul>
+                    ${errorMessages}
+                </ul>
+            `,
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+    @endif
+
+
     let map;
     let marker;
     const sellerLocation = {
