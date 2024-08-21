@@ -39,7 +39,7 @@
                 @if (Route::has('login'))
                     <nav class="dropdown-menu dropdown-menu-dark" style="margin-top: -10px;">
                         @auth
-                            <x-dropdown-link :href="route('profile.edit')" class="dropdown-item">
+                            <x-dropdown-link class="dropdown-item">
                                 Hi, {{ Auth::user()->name }}
                             </x-dropdown-link>
                             <x-dropdown-link :href="route('order')" class="dropdown-item">
