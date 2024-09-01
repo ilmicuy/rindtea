@@ -117,9 +117,7 @@
     <section class="contact" id="contact">
         <h2><span>Kontak</span> Kami</h2>
         <p>
-            Untuk informasi lebih lanjut atau pemesanan, hubungi kami di [email
-            protected] atau melalui WhatsApp di +62 812-3456-7890. Kunjungi juga
-            gerai kami di Jalan Mawar No. 123, Jakarta.
+            Untuk informasi lebih lanjut atau pemesanan, hubungi kami di kolom Bawah ini. Kunjungi juga gerai kami di Jalan Parang Kusumo V, Desa/Kelurahan Tlogosari Kulon, Kec. Pedurungan, Kota Semarang, Provinsi Jawa Tengah, 50196
         </p>
         <div class="row">
             <iframe
