@@ -132,7 +132,7 @@
                         <div class="col-md-4">
                             <div class="bg-white rounded-lg shadow-md">
                                 <div class="p-4">
-                                    <h4 class="pb-2 font-semibold">Phone Number </h4>
+                                    <h4 class="pb-2 font-semibold">No. Telepon </h4>
                                     <div class="text-gray-900 dark:text-gray-100">
                                         {{ $items->transaction->address->phone}}
                                     </div>
