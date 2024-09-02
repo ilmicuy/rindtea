@@ -140,9 +140,10 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
 
     // bahan baku
     Route::get('/ingredient', [IngredientController::class, 'index'])->name('ingredient.index');
-    // Route::get('/ingredient/create', [IngredientController::class, 'create'])->name('ingredient.create');
     Route::post('/ingredient/store', [IngredientController::class, 'store'])->name('ingredient.store');
-    // Route::get('/ingredient/{id}', [IngredientController::class, 'edit'])->name('ingredient.edit');
+    Route::put('/ingredient/{id}', [IngredientController::class, 'update'])->name('ingredient.update');
+    Route::delete('/ingredient/{id}', [IngredientController::class, 'destroy'])->name('ingredient.destroy');
+
 
     // request bahan baku
     Route::get('/request-bahan-baku', [RequestIngredientController::class, 'index'])->name('requestIngredient.index');

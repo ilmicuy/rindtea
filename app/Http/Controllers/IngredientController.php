@@ -74,16 +74,27 @@ class IngredientController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $ingredient = Ingredient::findOrFail($id);
+
+        // Update only the fields that can be modified
+        $ingredient->update([
+            'nama_bahan_baku' => $request->input('nama_bahan_baku'),
+            'satuan' => $request->input('satuan'),
+        ]);
+
+        return redirect()->route('ingredient.index')->with('success', 'Bahan Baku berhasil diperbarui.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $ingredient = Ingredient::findOrFail($id);
+        $ingredient->delete();
+
+        return redirect()->route('ingredient.index')->with('success', 'Bahan Baku berhasil dihapus.');
     }
 }

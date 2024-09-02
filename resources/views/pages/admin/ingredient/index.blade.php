@@ -77,7 +77,7 @@
                                         <th>Nama Bahan Baku</th>
                                         <th>Jumlah</th>
                                         <th>Satuan</th>
-                                        {{-- <th>Aksi</th> --}}
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -88,29 +88,88 @@
                                             <td>{{ $ingredient->nama_bahan_baku }}</td>
                                             <td>{{ $ingredient->qty }}</td>
                                             <td>{{ $ingredient->satuan }}</td>
-                                            {{-- <td width="100px">
-                                                <div class="d-flex justify-content-between">
-                                                    <a href="{{ route('ingredient.edit', $ingredient->id) }}"
-                                                        class="btn btn-primary btn-sm">
-                                                        <i class="ti-pencil"></i>
-                                                    </a>
-                                                    <form id="deleteForm{{ $ingredient->id }}"
-                                                        action="{{ route('ingredient.destroy', $ingredient->id) }}"
-                                                        method="POST">
-                                                        @method('delete')
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">
-                                                            <i class="ti-trash"></i>
-                                                        </button>
-                                                    </form>
 
+                                            <td width="100px">
+                                                <div class="d-flex justify-content-between">
+                                                    <!-- Edit Button -->
+                                                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editIngredientModal{{ $ingredient->id }}">
+                                                        <i class="ti-pencil"></i>
+                                                    </button>
+
+                                                    <!-- Delete Button -->
+                                                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteIngredientModal{{ $ingredient->id }}">
+                                                        <i class="ti-trash"></i>
+                                                    </button>
                                                 </div>
-                                            </td> --}}
+                                            </td>
                                         </tr>
+
+                                        <!-- Edit Ingredient Modal -->
+                                        <div class="modal fade" id="editIngredientModal{{ $ingredient->id }}" tabindex="-1" aria-labelledby="editIngredientModalLabel{{ $ingredient->id }}" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Edit Bahan Baku</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form action="{{ route('ingredient.update', $ingredient->id) }}" method="POST">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <div class="form-group mb-4">
+                                                                <label>Nama Bahan Baku</label>
+                                                                <input type="text" name="nama_bahan_baku" class="form-control" value="{{ $ingredient->nama_bahan_baku }}" required>
+                                                            </div>
+                                                            <div class="form-group mb-4">
+                                                                <label>Satuan</label>
+                                                                <select name="satuan" class="form-control" required>
+                                                                    <option value="pcs" {{ $ingredient->satuan == 'pcs' ? 'selected' : '' }}>Pcs</option>
+                                                                    <option value="gram" {{ $ingredient->satuan == 'gram' ? 'selected' : '' }}>Gram</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group mb-4">
+                                                                <label>Quantity (Tidak dapat diubah)</label>
+                                                                <input type="number" class="form-control" value="{{ $ingredient->qty }}" disabled>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                                                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Delete Ingredient Modal -->
+                                        <div class="modal fade" id="deleteIngredientModal{{ $ingredient->id }}" tabindex="-1" aria-labelledby="deleteIngredientModalLabel{{ $ingredient->id }}" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Hapus Bahan Baku</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Apakah Anda yakin ingin menghapus bahan baku ini?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <form action="{{ route('ingredient.destroy', $ingredient->id) }}" method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                                            <button type="submit" class="btn btn-danger">Hapus</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     @empty
                                         <tr>
-                                            <td colspan="5">
+                                            <td colspan="6">
                                                 <p>Tidak ada data terbaru</p>
                                             </td>
                                         </tr>
