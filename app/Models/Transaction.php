@@ -27,6 +27,8 @@ class Transaction extends Model
         'shipment_courier',
         'shipment_cost',
         'shipment_address_id',
+        'refund_status',
+        'refund_no_rek',
     ];
 
     protected $hidden = [];

@@ -176,6 +176,11 @@
                                         <a class="nav-link" id="shipping-details-tab" data-toggle="tab" href="#shipping-details" role="tab" aria-controls="shipping-details" aria-selected="false">Detil Pengiriman</a>
                                     </li>
                                 {{-- @endif --}}
+                                @if ($transaction->refund_status != null)
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link" id="refund-tab" data-toggle="tab" href="#refund" role="tab" aria-controls="refund" aria-selected="false">Refund</a>
+                                </li>
+                                @endif
                             </ul>
                             <div class="tab-content" id="myTabContent">
                                 <!-- Transaction Details Tab -->
@@ -293,6 +298,32 @@
                                 </div>
                                 {{-- @endif --}}
 
+                                 <!-- Transaction Details Tab -->
+                                <div class="tab-pane fade" id="refund" role="tabpanel" aria-labelledby="refund-tab">
+
+                                    <div class="mb-4">
+
+                                        <div class="form-group">
+                                          <label>Status Refund</label>
+                                          <input type="text" class="form-control" value="{{ strtoupper(str_replace('_', ' ', $transaction->refund_status)) }}" disabled>
+                                        </div>
+
+                                        <div class="form-group">
+                                          <label>No. Rekening Refund</label>
+                                          <input type="text" class="form-control" value="{{ $transaction->refund_no_rek ?? "(Belum Ada)" }}" disabled>
+                                        </div>
+
+                                        @if ($transaction->refund_status == 'pending')
+                                            <div class="form-group">
+                                                <button type="button" id="process-refund-button" class="btn btn-success btn-block">Proses Refund</button>
+                                            </div>
+                                        @endif
+
+
+                                    </div>
+
+                                </div>
+
                             </div>
                             <a class="btn btn-secondary" href="{{ route('transaction.index') }}">
                                 {{ __('Cancel') }}
@@ -335,5 +366,36 @@
             $("input[name='no_resi']").hide();
         }
     });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.getElementById('process-refund-button').addEventListener('click', function() {
+    Swal.fire({
+        title: 'Apakah anda yakin?',
+        text: "Anda tidak dapat mengubah status refund setelah diproses!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, proses refund!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '{{ route('transaction.processRefund', $transaction->id) }}';
+
+            const csrfToken = document.createElement('input');
+            csrfToken.type = 'hidden';
+            csrfToken.name = '_token';
+            csrfToken.value = '{{ csrf_token() }}';
+
+            form.appendChild(csrfToken);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+});
 </script>
 @endpush

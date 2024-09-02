@@ -67,10 +67,26 @@ class OrderListController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $transactions_id)
     {
-        //
+        // Validate the input
+        $request->validate([
+            'refund_no_rek' => 'required|string|max:255',
+        ]);
+
+        // Find the transaction by ID
+        $transaction = Transaction::findOrFail($transactions_id);
+
+        // Update the transaction
+        $transaction->update([
+            'refund_status' => 'pending',
+            'refund_no_rek' => $request->input('refund_no_rek'),
+        ]);
+
+        // Redirect back with success message
+        return redirect()->route('order.detail', $transactions_id)->with('success', 'Refund details updated successfully!');
     }
+
 
     /**
      * Remove the specified resource from storage.

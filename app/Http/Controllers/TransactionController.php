@@ -150,6 +150,9 @@ class TransactionController extends Controller
                 // DISABLE TEMPORARY
                 // $fonnteService->sendMessage('081282133865', $whatsappMessage);
             } elseif ($newStatus === 'failed') {
+                $item->refund_status = 'belum_diproses';
+                $item->save();
+
                 Mail::to($user->email)->send(new \App\Mail\TransactionFailedEmail($user, $item));
 
                 // WhatsApp message for failed
@@ -242,6 +245,20 @@ class TransactionController extends Controller
         return redirect()->route('transaction.edit', $id);
     }
 
+
+    public function processRefund(Request $request, string $id)
+    {
+        // Find the transaction by ID
+        $transaction = Transaction::findOrFail($id);
+        
+        // Update the refund status to 'selesai'
+        $transaction->update([
+            'refund_status' => 'selesai',
+        ]);
+        
+        // Redirect back to the transaction edit page with a success message
+        return redirect()->route('transaction.edit', $id)->with('success', 'Refund processed successfully!');
+    }
 
 
 

@@ -62,6 +62,7 @@ Route::group(['middleware' => ['auth', 'redirect_to_admin']], function () {
 
     Route::get('/order-list', [OrderListController::class, 'index'])->name('order');
     Route::get('/order-list-detail/{transactions_id}', [OrderListController::class, 'show'])->name('order.detail');
+    Route::post('/order-list-detail/{transactions_id}', [OrderListController::class, 'update'])->name('order.update');
 
     // Route::post('/review/store', [CustomerReviewController::class, 'store'])->name('review.store');
     // Route::post('/review/update/{id}', [CustomerReviewController::class, 'update'])->name('review.update');
@@ -121,6 +122,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     // transaction
     Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
     Route::get('/transaction/{id}', [TransactionController::class, 'edit'])->name('transaction.edit');
+    Route::post('/transaction/{id}/process-refund', [TransactionController::class, 'processRefund'])->name('transaction.processRefund');
     Route::post('/transaction/update/{id}', [TransactionController::class, 'update'])->name('transaction.update');
 
     // Transaction Logs
