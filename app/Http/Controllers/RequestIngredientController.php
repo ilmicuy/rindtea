@@ -80,7 +80,7 @@ class RequestIngredientController extends Controller
             'old_quantity' => $oldQuantity,
             'new_quantity' => $newQuantity,
             'transaction_date' => Carbon::now(),
-            'description' => 'Requested ' . $request->qty_request . ' of ' . $ingredient->nama_bahan_baku,
+            'description' => 'Requested ' . $request->qty_request . ' of ' . $ingredient->nama_bahan_baku . ' with #' . $getRequestIngredient->kode_request_bahan_baku,
         ]);
 
         // Log the request to the transaction logs

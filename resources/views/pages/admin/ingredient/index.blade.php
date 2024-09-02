@@ -43,7 +43,7 @@
 
     <div class="main-content">
         <div class="title">
-            Ingredient
+            Bahan Baku
         </div>
         <div class="content-wrapper">
             <div class="col-md-12">

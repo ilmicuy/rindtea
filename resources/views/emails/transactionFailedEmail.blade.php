@@ -42,7 +42,7 @@
         </div>
         <div class="content">
             <h2>Hai, {{ $user->name }}!</h2>
-            <p>Pemesanan produk anda dengan nomor #{{ $transaction->id }} gagal dilakukan. Silakan coba lagi atau hubungi tim support kami.</p>
+            <p>Pemesanan produk anda dengan kode transaksi #{{ $transaction->kode_transaksi }} gagal dilakukan. Silakan coba lagi atau hubungi tim support kami.</p>
             <p>Hormat Kami,<br>Tim Rind Tea</p>
         </div>
         <div class="footer">

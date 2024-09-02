@@ -2,7 +2,7 @@
 @section('content')
     <div class="main-content">
         <div class="title">
-            Transaction History
+            Riwayat Transaksi
         </div>
         <div class="content-wrapper">
             <div class="col-md-12">
@@ -25,7 +25,8 @@
                                         <th>Kode Transaksi</th>
                                         <th>Tanggal Checkout</th>
                                         <th>Total Price</th>
-                                        <th>Status Transaction</th>
+                                        <th>Status Transaksi</th>
+                                        <th>Status Keuangan</th>
                                         @hasanyrole('marketing')
                                         <th>Aksi</th>
                                         @endhasanyrole
@@ -61,6 +62,25 @@
 
                                                 <span class="px-2 inline-flex leading-5 text-base font-semibold rounded-full {{ $badgeColor }} text-white">
                                                     {{ $status }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                @php
+                                                    $statusPelunasan = ($transaction->paid_at != null ? 'Lunas' : 'Belum Lunas');
+                                                    $badgeColorPelunasan = '';
+
+                                                    switch($statusPelunasan){
+                                                        case 'Lunas':
+                                                            $badgeColorPelunasan = "bg-success";
+                                                            break;
+                                                        case 'Belum Lunas':
+                                                            $badgeColorPelunasan = "bg-danger";
+                                                            break;
+                                                    }
+                                                @endphp
+
+                                                <span class="px-2 inline-flex leading-5 text-base font-semibold rounded-full {{ $badgeColorPelunasan }} text-white">
+                                                    {{ $statusPelunasan }}
                                                 </span>
                                             </td>
 

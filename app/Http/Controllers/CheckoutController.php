@@ -193,7 +193,7 @@ class CheckoutController extends Controller
                 'old_quantity' => $oldQuantity,
                 'new_quantity' => $newQuantity,
                 'transaction_date' => date('Y-m-d H:i:s'),
-                'description' => 'Product sold during transaction #' . $transaction->id,
+                'description' => 'Product sold during transaction #' . $transaction->kode_transaksi,
             ]);
         }
 
@@ -209,7 +209,7 @@ class CheckoutController extends Controller
 
         // Send WhatsApp message to marketing team
         $whatsappMessage = "Notifikasi Order Baru\n\n" .
-        "Order ID: #" . $transaction->id . "\n" .
+        "Kode Transaksi: #" . $transaction->kode_transaksi . "\n" .
         "Total Harga: Rp " . number_format($transaction->total_price, 0, ',', '.') . "\n\n" .
         "Silahkan Cek Email/Login Untuk Detail Lebih Lanjut.";
 
@@ -312,7 +312,7 @@ class CheckoutController extends Controller
                 $whatsappMessage = "*Pembayaran Anda Berhasil di Rind Tea!*" . "\n\n" .
                 "_Lunas_" . "\n\n" .
                 "Hai, " . $user->name . "!" . "\n" .
-                    "Terima kasih telah melakukan pembayaran pemesanan nomor #" . $transaction->id . ". Berikut adalah rincian pesanan Anda:" . "\n\n";
+                    "Terima kasih telah melakukan pembayaran pemesanan kode transaksi #" . $transaction->kode_transaksi . ". Berikut adalah rincian pesanan Anda:" . "\n\n";
 
                 foreach ($items as $item) {
                     $whatsappMessage .= "- *" . $item['name'] . "* - " . $item['quantity'] . " x Rp " . number_format($item['price'], 0, ',', '.') . "\n";

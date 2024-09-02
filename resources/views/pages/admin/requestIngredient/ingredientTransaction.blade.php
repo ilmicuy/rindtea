@@ -2,7 +2,7 @@
 @section('content')
     <div class="main-content">
         <div class="title">
-            Ingredient Transaction History
+            Riwayat Transaksi Bahan Baku
         </div>
         <div class="content-wrapper">
             <div class="col-md-12">
@@ -13,14 +13,14 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Ingredient Name</th>
-                                        <th>Transaction Type</th>
-                                        <th>Quantity</th>
-                                        <th>Old Quantity</th>
-                                        <th>New Quantity</th>
-                                        <th>Transaction Date</th>
+                                        <th>Nama Bahan Baku</th>
+                                        <th>Tipe Transaksi</th>
+                                        <th>Jumlah</th>
+                                        <th>Jumlah Lama</th>
+                                        <th>Jumlah Baru</th>
+                                        <th>Tanggal Transaksi</th>
                                         <th>User</th>
-                                        <th>Description</th>
+                                        <th>Deskripsi</th>
                                     </tr>
                                 </thead>
                                 <tbody>

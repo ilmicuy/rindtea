@@ -2,17 +2,17 @@
 @section('content')
     <div class="main-content">
         <div class="title">
-            Message Detail
+            Detil Pesan
         </div>
         <div class="content-wrapper">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <p><strong>From:</strong> {{ $message->sender->name }}</p>
-                        <p><strong>Received At:</strong> {{ \Carbon\Carbon::parse($message->created_at)->format('d M Y H:i:s') }}</p>
-                        <p><strong>Message:</strong></p>
+                        <p><strong>Dari:</strong> {{ $message->sender->name }}</p>
+                        <p><strong>Diterima Pada:</strong> {{ \Carbon\Carbon::parse($message->created_at)->format('d M Y H:i:s') }}</p>
+                        <p><strong>Pesan:</strong></p>
                         <p>{{ $message->message }}</p>
-                        <a href="{{ route('inbox.index') }}" class="btn btn-primary">Back to Inbox</a>
+                        <a href="{{ route('inbox.index') }}" class="btn btn-primary">Kembali ke Pesan</a>
                     </div>
                 </div>
             </div>

@@ -60,7 +60,7 @@ class Transaction extends Model
 
     public function transactionDetail()
     {
-        return $this->hasMany(TransactionDetail::class, 'id', 'transaction_detail_id');
+        return $this->hasMany(TransactionDetail::class, 'transactions_id', 'id');
     }
 
     public function addressChoosen()

@@ -150,7 +150,7 @@ class RequestProductController extends Controller
                 'old_quantity' => $oldProductQuantity,
                 'new_quantity' => $newProductQuantity,
                 'transaction_date' => Carbon::now(),
-                'description' => 'Product quantity increased for product request #' . $getRequestProduct->id,
+                'description' => 'Product quantity increased for product request #' . $getRequestProduct->kode_request_produk,
             ]);
 
             $getRequestProduct->status = 'success';

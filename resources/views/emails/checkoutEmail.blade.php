@@ -72,7 +72,7 @@
         <div class="content">
             <div class="label">Belum Lunas</div>
             <h2>Hai, {{ $user->name }}!</h2>
-            <p>Terimakasih telah melakukan pemesanan dengan nomor #{{ $transaction->id }} di website Rind Tea. Berikut adalah rincian pesanan Anda:</p>
+            <p>Terimakasih telah melakukan pemesanan dengan kode transaksi #{{ $transaction->kode_transaksi }} di website Rind Tea. Berikut adalah rincian pesanan Anda:</p>
             <ul>
                 @foreach ($items as $item)
                     <li>{{ $item['name'] }} - {{ $item['quantity'] }} x Rp {{ number_format($item['price'], 0, ',', '.') }}</li>

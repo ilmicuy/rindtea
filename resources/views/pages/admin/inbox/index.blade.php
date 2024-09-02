@@ -2,7 +2,7 @@
 @section('content')
     <div class="main-content">
         <div class="title">
-            Inbox
+            Pesan
         </div>
         <div class="content-wrapper">
             <div class="col-md-12">
@@ -22,9 +22,9 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Sender</th>
-                                        <th>Message</th>
-                                        <th>Received At</th>
+                                        <th>Pengirim</th>
+                                        <th>Pesan</th>
+                                        <th>Diterima Pada</th>
                                         <th>Status</th>
                                     </tr>
                                 </thead>

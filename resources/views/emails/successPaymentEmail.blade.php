@@ -72,7 +72,7 @@
         <div class="content">
             <div class="label">Lunas</div>
             <h2>Hai, {{ $user->name }}!</h2>
-            <p>Terima kasih telah melakukan pembayaran pemesanan nomor #{{ $transaction->id }}. Berikut adalah rincian pesanan Anda:</p>
+            <p>Terima kasih telah melakukan pembayaran pemesanan kode transaksi #{{ $transaction->kode_transaksi }}. Berikut adalah rincian pesanan Anda:</p>
             <ul>
                 @foreach ($items as $item)
                     <li>{{ $item['name'] }} - {{ $item['quantity'] }} x Rp {{ number_format($item['price'], 0, ',', '.') }}</li>

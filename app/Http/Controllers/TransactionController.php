@@ -125,7 +125,7 @@ class TransactionController extends Controller
                 // WhatsApp message for shipping
                 $whatsappMessage = "*Produk Anda Telah Dikirim*" . "\n\n" .
                 "Hai, " . $user->name . "!" . "\n\n" .
-                "Pesanan anda dengan nomor #" . $item->id . " telah dikirim dengan Nomor Resi " . $data['no_resi'] . ". Silakan cek status pengiriman melalui situs kami." . "\n\n" .
+                "Pesanan anda dengan kode transaksi #" . $item->kode_transaksi . " telah dikirim dengan Nomor Resi " . $data['no_resi'] . ". Silakan cek status pengiriman melalui situs kami." . "\n\n" .
                 "Hormat Kami,\n" .
                 "*Tim Rind Tea*";
 
@@ -140,7 +140,7 @@ class TransactionController extends Controller
                 // WhatsApp message for completed
                 $whatsappMessage = "*Produk Anda Telah Tiba*" . "\n\n" .
                 "Hai, " . $user->name . "!" . "\n\n" .
-                "Pesanan anda dengan nomor #" . $item->id . " telah selesai dan tiba pada tujuan. Terima kasih telah membeli produk Rind Tea." . "\n\n" .
+                "Pesanan anda dengan kode transaksi #" . $item->kode_transaksi . " telah selesai dan tiba pada tujuan. Terima kasih telah membeli produk Rind Tea." . "\n\n" .
                 "Hormat Kami,\n" .
                 "*Tim Rind Tea*";
 
@@ -155,15 +155,21 @@ class TransactionController extends Controller
                 // WhatsApp message for failed
                 $whatsappMessage = "*Pemesanan Produk Anda Gagal*" . "\n\n" .
                 "Hai, " . $user->name . "!" . "\n\n" .
-                "Pemesanan produk anda dengan nomor #" . $item->id . " gagal dilakukan. Silakan coba lagi atau hubungi tim support kami." . "\n\n" .
+                "Pemesanan produk anda dengan kode transaksi #" . $item->kode_transaksi . " gagal dilakukan. Silakan coba lagi atau hubungi tim support kami." . "\n\n" .
                 "Hormat Kami,\n" .
                 "*Tim Rind Tea*";
 
                 if ($user->phone_number != null) {
                     $fonnteService->sendMessage($user->phone_number, $whatsappMessage);
                 }
-                // DISABLE TEMPORARY
-                // $fonnteService->sendMessage('081282133865', $whatsappMessage);
+
+                // Kembalikan stok produk jika transaksi gagal
+                $transactionDetails = $item->transactionDetail;
+                foreach ($transactionDetails as $detail) {
+                    $product = $detail->product;
+                    $product->quantity += $detail->qty;
+                    $product->save();
+                }
             }
         }
 

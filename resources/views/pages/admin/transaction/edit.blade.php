@@ -111,7 +111,7 @@
 @section('content')
     <div class="main-content">
         <div class="title">
-            Transaction Edit
+            Edit Transaksi
         </div>
         <form method="post" action="{{ route('transaction.update', $items->transaction->id) }}" class="mt-6 space-y-6"
             enctype="multipart/form-data">
@@ -142,7 +142,7 @@
                         <div class="col-md-4">
                             <div class="bg-white rounded-lg shadow-md">
                                 <div class="p-4">
-                                    <h4 class="pb-2 font-semibold">Transaction Status </h4>
+                                    <h4 class="pb-2 font-semibold">Status Transaksi </h4>
 
                                     <select id="transaction_status" name="transaction_status" class="form-control">
                                         <option value="pending" @if (old('transaction_status', $items->transaction->transaction_status) == 'pending') selected @endif>Pending
@@ -169,11 +169,11 @@
                         <div class="card-body">
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link active" id="transaction-details-tab" data-toggle="tab" href="#transaction-details" role="tab" aria-controls="transaction-details" aria-selected="true">Transaction Details</a>
+                                    <a class="nav-link active" id="transaction-details-tab" data-toggle="tab" href="#transaction-details" role="tab" aria-controls="transaction-details" aria-selected="true">Detil Transaksi</a>
                                 </li>
                                 {{-- @if ($transaction->transactionShipment()->latest()->first()) --}}
                                     <li class="nav-item" role="presentation">
-                                        <a class="nav-link" id="shipping-details-tab" data-toggle="tab" href="#shipping-details" role="tab" aria-controls="shipping-details" aria-selected="false">Shipping Details</a>
+                                        <a class="nav-link" id="shipping-details-tab" data-toggle="tab" href="#shipping-details" role="tab" aria-controls="shipping-details" aria-selected="false">Detil Pengiriman</a>
                                     </li>
                                 {{-- @endif --}}
                             </ul>
@@ -187,8 +187,8 @@
                                                     <th>No</th>
                                                     <th>Produk</th>
                                                     <th>Tanggal Checkout</th>
-                                                    <th>Price / Item</th>
-                                                    <th>Quantity</th>
+                                                    <th>Harga / Item</th>
+                                                    <th>Jumlah</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -256,7 +256,7 @@
                                             <p><strong>Receiver:</strong> {{ $transaction->transactionShipment()->latest()->first()->receiver }}</p>
                                             <p><strong>Last Crawl At:</strong> {{ $transaction->transactionShipment()->latest()->first()->last_crawl_at }}</p>
                                         @else
-                                            <p>No Shipping details available. (Nomor Resi / Pengiriman belum di-input)</p>
+                                            <p>Tidak ada data pengiriman. (Nomor Resi / Pengiriman belum di-input)</p>
                                         @endif
                                     </div>
 
@@ -264,9 +264,9 @@
                                         <table class="table table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>Date</th>
-                                                    <th>Description</th>
-                                                    <th>Location</th>
+                                                    <th>Tanggal</th>
+                                                    <th>Deskripsi</th>
+                                                    <th>Lokasi</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
