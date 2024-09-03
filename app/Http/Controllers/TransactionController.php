@@ -174,6 +174,8 @@ class TransactionController extends Controller
                     $product->save();
                 }
             }
+
+            session()->flash('status_updated', 'Status transaksi berhasil diperbarui menjadi ' . $newStatus);
         }
 
         if (!empty($data['no_resi'])) {
@@ -250,12 +252,14 @@ class TransactionController extends Controller
     {
         // Find the transaction by ID
         $transaction = Transaction::findOrFail($id);
-        
+
         // Update the refund status to 'selesai'
         $transaction->update([
             'refund_status' => 'selesai',
         ]);
-        
+
+        session()->flash('status_updated', 'Berhasil memproses refund!');
+
         // Redirect back to the transaction edit page with a success message
         return redirect()->route('transaction.edit', $id)->with('success', 'Refund processed successfully!');
     }
