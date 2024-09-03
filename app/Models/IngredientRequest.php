@@ -13,6 +13,7 @@ class IngredientRequest extends Model
         'kode_request_bahan_baku',
         'ingredient_id',
         'qty_request',
+        'notes',
         'approved_at',
         'approved_by_owner',
         'status',
