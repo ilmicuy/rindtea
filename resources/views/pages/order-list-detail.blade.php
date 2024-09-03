@@ -24,7 +24,7 @@
                     <br>
                     <form action="{{ route('order.update', $transaction->id) }}" method="POST">
                         @csrf
-                        <input type="text" name="refund_no_rek" class="form-control" style="text-align: center; height: 40px; padding: 0.5rem; border: 1px solid #666; border-radius: 5px; margin: 0 5px;" placeholder="Masukkan Rekening Refund" value="{{ $transaction->refund_no_rek }}" required
+                        <input type="text" name="refund_no_rek" class="form-control" style="text-align: center; height: 40px; padding: 0.5rem; border: 1px solid #666; border-radius: 5px; margin: 0 5px;" placeholder="Contoh: BCA (1233398231)" value="{{ $transaction->refund_no_rek }}" required
                         {{ $transaction->refund_status != 'belum_diproses' ? 'readonly' : '' }}
                         >
                         @if ($transaction->refund_status == 'belum_diproses')
