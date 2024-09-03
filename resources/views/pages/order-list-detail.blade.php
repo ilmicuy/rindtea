@@ -19,26 +19,25 @@
         <div class="order-list-page">
             <div style="float: right">
                 <p>Status Transaksi</p>
-                @if($transaction->paid_at)
-                <p style="background: green; text-align: center;">LUNAS</p>
+                @if($transaction->refund_status != null)
+                    <p style="background: red; text-align: center;">REFUND {{ strtoupper(str_replace('_',' ',$transaction->refund_status)) }}</p>
+                    <br>
+                    <form action="{{ route('order.update', $transaction->id) }}" method="POST">
+                        @csrf
+                        <input type="text" name="refund_no_rek" class="form-control" style="text-align: center; height: 40px; padding: 0.5rem; border: 1px solid #666; border-radius: 5px; margin: 0 5px;" placeholder="Masukkan Rekening Refund" value="{{ $transaction->refund_no_rek }}" required
+                        {{ $transaction->refund_status != 'belum_diproses' ? 'readonly' : '' }}
+                        >
+                        @if ($transaction->refund_status == 'belum_diproses')
+                            <button type="submit" style="padding: 10px 10px; font-size: 14px; margin-bottom: 10px;">Proses Refund</button>
+                        @endif
+                    </form>
                 @else
-                    @if ($transaction->refund_status == null)
+                    @if($transaction->paid_at)
+                        <p style="background: green; text-align: center;">LUNAS</p>
+                    @else
                         <p style="background: red; text-align: center;">BELUM LUNAS</p>
                         <br>
                         <button type="button" id="pay-button" style="padding: 10px 10px; font-size: 14px; margin-bottom: 10px;">Klik Untuk Bayar Sekarang</button>
-                    @else
-                        <p style="background: red; text-align: center;">REFUND {{ strtoupper(str_replace('_',' ',$transaction->refund_status)) }}</p>
-                        <br>
-
-                        <form action="{{ route('order.update', $transaction->id) }}" method="POST">
-                            @csrf
-                            <input type="text" name="refund_no_rek" class="form-control" style="text-align: center; height: 40px; padding: 0.5rem; border: 1px solid #666; border-radius: 5px; margin: 0 5px;" placeholder="Masukkan Rekening Refund" value="{{ $transaction->refund_no_rek }}" required
-                            {{ $transaction->refund_status != 'belum_diproses' ? 'readonly' : '' }}
-                            >
-                            @if ($transaction->refund_status == 'belum_diproses')
-                                <button type="submit" style="padding: 10px 10px; font-size: 14px; margin-bottom: 10px;">Proses Refund</button>
-                            @endif
-                        </form>
                     @endif
                 @endif
             </div>
