@@ -126,7 +126,7 @@ class RequestIngredientController extends Controller
 
     public function logs(Request $request)
     {
-        $ingredientTransactions = IngredientTransaction::with(['ingredient', 'user'])->paginate(10);
+        $ingredientTransactions = IngredientTransaction::with(['ingredient', 'user'])->orderBy('id', 'DESC')->paginate(10);
 
         return view('pages.admin.requestIngredient.ingredientTransaction', compact('ingredientTransactions'));
     }
