@@ -7,7 +7,7 @@
         <h1 class="page-title">Order List</h1>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item"><a href="#">Pages</a></li>
+            {{-- <li class="breadcrumb-item"><a href="#">Pages</a></li> --}}
             <li class="breadcrumb-item active">Order List</li>
         </ol>
     </div>

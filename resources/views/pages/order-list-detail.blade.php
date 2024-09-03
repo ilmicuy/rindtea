@@ -6,7 +6,7 @@
     <h1 class="page-title">Order List Detail </h1>
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/">Home</a></li>
-        <li class="breadcrumb-item"><a href="#">Pages</a></li>
+        <li class="breadcrumb-item"><a href="/order-list">Order list</a></li>
         <li class="breadcrumb-item active">Order List Detail </li>
     </ol>
 </div>
@@ -47,9 +47,9 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Produk</th>
-                        <th scope="col">Produk Name</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Price / Item</th>
+                        <th scope="col">Nama Produk</th>
+                        <th scope="col">Jumlah</th>
+                        <th scope="col">Harga / Item</th>
                         <th scope="col">Status</th>
                     </tr>
                 </thead>
