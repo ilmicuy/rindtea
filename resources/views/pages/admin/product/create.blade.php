@@ -2,7 +2,7 @@
 @section('content')
     <div class="main-content">
         <div class="title">
-            Create Produk
+            Tambah produk
         </div>
         <div class="content-wrapper">
             <div class="col-md-12">
