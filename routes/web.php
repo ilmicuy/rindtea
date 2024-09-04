@@ -24,8 +24,9 @@ use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\RequestIngredientController;
 use App\Http\Controllers\RequestProductController;
 use App\Http\Controllers\TransactionLogsController;
+use Illuminate\Support\Facades\Auth;
 
-Route::group(['middleware' => ['redirect_to_admin']], function() {
+Route::group(['middleware' => ['redirect_to_admin', 'check.verified']], function() {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
@@ -40,7 +41,7 @@ Route::group(['middleware' => ['redirect_to_admin']], function() {
 //     return view('pages.home');
 // })->middleware(['auth', 'verified'])->name('home');
 
-Route::group(['middleware' => ['auth', 'redirect_to_admin']], function () {
+Route::group(['middleware' => ['auth', 'redirect_to_admin', 'verified']], function () {
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
     Route::post('/checkout/store', [CheckoutController::class, 'store'])->name('checkout.store');
     Route::post('/cost', [CheckoutController::class, 'cost'])->name('cost');

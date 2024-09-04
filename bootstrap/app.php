@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CheckVerified;
 use App\Http\Middleware\EnsureUserRole;
 use App\Http\Middleware\RedirectToAdmin;
 use Illuminate\Foundation\Application;
@@ -16,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => EnsureUserRole::class,
             'redirect_to_admin' => RedirectToAdmin::class,
+            'check.verified' => CheckVerified::class,
         ]);
 
         $middleware->validateCsrfTokens(except: [
