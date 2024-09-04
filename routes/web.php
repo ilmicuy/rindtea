@@ -57,6 +57,8 @@ Route::group(['middleware' => ['auth', 'redirect_to_admin', 'verified']], functi
     Route::get('/cart', [CartController::class, 'index'])->name('cart');
     Route::delete('/cart/{id}', [CartController::class, 'delete'])->name('cart-delete');
 
+    Route::post('/cart/add-quantity', [CartController::class, 'addQuantity'])->name('cart.add-quantity');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

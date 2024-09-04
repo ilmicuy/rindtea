@@ -45,8 +45,26 @@
                                 <td>
                                     <p class="cart-item-price rupiah" data-price="{{ $cart->product->price }}"></p>
                                 </td>
-                                <td>
+                                {{-- <td>
                                     <p class="cart-item-qty">{{ $cart->qty }} Pcs</p>
+                                </td> --}}
+                                <td>
+                                    <div class="mb-5 input-group quantity">
+                                        <div class="input-group-btn">
+                                            <button class="border btn btn-sm btn-minus rounded-circle bg-light"
+                                                type="button" data-id="{{ $cart->id }}">
+                                                <i data-feather="minus"></i>
+                                            </button>
+                                        </div>
+                                        <input type="number" class="form-control text-center qty-input" value="{{ $cart->qty }}"
+                                            min="1" data-id="{{ $cart->id }}">
+                                        <div class="input-group-btn">
+                                            <button class="border btn btn-sm btn-plus rounded-circle bg-light"
+                                                type="button" data-id="{{ $cart->id }}">
+                                                <i data-feather="plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </td>
                                 @php $total = $cart->product->price * $cart->qty @endphp
                                 <td>
@@ -83,3 +101,50 @@
     </div>
     <!-- Cart Page End -->
 @endsection
+
+
+@push('myscript')
+<script>
+    $(document).ready(function () {
+        // Plus button click
+        $('.btn-plus').click(function () {
+            var id = $(this).data('id');
+            var qtyInput = $(this).closest('.quantity').find('.qty-input');
+            var qty = parseInt(qtyInput.val()) + 1;
+            updateCartQuantity(id, qty);
+        });
+
+        // Minus button click
+        $('.btn-minus').click(function () {
+            var id = $(this).data('id');
+            var qtyInput = $(this).closest('.quantity').find('.qty-input');
+            var qty = Math.max(1, parseInt(qtyInput.val()) - 1);
+            updateCartQuantity(id, qty);
+        });
+
+        // Update cart quantity via AJAX
+        function updateCartQuantity(cartId, qty) {
+            $.ajax({
+                url: '{{ route("cart.add-quantity") }}',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    cart_id: cartId,
+                    qty: qty
+                },
+                success: function (response) {
+                    if (response.success) {
+                        // Update the quantity in the UI
+                        $('.qty-input[data-id="' + cartId + '"]').val(qty);
+                        // Update the total price in the UI
+                        $('.cart-item-total[data-id="' + cartId + '"]').text(response.newTotal);
+                        $('.cart-summary .rupiah').text(response.subtotal);
+                    } else {
+                        alert(response.message);
+                    }
+                }
+            });
+        }
+    });
+</script>
+@endpush

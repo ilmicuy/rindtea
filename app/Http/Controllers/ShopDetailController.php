@@ -7,6 +7,7 @@ use App\Models\CustomerReview;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Termwind\Components\Raw;
 
 class ShopDetailController extends Controller
 {
@@ -56,6 +57,11 @@ class ShopDetailController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function addQuantity(Request $request)
+    {
+
     }
     /**
      * Show the form for creating a new resource.
