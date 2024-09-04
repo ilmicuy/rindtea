@@ -80,6 +80,10 @@
                             <p>{!! $product->thumb_description !!}</p>
                             <div class="product-info">
                                 <div class="info-item">
+                                    <p class="info-label">Opsi Pengiriman</p>
+                                    <p class="info-value">{{ implode(' / ', json_decode($product->opsi_pengiriman, true)) }}</p>
+                                </div>
+                                <div class="info-item">
                                     <p class="info-label">Min Weight</p>
                                     <p class="info-value">{{ $product->weight }}</p>
                                 </div>
