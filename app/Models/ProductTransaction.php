@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class ProductTransaction extends Model
 {
@@ -43,5 +44,31 @@ class ProductTransaction extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Scope a query to only include transactions for a specific year.
+     */
+    public function scopeOfYear($query, $year)
+    {
+        return $query->whereYear('transaction_date', $year);
+    }
+
+    /**
+     * Scope a query to only include transactions for a specific month.
+     */
+    public function scopeOfMonth($query, $year, $month)
+    {
+        return $query->whereYear('transaction_date', $year)
+            ->whereMonth('transaction_date', $month);
+    }
+
+    /**
+     * Scope a query to only include transactions for a specific week.
+     */
+    public function scopeOfWeek($query, $year, $week)
+    {
+        return $query->whereYear('transaction_date', $year)
+            ->whereRaw('WEEKOFYEAR(transaction_date) = ?', [$week]);
     }
 }

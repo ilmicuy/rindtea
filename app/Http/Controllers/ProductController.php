@@ -12,6 +12,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 
@@ -95,12 +96,30 @@ class ProductController extends Controller
 
     public function productTransactions(Request $request)
     {
-        $productTransaction = ProductTransaction::orderBy('created_at', 'DESC')->paginate(10);
+        $query = ProductTransaction::query();
 
+        // Check if date range is selected
+        if ($request->filled('date_range')) {
+            $dateRange = explode(' to ', $request->input('date_range'));
+
+            if (count($dateRange) === 2) {
+                $startDate = Carbon::parse($dateRange[0])->startOfDay();
+                $endDate = Carbon::parse($dateRange[1])->endOfDay();
+
+                // Filter by date range
+                $query->whereBetween('transaction_date', [$startDate, $endDate]);
+            }
+        }
+
+        // Order and paginate the results
+        $productTransaction = $query->orderBy('created_at', 'DESC')->paginate(10);
+
+        // Pass the transactions to the view
         return view('pages.admin.product.productTransaction', [
             'transactions' => $productTransaction
         ]);
     }
+
 
     /**
      * Show the form for editing the specified resource.
