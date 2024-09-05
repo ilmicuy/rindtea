@@ -193,6 +193,7 @@
                                 </div>
                                 {{-- @endif --}}
 
+                                <!-- Log Transaksi Tab -->
                                 <div class="tab-pane fade" id="log-transaksi" role="tabpanel" aria-labelledby="log-transaksi-tab">
                                     <div class="table-responsive">
                                         <table class="table table-hover">
@@ -200,30 +201,23 @@
                                                 <tr>
                                                     <th>No</th>
                                                     <th>Timestamp</th>
-                                                    <th>Status</th>
+                                                    <th>Kolom</th>
+                                                    <th>Data Sebelum</th>
+                                                    <th>Data Sesudah</th>
                                                     <th>Description</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {{-- Dummy data for Log Transaksi --}}
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>{{ \Carbon\Carbon::now()->subDays(5)->format('d M Y H:i:s') }}</td>
-                                                    <td>Pending</td>
-                                                    <td>Order has been placed but not yet confirmed</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>{{ \Carbon\Carbon::now()->subDays(3)->format('d M Y H:i:s') }}</td>
-                                                    <td>Shipping</td>
-                                                    <td>Order is being shipped to the customer</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td>{{ \Carbon\Carbon::now()->subDay()->format('d M Y H:i:s') }}</td>
-                                                    <td>Completed</td>
-                                                    <td>Order has been delivered and completed</td>
-                                                </tr>
+                                                @foreach ($transaction->transactionStatusLogs as $key => $log)
+                                                    <tr>
+                                                        <td>{{ $key + 1 }}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($log->created_at)->format('d M Y H:i:s') }}</td>
+                                                        <td>{{ $log->column_name }}</td>
+                                                        <td>{{ $log->old_value }}</td>
+                                                        <td>{{ $log->new_value }}</td>
+                                                        <td>{{ $log->description }}</td>
+                                                    </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
