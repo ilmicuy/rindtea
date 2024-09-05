@@ -6,6 +6,14 @@
         </div>
         <div class="content-wrapper">
             <div class="col-md-12">
+                @hasanyrole('marketing')
+                    @if ($transactionPending > 0)
+                        <div class="alert alert-warning" role="alert">
+                            Terdapat <a href="javascript:void(0)" class="alert-link"><b>{{ $transactionPending }}</b></a> Order dengan status Pending
+                        </div>
+                    @endif
+                @endhasanyrole
+
                 <!-- Total Transaction Card -->
                 <div class="card mb-4">
                     <div class="card-body">

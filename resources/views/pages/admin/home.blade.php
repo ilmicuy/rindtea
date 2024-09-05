@@ -14,6 +14,20 @@
         @endhasanyrole
         </div>
 
+        @hasanyrole('marketing')
+            <div class="content-wrapper">
+                <div class="row">
+                    <div class="col-md-12">
+                        @if ($transactionPending > 0)
+                        <div class="alert alert-warning" role="alert">
+                            Terdapat <a href="/transaction" class="alert-link"><b>{{ $transactionPending }}</b></a> Order dengan status Pending
+                        </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        @endhasanyrole
+
         @hasanyrole('owner|keuangan')
             <div class="content-wrapper">
                 <div class="row same-height">

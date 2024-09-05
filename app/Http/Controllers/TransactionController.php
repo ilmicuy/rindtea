@@ -25,9 +25,12 @@ class TransactionController extends Controller
 
         $totalTransaction = Transaction::sum('total_price');
 
+        $transactionPending = Transaction::where('transaction_status', 'pending')->count('transaction_status');
+
         return view('pages.admin.transaction.index', [
             'query' => $query,
             'totalTransaction' => $totalTransaction,
+            'transactionPending' => $transactionPending,
         ]);
     }
 
