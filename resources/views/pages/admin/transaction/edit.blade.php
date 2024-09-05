@@ -67,6 +67,10 @@
                                         <a class="nav-link" id="shipping-details-tab" data-toggle="tab" href="#shipping-details" role="tab" aria-controls="shipping-details" aria-selected="false">Detil Pengiriman</a>
                                     </li>
                                 {{-- @endif --}}
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link" id="log-transaksi-tab" data-toggle="tab" href="#log-transaksi" role="tab" aria-controls="log-transaksi" aria-selected="false">Log Transaksi</a>
+                                </li>
+
                                 @if ($transaction->refund_status != null)
                                 <li class="nav-item" role="presentation">
                                     <a class="nav-link" id="refund-tab" data-toggle="tab" href="#refund" role="tab" aria-controls="refund" aria-selected="false">Refund</a>
@@ -188,6 +192,42 @@
                                     </div>
                                 </div>
                                 {{-- @endif --}}
+
+                                <div class="tab-pane fade" id="log-transaksi" role="tabpanel" aria-labelledby="log-transaksi-tab">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Timestamp</th>
+                                                    <th>Status</th>
+                                                    <th>Description</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {{-- Dummy data for Log Transaksi --}}
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>{{ \Carbon\Carbon::now()->subDays(5)->format('d M Y H:i:s') }}</td>
+                                                    <td>Pending</td>
+                                                    <td>Order has been placed but not yet confirmed</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>{{ \Carbon\Carbon::now()->subDays(3)->format('d M Y H:i:s') }}</td>
+                                                    <td>Shipping</td>
+                                                    <td>Order is being shipped to the customer</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>3</td>
+                                                    <td>{{ \Carbon\Carbon::now()->subDay()->format('d M Y H:i:s') }}</td>
+                                                    <td>Completed</td>
+                                                    <td>Order has been delivered and completed</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
 
                                  <!-- Transaction Details Tab -->
                                 <div class="tab-pane fade" id="refund" role="tabpanel" aria-labelledby="refund-tab">
