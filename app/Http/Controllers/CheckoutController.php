@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Http\Requests\CheckoutRequest;
+use App\Models\Inbox;
 use App\Models\Product;
 use App\Models\ProductTransaction;
 use App\Services\FonnteService;
@@ -198,6 +199,13 @@ class CheckoutController extends Controller
         }
 
         Cart::where('users_id', Auth::user()->id)->delete();
+
+        Inbox::create([
+            'sender_id' => Auth::user()->id,
+            'receiver_id' => 8,
+            'message' => 'Terdapat order baru dengan Kode Transaksi ' . $transaction->kode_transaksi,
+            'is_read' => false,
+        ]);
 
         // Send checkout email to the user
         Mail::to(Auth::user()->email)->send(new \App\Mail\CheckoutEmail(Auth::user(), $transaction, $items));
