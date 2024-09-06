@@ -82,12 +82,15 @@ class Transaction extends Model
         if ($action === 'updated') {
             // Only log the fields that were changed
             foreach ($changes as $column => $newValue) {
+                // Use null coalescing operator to avoid undefined array key errors
+                $oldValue = $original[$column] ?? null;
+
                 TransactionStatusLog::create([
                     'transaction_id' => $transaction->id,
                     'column_name'    => $column,
-                    'old_value'      => $original[$column] ?? null,
+                    'old_value'      => $oldValue,
                     'new_value'      => $newValue,
-                    'description'    => "$column berubah dari {$original[$column]} ke $newValue",
+                    'description'    => "$column changed from $oldValue to $newValue",
                 ]);
             }
         }
