@@ -48,6 +48,28 @@
     </div>
     @endhasanyrole
 
+    <!-- Modal for showing Product Request details -->
+    <div class="modal fade" id="detailModalProduct" tabindex="-1" role="dialog" aria-labelledby="detailModalProductLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailModalProductLabel">Detail Permintaan Produk</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Product request details will be dynamically loaded here -->
+                    <p id="transactionDetailsProduct">Loading...</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
     <div class="main-content">
         <div class="title">
@@ -175,6 +197,13 @@
                                                         </div>
                                                     @endif
                                                 @endhasanyrole
+
+                                                <!-- Detail Button (always visible) -->
+                                                <div class="d-flex justify-content-start mt-2">
+                                                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#detailModalProduct" onclick="showProductDetail({{ $req->id }})">
+                                                        <i class="fa fa-info"></i> Detail
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     @empty
@@ -376,5 +405,28 @@ function confirmAction(id, action)
         }
     });
 }
+
+function showProductDetail(requestProductId) {
+    // Replace the URL with the appropriate route to fetch the product request details
+    var url = '/request-product/' + requestProductId;
+
+    $.ajax({
+        url: url,
+        type: 'GET',
+        success: function(response) {
+            // Populate the modal body with the returned request details
+            $('#transactionDetailsProduct').html(`
+                <strong>Created At:</strong> ${response.created_at} <br>
+                <strong>Owner Approved At:</strong> ${response.owner_approved_at ? response.owner_approved_at : 'Not Approved Yet'} <br>
+                <strong>Processing At:</strong> ${response.processing_at ? response.processing_at : 'Not Processed Yet'} <br>
+                <strong>Completed At:</strong> ${response.completed_at ? response.completed_at : 'Not Completed Yet'}
+            `);
+        },
+        error: function() {
+            $('#transactionDetailsProduct').html('Error loading product request details');
+        }
+    });
+}
+
 </script>
 @endpush

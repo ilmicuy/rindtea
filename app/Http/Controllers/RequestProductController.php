@@ -62,7 +62,11 @@ class RequestProductController extends Controller
             'data' => [
                 'request_product' => $id,
                 'kekurangan_bahan' => $bahanBakuKurangHolder
-            ]
+            ],
+            'created_at' => $id->created_at->format('Y-m-d H:i:s'),
+            'owner_approved_at' => $id->approved_by_owner ? $id->approved_by_owner->format('Y-m-d H:i:s') : null,
+            'processing_at' => $id->processing_at ? $id->processing_at->format('Y-m-d H:i:s') : null,
+            'success_at' => $id->success_at ? $id->success_at->format('Y-m-d H:i:s') : null,
         ]);
     }
 
@@ -158,6 +162,7 @@ class RequestProductController extends Controller
         } elseif ($request->action == 'processing') {
             $statusName = 'Diproses';
             $getRequestProduct->status = 'processing';
+            $getRequestProduct->processing_at = Carbon::now();
         } elseif ($request->action == 'owner_approval') {
             $statusName = "Disetujui Oleh Owner";
             $getRequestProduct->approved_by_owner = Carbon::now();

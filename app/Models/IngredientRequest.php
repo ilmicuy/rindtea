@@ -16,9 +16,17 @@ class IngredientRequest extends Model
         'notes',
         'approved_at',
         'approved_by_owner',
+        'processing_at',
         'status',
         'created_at',
         'updated_at',
+    ];
+
+    protected $casts = [
+        'approved_by_owner' => 'datetime:Y-m-d H:i:s',
+        'processing_at' => 'datetime:Y-m-d H:i:s',
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
 
     public function generateKodeRequestBahanBaku()

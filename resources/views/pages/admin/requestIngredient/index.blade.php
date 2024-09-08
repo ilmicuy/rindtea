@@ -62,6 +62,29 @@
                     </div>
                 @endif
 
+                <!-- Modal -->
+                <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="detailModalLabel">Detail Permintaan Bahan Baku</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Transaction details will be dynamically loaded here -->
+                                <p id="transactionDetails">Loading...</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
                 <div class="card">
                     <div class="card-body">
                         @hasanyrole('produksi')
@@ -113,17 +136,6 @@
                                                         <button class="btn btn-danger btn-sm" onclick="statusEdit({{ $req->id }}, 'cancel')">
                                                             <i class="fa fa-times"></i>
                                                         </button>
-                                                        {{-- <form id="deleteForm{{ $ingredient->id }}"
-                                                            action="{{ route('ingredient.destroy', $ingredient->id) }}"
-                                                            method="POST">
-                                                            @method('delete')
-                                                            @csrf
-                                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                                onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">
-                                                                <i class="ti-trash"></i>
-                                                            </button>
-                                                        </form> --}}
-
                                                     </div>
                                                 @endif
                                                 @endhasanyrole
@@ -144,18 +156,27 @@
                                                 @endhasanyrole
 
                                                 @hasanyrole('owner')
-                                                    @if ($req->approved_by_owner == null && $req->status == 'pending')
-                                                        <div class="d-flex justify-content-between">
-                                                            <button class="btn btn-success btn-sm" onclick="statusEdit({{ $req->id }}, 'owner_approval')">
-                                                                <i class="fa fa-check"></i>
-                                                            </button>
-                                                            <button class="btn btn-danger btn-sm" onclick="statusEdit({{ $req->id }}, 'owner_approval_cancel')">
-                                                                <i class="fa fa-times"></i>
-                                                            </button>
-                                                        </div>
-                                                    @endif
+                                                @if ($req->approved_by_owner == null && $req->status == 'pending')
+                                                    <div class="d-flex justify-content-between">
+                                                        <button class="btn btn-success btn-sm" onclick="statusEdit({{ $req->id }}, 'owner_approval')">
+                                                            <i class="fa fa-check"></i>
+                                                        </button>
+                                                        <button class="btn btn-danger btn-sm" onclick="statusEdit({{ $req->id }}, 'owner_approval_cancel')">
+                                                            <i class="fa fa-times"></i>
+                                                        </button>
+                                                    </div>
+                                                @endif
                                                 @endhasanyrole
+
+                                                <!-- Detail Button (always visible) -->
+                                                <div class="d-flex justify-content-start mt-2">
+                                                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#detailModal" onclick="showDetail({{ $req->id }})">
+                                                        <i class="fa fa-info"></i> Detail
+                                                    </button>
+                                                </div>
                                             </td>
+
+
                                         </tr>
                                     @empty
                                         <tr>
@@ -325,6 +346,29 @@ function confirmAction(id, action)
         },
         error: function (data) {
             console.log('error:', data);
+        }
+    });
+}
+
+
+function showDetail(requestIngredientId) {
+    // Replace the URL with the appropriate route to fetch the ingredient request details
+    var url = '/request-bahan-baku/' + requestIngredientId;
+
+    $.ajax({
+        url: url,
+        type: 'GET',
+        success: function(response) {
+            // Populate the modal body with the returned transaction details
+            $('#transactionDetails').html(`
+                <strong>Created At:</strong> ${response.created_at} <br>
+                <strong>Owner Approved At:</strong> ${response.owner_approved_at ? response.owner_approved_at : 'Not Approved Yet'} <br>
+                <strong>Processing At:</strong> ${response.processing_at ? response.processing_at : 'Not Processed Yet'} <br>
+                <strong>Completed At:</strong> ${response.completed_at ? response.completed_at : 'Not Completed Yet'}
+            `);
+        },
+        error: function() {
+            $('#transactionDetails').html('Error loading transaction details');
         }
     });
 }

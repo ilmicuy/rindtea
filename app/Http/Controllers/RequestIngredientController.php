@@ -185,6 +185,7 @@ class RequestIngredientController extends Controller
         } elseif ($request->action == 'processing') {
             $statusName = "Diproses";
             $getRequestIngredient->status = 'processing';
+            $getRequestIngredient->processing_at = Carbon::now();
         } elseif ($request->action == 'owner_approval') {
             $statusName = "Disetujui Oleh Owner";
             $getRequestIngredient->approved_by_owner = Carbon::now();
@@ -250,10 +251,19 @@ class RequestIngredientController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $ingredientRequest = IngredientRequest::with(['ingredient'])->findOrFail($id);
+
+        // Prepare the response with formatted dates
+        return response()->json([
+            'created_at' => $ingredientRequest->created_at ? $ingredientRequest->created_at->format('Y-m-d H:i:s') : null,
+            'owner_approved_at' => $ingredientRequest->approved_by_owner ? $ingredientRequest->approved_by_owner->format('Y-m-d H:i:s') : 'Not Approved Yet',
+            'processing_at' => $ingredientRequest->processing_at ? $ingredientRequest->processing_at->format('Y-m-d H:i:s') : 'Not Processed Yet',
+            'completed_at' => $ingredientRequest->approved_at ? $ingredientRequest->approved_at->format('Y-m-d H:i:s') : 'Not Completed Yet',
+        ]);
     }
+
 
     /**
      * Show the form for editing the specified resource.
