@@ -126,10 +126,28 @@ class RequestIngredientController extends Controller
 
     public function logs(Request $request)
     {
-        $ingredientTransactions = IngredientTransaction::with(['ingredient', 'user'])->orderBy('id', 'DESC')->paginate(10);
+        $query = IngredientTransaction::with(['ingredient', 'user']);
 
+        // Check if date range is selected
+        if ($request->filled('date_range')) {
+            $dateRange = explode(' to ', $request->input('date_range'));
+
+            if (count($dateRange) === 2) {
+                $startDate = Carbon::parse($dateRange[0])->startOfDay();
+                $endDate = Carbon::parse($dateRange[1])->endOfDay();
+
+                // Filter by date range
+                $query->whereBetween('transaction_date', [$startDate, $endDate]);
+            }
+        }
+
+        // Order and paginate the results
+        $ingredientTransactions = $query->orderBy('created_at', 'DESC')->paginate(10);
+
+        // Pass the transactions to the view
         return view('pages.admin.requestIngredient.ingredientTransaction', compact('ingredientTransactions'));
     }
+
 
 
     public function statusEdit(Request $request)
