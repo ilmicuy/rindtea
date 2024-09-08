@@ -35,7 +35,7 @@
                                         <th>Total Price</th>
                                         <th>Status Transaksi</th>
                                         <th>Status Keuangan</th>
-                                        @hasanyrole('marketing')
+                                        @hasanyrole('marketing|owner')
                                         <th>Aksi</th>
                                         @endhasanyrole
                                     </tr>
@@ -92,7 +92,7 @@
                                                 </span>
                                             </td>
 
-                                            @hasanyrole('marketing')
+                                            @hasanyrole('marketing|owner')
                                             <td>
                                                 <div class="btn-group">
                                                     <a href="{{ route('transaction.edit', $transaction->id) }}" class="btn btn-primary">

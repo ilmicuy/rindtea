@@ -35,7 +35,11 @@
                                 <div class="p-4">
                                     <h4 class="pb-2 font-semibold">Status Transaksi </h4>
 
-                                    <select id="transaction_status" name="transaction_status" class="form-control">
+                                    <select id="transaction_status" name="transaction_status" class="form-control"
+                                    @hasanyrole('owner')
+                                    disabled
+                                    @endhasanyrole
+                                    >
                                         <option value="pending" @if (old('transaction_status', $items->transaction->transaction_status) == 'pending') selected @endif>Pending
                                         </option>
                                         <option value="shipping" @if (old('transaction_status', $items->transaction->transaction_status) == 'shipping') selected @endif>
@@ -238,12 +242,13 @@
                                           <input type="text" class="form-control" value="{{ $transaction->refund_no_rek ?? "(Belum Ada)" }}" disabled>
                                         </div>
 
+                                        @hasanyrole('marketing')
                                         @if ($transaction->refund_status == 'pending')
                                             <div class="form-group">
                                                 <button type="button" id="process-refund-button" class="btn btn-success btn-block">Proses Refund</button>
                                             </div>
                                         @endif
-
+                                        @endhasanyrole
 
                                     </div>
 
@@ -253,7 +258,9 @@
                             <a class="btn btn-secondary" href="{{ route('transaction.index') }}">
                                 {{ __('Cancel') }}
                             </a>
+                            @hasanyrole('marketing')
                             <button type="submit" class="btn btn-primary"> Save</button>
+                            @endhasanyrole
                         </div>
                     </div>
 
