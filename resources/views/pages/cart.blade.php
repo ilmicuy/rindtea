@@ -49,20 +49,22 @@
                                     <p class="cart-item-qty">{{ $cart->qty }} Pcs</p>
                                 </td> --}}
                                 <td>
-                                    <div class="mb-5 input-group quantity">
-                                        <div class="input-group-btn">
-                                            <button class="border btn btn-sm btn-minus rounded-circle bg-light"
-                                                type="button" data-id="{{ $cart->id }}">
-                                                <i data-feather="minus"></i>
-                                            </button>
-                                        </div>
-                                        <input type="number" class="form-control text-center qty-input" value="{{ $cart->qty }}"
-                                            min="1" data-id="{{ $cart->id }}">
-                                        <div class="input-group-btn">
-                                            <button class="border btn btn-sm btn-plus rounded-circle bg-light"
-                                                type="button" data-id="{{ $cart->id }}">
-                                                <i data-feather="plus"></i>
-                                            </button>
+                                    <div class="product-details">
+                                        <div class="mb-5 input-group quantity">
+                                            <div class="input-group-btn">
+                                                <button class="border btn btn-sm btn-minus rounded-circle bg-light"
+                                                    type="button" data-id="{{ $cart->id }}">
+                                                    <i data-feather="minus"></i>
+                                                </button>
+                                            </div>
+                                            <input type="number" class="form-control text-center qty-input" value="{{ $cart->qty }}"
+                                                min="1" data-id="{{ $cart->id }}">
+                                            <div class="input-group-btn">
+                                                <button class="border btn btn-sm btn-plus rounded-circle bg-light"
+                                                    type="button" data-id="{{ $cart->id }}">
+                                                    <i data-feather="plus"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </td>
