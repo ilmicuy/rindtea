@@ -187,26 +187,29 @@
                         <tr>
                             <th>No</th>
                             <th>Timestamp</th>
-                            <th>Kolom</th>
-                            <th>Data Sebelum</th>
-                            <th>Data Sesudah</th>
                             <th>Description</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($transaction->transactionStatusLogs as $key => $log)
-                            <tr>
-                                <td>{{ $key + 1 }}</td>
-                                <td>{{ \Carbon\Carbon::parse($log->created_at)->format('d M Y H:i:s') }}</td>
-                                <td>{{ $log->column_name }}</td>
-                                <td>{{ $log->old_value }}</td>
-                                <td>{{ $log->new_value }}</td>
-                                <td>{{ $log->description }}</td>
-                            </tr>
+                            @if ($log->column_name == 'transaction_status')
+                                <tr>
+                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($log->created_at)->format('d M Y H:i:s') }}</td>
+                                    <td>{{ $log->description }}</td>
+                                </tr>
+                            @elseif ($log->column_name == 'paid_at')
+                                <tr>
+                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($log->created_at)->format('d M Y H:i:s') }}</td>
+                                    <td>Transaksi dibayar pada {{ \Carbon\Carbon::parse($log->new_value)->format('d M Y H:i:s') }}</td>
+                                </tr>
+                            @endif
                         @endforeach
                     </tbody>
                 </table>
             @endif
+
 
             @if ($transaction->transactionShipment()->latest()->first())
                 <div>
