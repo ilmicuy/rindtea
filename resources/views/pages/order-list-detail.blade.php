@@ -196,7 +196,7 @@
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ \Carbon\Carbon::parse($log->created_at)->format('d M Y H:i:s') }}</td>
-                                    <td>{{ $log->description }}</td>
+                                    <td>Status Transaksi Berubah dari {{ ucfirst($log->old_value) }} ke {{ ucfirst($log->new_value) }}</td>
                                 </tr>
                             @elseif ($log->column_name == 'paid_at')
                                 <tr>
