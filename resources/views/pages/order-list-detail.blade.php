@@ -185,22 +185,19 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>No</th>
-                            <th>Timestamp</th>
-                            <th>Description</th>
+                            <th>Waktu</th>
+                            <th>Deskripsi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($transaction->transactionStatusLogs as $key => $log)
                             @if ($log->column_name == 'transaction_status')
                                 <tr>
-                                    <td>{{ $key + 1 }}</td>
                                     <td>{{ \Carbon\Carbon::parse($log->created_at)->format('d M Y H:i:s') }}</td>
                                     <td>Status Transaksi Berubah dari {{ ucfirst($log->old_value) }} ke {{ ucfirst($log->new_value) }}</td>
                                 </tr>
                             @elseif ($log->column_name == 'paid_at')
                                 <tr>
-                                    <td>{{ $key + 1 }}</td>
                                     <td>{{ \Carbon\Carbon::parse($log->created_at)->format('d M Y H:i:s') }}</td>
                                     <td>Transaksi dibayar pada {{ \Carbon\Carbon::parse($log->new_value)->format('d M Y H:i:s') }}</td>
                                 </tr>
