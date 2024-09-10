@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class RequestIngredientController extends Controller
 {
@@ -144,10 +145,40 @@ class RequestIngredientController extends Controller
         // Order and paginate the results
         $ingredientTransactions = $query->orderBy('created_at', 'DESC')->paginate(10);
 
+        $dateRange = $request->has('date_range') ? $request->input('date_range') : null;
+
         // Pass the transactions to the view
-        return view('pages.admin.requestIngredient.ingredientTransaction', compact('ingredientTransactions'));
+        return view('pages.admin.requestIngredient.ingredientTransaction', compact('ingredientTransactions', 'dateRange'));
     }
 
+    public function downloadPdf(Request $request)
+    {
+        $query = IngredientTransaction::with(['ingredient', 'user']);
+        $dateRangeRaw = 'Semua Waktu';
+
+        // Check if date range is selected
+        if ($request->filled('date_range')) {
+            $dateRangeRaw = $request->input('date_range');
+            $dateRange = explode(' to ', $request->input('date_range'));
+
+            if (count($dateRange) === 2) {
+                $startDate = Carbon::parse($dateRange[0])->startOfDay();
+                $endDate = Carbon::parse($dateRange[1])->endOfDay();
+
+                // Filter by date range
+                $query->whereBetween('transaction_date', [$startDate, $endDate]);
+            }
+        }
+
+        // Get the filtered request ingredients
+        $ingredientTransaction = $query->get();
+
+        // Load the view for the PDF
+        $pdf = PDF::loadView('pages.admin.requestIngredient.ingredientTransactionPdf', compact('ingredientTransaction', 'dateRangeRaw'));
+
+        // Stream the PDF back to the user for download
+        return $pdf->download('request-bahan-baku-logs.pdf');
+    }
 
 
     public function statusEdit(Request $request)

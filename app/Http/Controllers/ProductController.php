@@ -116,7 +116,8 @@ class ProductController extends Controller
 
         // Pass the transactions to the view
         return view('pages.admin.product.productTransaction', [
-            'transactions' => $productTransaction
+            'transactions' => $productTransaction,
+            'dateRange' => $request->has('date_range') ? $request->input('date_range') : null,
         ]);
     }
 
@@ -137,16 +138,35 @@ class ProductController extends Controller
         ]);
     }
 
-    public function downloadPdf()
+    public function downloadPdf(Request $request)
     {
-        $transactions = ProductTransaction::with(['product', 'user'])->get();
+        $query = ProductTransaction::with(['product', 'user']);
+        $dateRangeRaw = 'Semua Waktu';
+
+        // Check if date range is selected
+        if ($request->filled('date_range')) {
+            $dateRangeRaw = $request->input('date_range');
+            $dateRange = explode(' to ', $request->input('date_range'));
+
+            if (count($dateRange) === 2) {
+                $startDate = Carbon::parse($dateRange[0])->startOfDay();
+                $endDate = Carbon::parse($dateRange[1])->endOfDay();
+
+                // Filter by date range
+                $query->whereBetween('transaction_date', [$startDate, $endDate]);
+            }
+        }
+
+        // Get the filtered transactions
+        $transactions = $query->get();
 
         // Load the view for the PDF
-        $pdf = PDF::loadView('pages.admin.product.productTransactionPdf', compact('transactions'));
+        $pdf = PDF::loadView('pages.admin.product.productTransactionPdf', compact('transactions', 'dateRangeRaw'));
 
         // Stream the PDF back to the user for download
         return $pdf->download('product_transaction_log.pdf');
     }
+
 
     /**
      * Update the specified resource in storage.

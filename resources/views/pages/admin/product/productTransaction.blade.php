@@ -19,7 +19,7 @@
                             <button type="submit" class="btn btn-primary">Filter</button>
                         </form>
 
-                        <a href="{{ route('product.downloadPdf') }}" class="btn btn-primary mt-3">Download Detail PDF</a>
+                        <a href="{{ route('product.downloadPdf') }}{{ $dateRange ? '?date_range=' . $dateRange : '' }}" class="btn btn-primary mt-3">Download Detail PDF</a>
 
                         <div class="table-responsive">
                             <table id="example2" class="table table-hover">

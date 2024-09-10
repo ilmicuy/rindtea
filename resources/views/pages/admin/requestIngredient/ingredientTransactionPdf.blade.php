@@ -1,8 +1,7 @@
-{{-- resources/views/product-transaction/pdf.blade.php --}}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Produk Transaction Log</title>
+    <title>Ingredient Transaction Log</title>
     <style>
         body {
             font-family: sans-serif;
@@ -22,9 +21,9 @@
     </style>
 </head>
 <body>
-    <h1>Laporan Transaksi Produk</h1>
+    <h1>Laporan Transaksi Bahan Baku</h1>
     <p>
-        <b>Laporan Dibuat: </b> Bag. Keuangan
+        <b>Laporan Dibuat: </b> Bag. Logistik
     </p>
     <p>
         <b>Laporan di-Download: </b> {{ \Carbon\Carbon::now() }}
@@ -33,32 +32,31 @@
         <b>Laporan Tanggal: </b> {{ str_replace('to', 'ke', $dateRangeRaw) }}
     </p>
 
-
     <table>
         <thead>
             <tr>
                 <th>No</th>
-                <th>Nama Produk</th>
+                <th>Nama Bahan Baku</th>
                 <th>Tipe Transaksi</th>
-                <th>Role</th>
                 <th>Jumlah</th>
                 <th>Jumlah Lama</th>
                 <th>Jumlah Baru</th>
                 <th>Tanggal Transaksi</th>
+                <th>User</th>
                 <th>Deskripsi</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($transactions as $key => $transaction)
+            @foreach ($ingredientTransaction as $key => $transaction)
                 <tr>
                     <td>{{ $key + 1 }}</td>
-                    <td>{{ $transaction->product->name }}</td>
+                    <td>{{ $transaction->ingredient->nama_bahan_baku }}</td>
                     <td>{{ ucfirst($transaction->transaction_type) }}</td>
-                    <td>{{ $transaction->user->getRoleNames()->implode(', ') }}</td>
                     <td>{{ $transaction->quantity }}</td>
                     <td>{{ $transaction->old_quantity }}</td>
                     <td>{{ $transaction->new_quantity }}</td>
                     <td>{{ \Carbon\Carbon::parse($transaction->transaction_date)->format('d M Y H:i:s') }}</td>
+                    <td>{{ $transaction->user->name }}</td>
                     <td>{{ $transaction->description }}</td>
                 </tr>
             @endforeach

@@ -153,6 +153,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::post('/request-bahan-baku/store', [RequestIngredientController::class, 'store'])->name('requestIngredient.store');
     Route::post('/request-bahan-baku/status-edit', [RequestIngredientController::class, 'statusEdit'])->name('requestIngredient.statusEdit');
     Route::get('/request-bahan-baku/logs', [RequestIngredientController::class, 'logs'])->name('requestIngredient.logs');
+    Route::get('/request-bahan-baku/logs/download-pdf', [RequestIngredientController::class, 'downloadPdf'])->name('requestIngredient.downloadPdf');
 
     Route::get('/request-bahan-baku/{id}', [RequestIngredientController::class, 'show'])->name('requestIngredient.show');
 

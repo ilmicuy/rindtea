@@ -19,6 +19,8 @@
                             <button type="submit" class="btn btn-primary">Filter</button>
                         </form>
 
+                        <a href="{{ route('requestIngredient.downloadPdf') }}{{ $dateRange ? '?date_range=' . $dateRange : '' }}" class="btn btn-primary mt-3">Download Detail PDF</a>
+
                         {{-- <a href="{{ route('ingredient.downloadPdf') }}" class="btn btn-primary mt-3">Download Detail PDF</a> --}}
 
                         <div class="table-responsive">
