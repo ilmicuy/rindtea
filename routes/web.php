@@ -19,24 +19,31 @@ use App\Http\Controllers\ShopDetailController;
 use App\Http\Controllers\HeroSectionController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\CustomerReviewController;
+use App\Http\Controllers\InboxController;
+use App\Http\Controllers\IngredientController;
+use App\Http\Controllers\RequestIngredientController;
+use App\Http\Controllers\RequestProductController;
+use App\Http\Controllers\TransactionLogsController;
+use Illuminate\Support\Facades\Auth;
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::group(['middleware' => ['redirect_to_admin', 'check.verified']], function() {
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
-Route::get('/shop', [ShopController::class, 'index'])->name('shop');
-Route::get('/shop-detail/{id}', [ShopDetailController::class, 'index'])->name('shop-detail');
-Route::post('/product/detail', [HomeController::class, 'detail'])->name('product.detail');
+    Route::get('/shop', [ShopController::class, 'index'])->name('shop');
+    Route::get('/shop-detail/{id}', [ShopDetailController::class, 'index'])->name('shop-detail');
+    Route::post('/product/detail', [HomeController::class, 'detail'])->name('product.detail');
 
-Route::get('/success', [CheckoutController::class, 'success'])->name('success');
+    Route::get('/success', [CheckoutController::class, 'success'])->name('success');
+});
 
 // Route::get('/home', function () {
 //     return view('pages.home');
 // })->middleware(['auth', 'verified'])->name('home');
 
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth', 'redirect_to_admin', 'verified']], function () {
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
     Route::post('/checkout/store', [CheckoutController::class, 'store'])->name('checkout.store');
-    Route::post('/midtrans-callback', [CheckoutController::class, 'callback'])->name('midtrans.callback');
     Route::post('/cost', [CheckoutController::class, 'cost'])->name('cost');
     Route::post('/shippingfee', [CheckoutController::class, 'shippingfee'])->name('shippingfee');
 
@@ -50,15 +57,18 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart');
     Route::delete('/cart/{id}', [CartController::class, 'delete'])->name('cart-delete');
 
+    Route::post('/cart/add-quantity', [CartController::class, 'addQuantity'])->name('cart.add-quantity');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/order-list', [OrderListController::class, 'index'])->name('order');
     Route::get('/order-list-detail/{transactions_id}', [OrderListController::class, 'show'])->name('order.detail');
+    Route::post('/order-list-detail/{transactions_id}', [OrderListController::class, 'update'])->name('order.update');
 
-    Route::post('/review/store', [CustomerReviewController::class, 'store'])->name('review.store');
-    Route::post('/review/update/{id}', [CustomerReviewController::class, 'update'])->name('review.update');
+    // Route::post('/review/store', [CustomerReviewController::class, 'store'])->name('review.store');
+    // Route::post('/review/update/{id}', [CustomerReviewController::class, 'update'])->name('review.update');
 
     Route::get('/address', [AddressController::class, 'index'])->name('address');
     Route::post('/address/store', [AddressController::class, 'store'])->name('address.store');
@@ -99,7 +109,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::delete('/category/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
 
     // product
-    Route::get('/product', [ProductController::class, 'index'])->name('product');
+    Route::get('/product', [ProductController::class, 'index'])->name('product.index');
     Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');
     Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
 
@@ -107,14 +117,60 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::post('/product/update/{id}', [ProductController::class, 'update'])->name('product.update');
     Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
 
+    // product transaction logs
+    Route::get('/product-transactions', [ProductController::class, 'productTransactions'])->name('product.productTransactions');
+    // web.php
+    Route::get('/product-transaction/download-pdf', [ProductController::class, 'downloadPdf'])->name('product.downloadPdf');
+
     // transaction
-    Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction');
+    Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
     Route::get('/transaction/{id}', [TransactionController::class, 'edit'])->name('transaction.edit');
+    Route::post('/transaction/{id}/process-refund', [TransactionController::class, 'processRefund'])->name('transaction.processRefund');
     Route::post('/transaction/update/{id}', [TransactionController::class, 'update'])->name('transaction.update');
 
+    // Transaction Logs
+    Route::get('/transaction-logs', [TransactionLogsController::class, 'transactionLogs'])->name('transactionLogs.index');
+    Route::get('/transaction-logs/download-pdf', [TransactionLogsController::class, 'downloadPdf'])->name('transactionLogs.downloadPdf');
+
+
+    // TEMPORARY: Cek Resi Route
+    Route::get('/cek-resi', [TransactionController::class, 'cekResi'])->name('cekResi');
+    Route::post('/cek-resi', [TransactionController::class, 'cekResiProcess'])->name('cekResiProcess');
+
     // reviews
-    Route::get('/reviews', [CustomerReviewController::class, 'index'])->name('reviews');
-    Route::get('/reviews/{id}', [CustomerReviewController::class, 'edit'])->name('reviews.edit');
+    // Route::get('/reviews', [CustomerReviewController::class, 'index'])->name('reviews.index');
+    // Route::get('/reviews/{id}', [CustomerReviewController::class, 'edit'])->name('reviews.edit');
+
+    // bahan baku
+    Route::get('/ingredient', [IngredientController::class, 'index'])->name('ingredient.index');
+    Route::post('/ingredient/store', [IngredientController::class, 'store'])->name('ingredient.store');
+    Route::put('/ingredient/{id}', [IngredientController::class, 'update'])->name('ingredient.update');
+    Route::delete('/ingredient/{id}', [IngredientController::class, 'destroy'])->name('ingredient.destroy');
+
+
+    // request bahan baku
+    Route::get('/request-bahan-baku', [RequestIngredientController::class, 'index'])->name('requestIngredient.index');
+    Route::post('/request-bahan-baku/store', [RequestIngredientController::class, 'store'])->name('requestIngredient.store');
+    Route::post('/request-bahan-baku/status-edit', [RequestIngredientController::class, 'statusEdit'])->name('requestIngredient.statusEdit');
+    Route::get('/request-bahan-baku/logs', [RequestIngredientController::class, 'logs'])->name('requestIngredient.logs');
+    Route::get('/request-bahan-baku/logs/download-pdf', [RequestIngredientController::class, 'downloadPdf'])->name('requestIngredient.downloadPdf');
+
+    Route::get('/request-bahan-baku/{id}', [RequestIngredientController::class, 'show'])->name('requestIngredient.show');
+
+
+    // request product
+    Route::get('/request-product', [RequestProductController::class, 'index'])->name('requestProduct.index');
+    Route::post('/request-product/store', [RequestProductController::class, 'store'])->name('requestProduct.store');
+    Route::post('/request-product/status-edit', [RequestProductController::class, 'statusEdit'])->name('requestProduct.statusEdit');
+    Route::get('/request-product/{id}', [RequestProductController::class, 'show'])->name('requestProduct.show');
+
+    // Inbox
+    Route::get('/inbox', [InboxController::class, 'index'])->name('inbox.index');
+    Route::get('/inbox/create', [InboxController::class, 'create'])->name('inbox.create');
+    Route::post('/inbox', [InboxController::class, 'store'])->name('inbox.store');
+    Route::get('/inbox/{id}', [InboxController::class, 'show'])->name('inbox.show');
 });
+
+Route::post('/midtrans-callback', [CheckoutController::class, 'callback'])->name('midtrans.callback');
 
 require __DIR__ . '/auth.php';

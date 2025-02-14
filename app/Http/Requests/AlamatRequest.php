@@ -25,10 +25,15 @@ class AlamatRequest extends FormRequest
             'fullname' => 'required|string',
             'address' => 'required|string',
             'province_id' => 'required|string',
+            'province_name' => 'required|string',
             'regency_id' => 'required|string',
+            'regency_name' => 'required|string',
             'label' => 'required|string',
             'postcode' => 'required|string',
             'phone' => 'required|string',
+            'latitude' => 'required',
+            'longitude' => 'required',
+            'distance_in_km' => 'required',
         ];
     }
 }

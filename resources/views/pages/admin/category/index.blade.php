@@ -43,14 +43,14 @@
                                                                     Hapus
                                                                 </button>
                                                             </form>
-                                                            
+
                                                         </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
-                                    {{$query->links()}}
+                                    {{$query->links('pagination::bootstrap-4') }}
                                 </div>
                             </div>
                         </div>

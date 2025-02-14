@@ -19,6 +19,12 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Http\Requests\CheckoutRequest;
+use App\Models\Inbox;
+use App\Models\Product;
+use App\Models\ProductTransaction;
+use App\Services\FonnteService;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class CheckoutController extends Controller
 {
@@ -50,26 +56,45 @@ class CheckoutController extends Controller
         $destination = $address->regency_id;
         $origin = env('API_ONGKIR_ORIGIN');
 
-        $response = Http::withHeaders([
-            'key' => env('API_ONGKIR_KEY')
-        ])->post(env('API_ONGKIR_BASE_URL') . 'cost', [
-            'origin' => $origin,
-            'destination' => $destination,
-            'weight' => $weight,
-            'courier' => $courier
-        ]);
+        $tarif_lokal_kurir = 5000;
 
-        $shipping_options = $response->json();
+        if($courier == 'lokal_kurir'){
+            $total = $address->distance_in_km * $tarif_lokal_kurir;
 
-        if ($response->failed() || !isset($shipping_options['rajaongkir']['results'][0]['costs'])) {
-            return response()->json(['error' => 'Unable to get shipping cost'], 500);
+            return response()->json([
+                'status' => 'success',
+                'distance_in_km' => $address->distance_in_km,
+                'tarif_lokal_kurir_per_km' => $tarif_lokal_kurir,
+                'total' => $total
+            ]);
+        } else if($courier == 'ambil_ditempat'){
+            return response()->json([
+                'status' => 'success',
+                'total' => 0
+            ]);
+        }else{
+            $response = Http::withHeaders([
+                'key' => env('API_ONGKIR_KEY')
+            ])->post(env('API_ONGKIR_BASE_URL') . 'cost', [
+                'origin' => $origin,
+                'destination' => $destination,
+                'weight' => $weight,
+                'courier' => $courier
+            ]);
+
+            $shipping_options = $response->json();
+
+            if ($response->failed() || !isset($shipping_options['rajaongkir']['results'][0]['costs'])) {
+                return response()->json(['error' => 'Unable to get shipping cost'], 500);
+            }
+
+            $costs = $shipping_options['rajaongkir']['results'][0]['costs'];
+
+            $html = view('pages.available_service', ['costs' => $costs])->render();
+
+            return response()->json($html);
         }
 
-        $costs = $shipping_options['rajaongkir']['results'][0]['costs'];
-
-        $html = view('pages.available_service', ['costs' => $costs])->render();
-
-        return response()->json($html);
     }
 
     public function cost(Request $request)
@@ -107,27 +132,99 @@ class CheckoutController extends Controller
     public function store(Request $request)
     {
         $carts = Cart::with(['product', 'user'])
-            ->where('users_id', Auth::user()->id)
+        ->where('users_id', Auth::user()->id)
             ->get();
 
-        $transaction =  Transaction::create([
+        $items = [];
+        $itemTotalPrice = 0;
+
+        foreach ($carts as $cart) {
+            $items[] = [
+                'id'       => 'item' . $cart->id,
+                'price'    => $cart->product->price,
+                'quantity' => $cart->qty,
+                'name'     => $cart->product->name,
+            ];
+
+            $itemTotalPrice += $cart->qty * $cart->product->price;
+        }
+
+        $shippingCourier = strtoupper(str_replace('_', ' ', $request->courier)) . '_' . $request->delivery_package;
+        $shippingCost = $request->total_price - $itemTotalPrice;
+
+        $items[] = [
+            'id'       => 'ongkir_' . $request->courier,
+            'price'    => $shippingCost,
+            'quantity' => 1,
+            'name'     => 'Ongkos Kirim (' . $shippingCourier . ')',
+        ];
+
+        $transaction = Transaction::create([
+            'kode_transaksi' => (new Transaction)->generateKodeTransaksi(),
             'checkout_date' => date('Y-m-d H:i:s'),
             'users_id' => Auth::user()->id,
             'total_price' => (int) $request->total_price,
             'transaction_status' => 'pending',
+            'shipment_courier' => $shippingCourier,
+            'shipment_cost' => $shippingCost,
+            'shipment_address_id' => $request->address_id,
         ]);
 
         foreach ($carts as $cart) {
+            $getProduct = Product::find($cart->product->id);
+            $oldQuantity = $getProduct->quantity;
+            $newQuantity = $oldQuantity - $cart->qty;
+
+            $getProduct->quantity = $newQuantity;
+            $getProduct->save();
+
             TransactionDetail::create([
                 'checkout_date' => date('Y-m-d H:i:s'),
                 'transactions_id' => $transaction->id,
                 'products_id' => $cart->product->id,
-                'qty'       => $request->qty,
+                'qty' => $cart->qty,
+            ]);
+
+            ProductTransaction::create([
+                'product_id' => $cart->product->id,
+                'transaction_id' => $transaction->id,
+                'user_id' => Auth::user()->id,
+                'transaction_type' => 'sale',
+                'quantity' => $cart->qty,
+                'old_quantity' => $oldQuantity,
+                'new_quantity' => $newQuantity,
+                'transaction_date' => date('Y-m-d H:i:s'),
+                'description' => 'Product sold during transaction #' . $transaction->kode_transaksi,
             ]);
         }
 
         Cart::where('users_id', Auth::user()->id)->delete();
 
+        Inbox::create([
+            'sender_id' => Auth::user()->id,
+            'receiver_id' => 8,
+            'message' => 'Terdapat order baru dengan Kode Transaksi ' . $transaction->kode_transaksi,
+            'is_read' => false,
+        ]);
+
+        // Send checkout email to the user
+        Mail::to(Auth::user()->email)->send(new \App\Mail\CheckoutEmail(Auth::user(), $transaction, $items));
+
+        // Send new order email to the marketing team
+        try{
+            Mail::to('marketingrindtea@gmail.com')->send(new \App\Mail\NewOrderEmail($transaction, $items));
+        }catch(Exception $e){}
+
+        // Send WhatsApp message to marketing team
+        $whatsappMessage = "Notifikasi Order Baru\n\n" .
+        "Kode Transaksi: #" . $transaction->kode_transaksi . "\n" .
+        "Total Harga: Rp " . number_format($transaction->total_price, 0, ',', '.') . "\n\n" .
+        "Silahkan Cek Email/Login Untuk Detail Lebih Lanjut.";
+
+        $fonnteService = new FonnteService();
+        $fonnteService->sendMessage("081282133865", $whatsappMessage);
+
+        // Midtrans configuration and transaction initiation
         Config::$serverKey = config('services.midtrans.serverKey');
         Config::$isProduction = config('services.midtrans.isProduction');
         Config::$isSanitized = config('services.midtrans.isSanitized');
@@ -143,18 +240,27 @@ class CheckoutController extends Controller
                 'email' => Auth::user()->email,
             ],
             'enable_payments' => [
-                'gopay', 'permata_va', 'shoppepay', 'bank_transfer'
+                'gopay',
+                'permata_va',
+                'shoppepay',
+                'bank_transfer'
             ],
+            'item_details' => $items,
             'vtweb' => []
         ];
+
         try {
-            $paymentUrl = Snap::createTransaction($midtrans)->redirect_url;
-            return redirect($paymentUrl);
-        } catch (Exception $e) {
+            $snapToken = Snap::getSnapToken($midtrans);
+            $transaction->snap_token = $snapToken;
+            $transaction->save();
+
+            return redirect(route('order.detail', $transaction->id));
+        } catch (\Exception $e) {
             Log::error('Midtrans Error: ' . $e->getMessage());
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
 
     public function callback(Request $request)
     {
@@ -172,24 +278,70 @@ class CheckoutController extends Controller
 
         $transaction = Transaction::findOrFail($order_id);
 
+        $payment_status = 'PENDING';
+
         if ($status == 'capture') {
             if ($type == 'credit_card') {
-                if ($fraud == 'challange') {
-                    $transaction->status = 'PENDING';
+                if ($fraud == 'challenge') {
+                    $payment_status = 'PENDING';
                 } else {
-                    $transaction->status = 'SUCCESS';
+                    $payment_status = 'SUCCESS';
                 }
             }
         } else if ($status == 'settlement') {
-            $transaction->status = 'SUCCESS';
+            $payment_status = 'SUCCESS';
         } else if ($status == 'pending') {
-            $transaction->status = 'PENDING';
+            $payment_status = 'PENDING';
         } else if ($status == 'deny') {
-            $transaction->status = 'CANCELED';
+            $payment_status = 'CANCELED';
         } else if ($status == 'expire') {
-            $transaction->status = 'CANCELED';
+            $payment_status = 'CANCELED';
         } else if ($status == 'cancel') {
-            $transaction->status = 'CANCELED';
+            $payment_status = 'CANCELED';
+        }
+
+        if ($payment_status == 'SUCCESS') {
+            $transaction->paid_at = Carbon::now();
+            $transaction->paid_payload = json_encode($notification);
+
+            // Send success payment email
+            $user = $transaction->user;
+            $items = TransactionDetail::where('transactions_id', $transaction->id)->get()->map(function ($item) {
+                return [
+                    'name' => $item->product->name,
+                    'quantity' => $item->qty,
+                    'price' => $item->product->price,
+                ];
+            });
+
+            // Send WhatsApp message if phone number exists
+            if ($user->phone_number) {
+                // Prepare the WhatsApp message
+                $whatsappMessage = "*Pembayaran Anda Berhasil di Rind Tea!*" . "\n\n" .
+                "_Lunas_" . "\n\n" .
+                "Hai, " . $user->name . "!" . "\n" .
+                    "Terima kasih telah melakukan pembayaran pemesanan kode transaksi #" . $transaction->kode_transaksi . ". Berikut adalah rincian pesanan Anda:" . "\n\n";
+
+                foreach ($items as $item) {
+                    $whatsappMessage .= "- *" . $item['name'] . "* - " . $item['quantity'] . " x Rp " . number_format($item['price'], 0, ',', '.') . "\n";
+                }
+
+                $whatsappMessage .= "\n*Total Harga:* Rp " . number_format($transaction->total_price, 0, ',', '.') . "\n\n" .
+                "Pesanan Anda sedang diproses dan akan segera kami kirim." . "\n\n" .
+                "_Hormat Kami,_\n" .
+                "*Tim Rind Tea*" . "\n\n" .
+                "&copy; " . date('Y') . " Rind Tea. All rights reserved.";
+
+                // Send the WhatsApp message using FonnteService
+                $fonnteService = new FonnteService();
+                // $fonnteService->sendMessage($user->phone_number, $whatsappMessage);
+                $fonnteService->sendMessage('081282133865', $whatsappMessage);
+            }
+
+            Mail::to($user->email)->send(new \App\Mail\SuccessPaymentEmail($user, $transaction, $items));
+
+            // Sementara
+            Mail::to('rindteasemarang@gmail.com')->send(new \App\Mail\SuccessPaymentEmail($user, $transaction, $items));
         }
 
         $transaction->save();

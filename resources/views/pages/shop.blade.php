@@ -6,7 +6,7 @@
         <h1 class="page-title">Shop </h1>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item"><a href="#">Pages</a></li>
+            {{-- <li class="breadcrumb-item"><a href="#">Pages</a></li> --}}
             <li class="breadcrumb-item active">Shop </li>
         </ol>
     </div>
@@ -39,7 +39,7 @@
                 @endforeach
 
                 <div class="pagination-container">
-                    {{ $products->links() }}
+                    {{ $products->links('pagination::bootstrap-4')  }}
                 </div>
             </div>
         </div>

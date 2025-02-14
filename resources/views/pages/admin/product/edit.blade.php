@@ -1,92 +1,8 @@
-{{-- <x-app-layout>
-    <x-slot name="header">
-        <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-            {{ __('Product Edit') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div class="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <form method="post" action="{{ route('product.update', $item->id) }}"
-                                    class="mt-6 space-y-6" enctype="multipart/form-data">
-                                    @csrf
-                                    <div>
-                                        <x-input-label for="name" :value="__('Product Name')" />
-                                        <x-text-input id="name" name="name" type="text"
-                                            class="block w-full mt-1" autocomplete="name" :value="old('name', $item->name)" />
-                                    </div>
-                                    <div>
-                                        <x-input-label for="quantity" :value="__('Quantity')" />
-                                        <x-text-input id="quantity" name="quantity" type="number"
-                                            class="block w-full mt-1" autocomplete="quantity" :value="old('quantity', $item->quantity)" />
-                                    </div>
-                                    <div>
-                                        <x-input-label for="quality" :value="__('Quality')" />
-                                        <x-text-input id="quality" name="quality" type="text"
-                                            class="block w-full mt-1" autocomplete="quality" :value="old('quality', $item->quality)" />
-                                    </div>
-                                    <div>
-                                        <x-input-label for="check" :value="__('Check')" />
-                                        <x-text-input id="check" name="check" type="text"
-                                            class="block w-full mt-1" autocomplete="check" :value="old('check', $item->check)" />
-                                    </div>
-                                    <div>
-                                        <x-input-label for="country_of_origin" :value="__('Country Of Origin')" />
-                                        <x-text-input id="country_of_origin" name="country_of_origin" type="text"
-                                            class="block w-full mt-1" autocomplete="country_of_origin"
-                                            :value="old('country_of_origin', $item->country_of_origin)" />
-                                    </div>
-                                    <div>
-                                        <x-input-label for="price" :value="__('Price')" />
-                                        <x-text-input id="price" name="price" type="number"
-                                            class="block w-full mt-1" autocomplete="price" :value="old('price', $item->price)" />
-                                    </div>
-                                    <div>
-                                        <x-input-label for="weight" :value="__('Weight')" />
-                                        <x-text-input id="weight" name="weight" type="text"
-                                            class="block w-full mt-1" autocomplete="weight" :value="old('weight', $item->weight)" />
-                                    </div>
-                                    <div>
-                                        <x-input-label for="thumb_description" :value="__('Description')" />
-                                        <textarea id="thumb_description" name="thumb_description"
-                                            class="block w-full mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
-                                            autocomplete="thumb_description">{{ $item->thumb_description }}</textarea>
-                                    </div>
-                                        <x-input-label for="photos" :value="__('Photos')" />
-                                        <x-text-input id="photos" name="photos" type="file"
-                                            class="block w-full mt-1" autocomplete="photos" />
-                                        <img class="mt-3" src="{{ Storage::url($item->photos) }}"
-                                            style="max-width: 250px;" />
-                                    </div>
-
-                                    <div class="flex items-center gap-4">
-                                        <a class="inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-25 transition ease-in-out duration-150"
-                                            style="text-decoration: none;" href="{{ route('product') }}">
-                                            {{ __('Cancel') }}
-                                        </a>
-
-                                        <x-primary-button>{{ __('Save') }}</x-primary-button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</x-app-layout> --}}
-
 @extends('layouts.app-old')
 @section('content')
     <div class="main-content">
         <div class="title">
-            Edit Product
+            Edit Produk
         </div>
         <div class="content-wrapper">
             <div class="col-md-12">
@@ -97,7 +13,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label for="name" class="form-label">Product Name</label>
+                                        <label for="name" class="form-label">Produk Name</label>
                                         <input type="text" class="form-control" id="name" name="name"
                                             autocomplete="name" required value="{{ $item->name }}">
                                     </div>
@@ -105,7 +21,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="quantity" class="form-label">Quantity</label>
-                                        <input type="number" class="form-control" id="quantity" name="quantity" required value="{{ $item->quantity }}">
+                                        <input type="number" class="form-control" id="quantity" name="quantity" disabled value="{{ $item->quantity }}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -122,11 +38,33 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label for="country_of_origin" class="form-label">Country_of_origin</label>
+                                        <label for="country_of_origin" class="form-label">Country of Origin</label>
                                         <input type="text" class="form-control" id="country_of_origin"
                                             name="country_of_origin" required value="{{ $item->country_of_origin }}">
                                     </div>
                                 </div>
+
+                                <!-- Shipping Options -->
+                                <div class="col-md-12">
+                                    <div class="form-group mb-3">
+                                        <label for="opsi_pengiriman" class="form-label">Opsi Pengiriman</label><br>
+                                        @php
+                                            $opsiPengiriman = json_decode($item->opsi_pengiriman, true) ?? [];
+                                        @endphp
+                                        <label>
+                                            <input type="checkbox" name="opsi_pengiriman[]" value="Regular"
+                                                {{ in_array('Regular', $opsiPengiriman) ? 'checked' : '' }}>
+                                            Regular
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" name="opsi_pengiriman[]" value="Instant"
+                                                {{ in_array('Instant', $opsiPengiriman) ? 'checked' : '' }}>
+                                            Instant
+                                        </label>
+                                    </div>
+                                </div>
+
+
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="price" class="form-label">Price</label>
@@ -142,7 +80,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="photos" class="form-label">Image</label>
-                                        <input type="file" class="form-control" id="photos" name="photos" required>
+                                        <input type="file" class="form-control" id="photos" name="photos">
                                     </div>
                                     <img src="{{ Storage::url($item->photos) }}" alt="" class="img-fluid" width="200px">
                                 </div>
@@ -152,16 +90,116 @@
                                         <textarea name="thumb_description" id="thumb_description" cols="30" rows="5" class="form-control">{{ $item->thumb_description }}</textarea>
                                     </div>
                                 </div>
-                                <div class="">
-                                    <a class="btn btn-secondary" href="{{ route('product') }}">
-                                        {{ __('Cancel') }}
-                                    </a>
-                                    <button type="submit" class="btn btn-primary"> Save</button>
+                                <div class="col-md-12">
+                                    <label>Bahan Baku</label>
+                                    <div id="repeater">
+                                        <div data-repeater-list="list_bahan_baku">
+                                            @if ($item->ingredients->isEmpty())
+                                                <div data-repeater-item>
+                                                    <div class="row">
+                                                        <div class="col-md-5">
+                                                            <div class="form-group mb-3">
+                                                                <label for="bahan_baku" class="form-label">Bahan Baku</label>
+                                                                <select class="form-control" name="bahan_baku">
+                                                                    <option value="">== Pilih Bahan Baku ==</option>
+                                                                    @foreach ($ingredients as $ingredient)
+                                                                        <option value="{{ $ingredient->id }}">{{ $ingredient->nama_bahan_baku }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-5">
+                                                            <div class="form-group mb-3">
+                                                                <label for="qty_needed" class="form-label">Quantity Needed</label>
+                                                                <input type="number" class="form-control" name="qty_needed" value="1" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="form-group mb-3">
+                                                                <button type="button" class="btn btn-danger" data-repeater-delete>Delete</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @else
+                                                @foreach ($item->ingredients as $bahanBaku)
+                                                <div data-repeater-item>
+                                                    <div class="row">
+                                                        <div class="col-md-5">
+                                                            <div class="form-group mb-3">
+                                                                <label for="bahan_baku" class="form-label">Bahan Baku</label>
+                                                                <select class="form-control" name="bahan_baku">
+                                                                    <option value="">== Pilih Bahan Baku ==</option>
+                                                                    @foreach ($ingredients as $ingredient)
+                                                                        <option value="{{ $ingredient->id }}" {{ $ingredient->id == $bahanBaku->pivot->ingredient_id ? 'selected' : '' }}>
+                                                                            {{ $ingredient->nama_bahan_baku }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-5">
+                                                            <div class="form-group mb-3">
+                                                                <label for="qty_needed" class="form-label">Quantity Needed</label>
+                                                                <input type="number" class="form-control" name="qty_needed" value="{{ $bahanBaku->pivot->qty_needed }}" required>
+                                                            </div>
+                                                        </div>
+                                                        @hasanyrole('produksi')
+                                                        <div class="col-md-2">
+                                                            <div class="form-group mb-3">
+                                                                <button type="button" class="btn btn-danger" data-repeater-delete>Delete</button>
+                                                            </div>
+                                                        </div>
+                                                        @endhasanyrole
+                                                    </div>
+                                                </div>
+                                                @endforeach
+                                            @endif
+                                        </div>
+                                        @hasanyrole('produksi')
+                                            <button type="button" class="btn btn-primary" data-repeater-create>Add Bahan Baku</button>
+                                        @endhasanyrole
+                                    </div>
                                 </div>
+                                @hasanyrole('produksi')
+                                    <div class="col-md-12 mt-5">
+                                        <a class="btn btn-secondary" href="{{ route('product.index') }}">
+                                            {{ __('Cancel') }}
+                                        </a>
+                                        <button type="submit" class="btn btn-primary"> Save</button>
+                                    </div>
+                                @endhasanyrole
+                            </div>
                         </form>
                     </div>
                 </div>
             </div>
+
+
         </div>
     </div>
 @endsection
+
+@push('js')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.repeater/1.2.1/jquery.repeater.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#repeater').repeater({
+            initEmpty: false,
+            defaultValues: {
+                'key': '',
+                'value': '',
+            },
+            show: function () {
+                $(this).slideDown();
+            },
+            hide: function (deleteElement) {
+                if(confirm('Are you sure you want to delete this element?')) {
+                    $(this).slideUp(deleteElement);
+                }
+            }
+        });
+    });
+</script>
+@endpush

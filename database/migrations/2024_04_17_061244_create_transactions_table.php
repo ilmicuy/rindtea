@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('users_id');
             $table->string('transaction_status'); //UNPAID/PENDING/SUCCESS/FAILED
             $table->integer('total_price');
-          
+
             $table->softDeletes();
             $table->timestamps();
         });

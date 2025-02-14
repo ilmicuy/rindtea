@@ -16,11 +16,16 @@ class Address extends Model
         'fullname',
         'users_id',
         'province_id',
+        'province_name',
         'regency_id',
+        'regency_name',
         'label',
         'phone',
         'address',
         'postcode',
+        'latitude',
+        'longitude',
+        'distance_in_km',
     ];
 
     public function user()

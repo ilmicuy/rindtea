@@ -1,31 +1,34 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
-    </div>
+@extends('layouts.home')
 
-    @if (session('status') == 'verification-link-sent')
-        <div class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
-            {{ __('A new verification link has been sent to the email address you provided during registration.') }}
-        </div>
-    @endif
+@push('css')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+@endpush
 
-    <div class="mt-4 flex items-center justify-between">
-        <form method="POST" action="{{ route('verification.send') }}">
-            @csrf
+@section('content')
+    <section class="login" id="login">
+        <div class="inner-page">
+            <div class="login-container">
+                <h1>Verifikasi Email</h1>
 
-            <div>
-                <x-primary-button>
-                    {{ __('Resend Verification Email') }}
-                </x-primary-button>
+                {{-- Add this section to handle email verification reminder --}}
+                @if (auth()->user() && !auth()->user()->hasVerifiedEmail())
+                    <div class="email-verification-notice">
+                        <p>{{ __('Silahkan untuk verifikasi email dengan cara menekan link yang telah dikirimkan ke email anda.') }}</p>
+                        <form method="POST" action="{{ route('verification.send') }}">
+                            @csrf
+                            <button class="login-button" type="submit">{{ __('Resend Verification Email') }}</button>
+                        </form>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button class="login-button" type="submit">{{ __('Log Out') }}</button>
+                        </form>
+                    </div>
+                @endif
             </div>
-        </form>
+        </div>
+    </section>
 
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-
-            <button type="submit" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-                {{ __('Log Out') }}
-            </button>
-        </form>
-    </div>
-</x-guest-layout>
+    @push('myscript')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @endpush
+@endsection

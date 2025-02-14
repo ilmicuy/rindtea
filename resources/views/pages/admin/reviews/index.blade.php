@@ -22,7 +22,7 @@
                                                 <th>No</th>
                                                 <th>Tanggal Review</th>
                                                 <th>Nama User</th>
-                                                <th>Product</th>
+                                                <th>Produk</th>
                                                 <th>Rating</th>
                                                 <th>Aksi</th>
                                             </tr>
@@ -34,7 +34,7 @@
                                                     <td>{{ \Carbon\Carbon::parse($review->created_at)->format('d M Y') }}</td>
                                                     <td>{{ $review->user->name }}</td>
                                                     <td>{{ $review->product->name }}</td>
-                                                    <td>{{ $review->rating}} Bintang</td>                                                    
+                                                    <td>{{ $review->rating}} Bintang</td>
                                                     <td>
                                                         <div class="btn-group">
                                                             <a href="{{ route('reviews.edit', $review->id) }}" class="mb-1 mr-1 btn btn-primary">
@@ -46,7 +46,7 @@
                                             @endforeach
                                         </tbody>
                                     </table>
-                                    {{-- {{$query->links()}} --}}
+                                    {{$query->links('pagination::bootstrap-4') }}
                                 </div>
                             </div>
                         </div>

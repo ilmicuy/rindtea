@@ -14,7 +14,7 @@ class OrderListController extends Controller
      */
     public function index()
     {
-        $query = Transaction::with(['transactionDetail'])            
+        $query = Transaction::with(['transactionDetail'])
             ->orderBy('created_at', 'desc')
             ->where('users_id', Auth::user()->id)
             ->get();
@@ -43,17 +43,18 @@ class OrderListController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $transactions_id)
+    public function show(Transaction $transactions_id)
     {
         $query = TransactionDetail::with(['transaction', 'product'])
-            ->where('transactions_id', $transactions_id)
+            ->where('transactions_id', $transactions_id->id)
             ->get();
 
         return view('pages.order-list-detail', [
-            'query' => $query
+            'query' => $query,
+            'transaction' => $transactions_id
         ]);
     }
-    
+
 
     /**
      * Show the form for editing the specified resource.
@@ -66,10 +67,26 @@ class OrderListController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $transactions_id)
     {
-        //
+        // Validate the input
+        $request->validate([
+            'refund_no_rek' => 'required|string|max:255',
+        ]);
+
+        // Find the transaction by ID
+        $transaction = Transaction::findOrFail($transactions_id);
+
+        // Update the transaction
+        $transaction->update([
+            'refund_status' => 'pending',
+            'refund_no_rek' => $request->input('refund_no_rek'),
+        ]);
+
+        // Redirect back with success message
+        return redirect()->route('order.detail', $transactions_id)->with('success', 'Refund details updated successfully!');
     }
+
 
     /**
      * Remove the specified resource from storage.

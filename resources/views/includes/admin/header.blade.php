@@ -2,140 +2,103 @@
     <div class="header-wrapper">
         <div class="header-left">
             <div class="sidebar-toggle action-toggle"><i class="fas fa-bars"></i></div>
-
         </div>
         <div class="header-content">
             <div class="theme-switch-icon"></div>
             <div class="notification dropdown">
                 <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="far fa-envelope"></i>
+                    @if ($unreadInboxes > 0)
+                    <span class="badge">{{ $unreadInboxes }}</span>
+                    @endif
                 </a>
                 <ul class="dropdown-menu medium">
                     <li class="menu-header">
                         <a class="dropdown-item" href="#">Message</a>
                     </li>
                     <li class="menu-content ps-menu">
-                        <a href="#">
-                            <div class="message-image">
-                                <img src="{{ asset('admin') }}/assets/images/avatar1.png" class="rounded-circle w-100"
-                                    alt="user1">
-                            </div>
-                            <div class="message-content read">
-                                <div class="subject">
-                                    John
+                        @forelse ($inboxes as $inbox)
+                            <a href="{{ route('inbox.show', $inbox->id) }}">
+                                <div class="message-image">
+                                    <img src="{{ asset('admin/assets/images/avatar1.png') }}" class="rounded-circle w-100" alt="user">
                                 </div>
-                                <div class="body">
-                                    Please call me at 9pm
+                                <div class="message-content {{ $inbox->is_read == 1 ? 'read' : '' }}">
+                                    <div class="subject">
+                                        {{ $inbox->sender->name }}
+                                    </div>
+                                    <div class="body">
+                                        {{ $inbox->message }}
+                                    </div>
+                                    <div class="time">{{ $inbox->created_at->diffForHumans() }}</div>
                                 </div>
-                                <div class="time">Just now</div>
-                            </div>
-                        </a>
-                        <a href="#">
-                            <div class="message-image">
-                                <img src="{{ asset('admin') }}/assets/images/avatar2.png" class="rounded-circle w-100"
-                                    alt="user1">
-                            </div>
-                            <div class="message-content">
-                                <div class="subject">
-                                    Michele
-                                </div>
-                                <div class="body">
-                                    Please come to my party
-                                </div>
-                                <div class="time">3 hours ago</div>
-                            </div>
-                        </a>
-                        <a href="#">
-                            <div class="message-image">
-                                <img src="{{ asset('admin') }}/assets/images/avatar1.png" class="rounded-circle w-100"
-                                    alt="user1">
-                            </div>
-                            <div class="message-content read">
-                                <div class="subject">
-                                    Brad
-                                </div>
-                                <div class="body">
-                                    I have something to discuss, please call me soon
-                                </div>
-                                <div class="time">3 hours ago</div>
-                            </div>
-                        </a>
-                        <a href="#">
-                            <div class="message-image">
-                                <img src="{{ asset('admin') }}/assets/images/avatar2.png" class="rounded-circle w-100"
-                                    alt="user1">
-                            </div>
-                            <div class="message-content">
-                                <div class="subject">
-                                    Anel
-                                </div>
-                                <div class="body">
-                                    Sorry i'm late
-                                </div>
-                                <div class="time">8 hours ago</div>
-                            </div>
-                        </a>
-                        <a href="#">
-                            <div class="message-image">
-                                <img src="{{ asset('admin') }}/assets/images/avatar2.png" class="rounded-circle w-100"
-                                    alt="user1">
-                            </div>
-                            <div class="message-content">
-                                <div class="subject">
-                                    Mary
-                                </div>
-                                <div class="body">
-                                    Please answer my question last night
-                                </div>
-                                <div class="time">Last month</div>
-                            </div>
-                        </a>
+                            </a>
+                        @empty
+                            <a href="javascript:void(0);" class="text-center">
+                                Tidak ada message
+                            </a>
+                        @endforelse
                     </li>
                 </ul>
             </div>
             <div class="notification dropdown">
                 <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="far fa-bell"></i>
-                    <span class="badge">12</span>
+                    @if ($getProductRequest + $getIngredientRequest + $hasLowStock != 0)
+                    <span class="badge">{{ $getProductRequest + $getIngredientRequest + $hasLowStock }}</span>
+                    @endif
                 </a>
                 <ul class="dropdown-menu medium">
                     <li class="menu-header">
                         <a class="dropdown-item" href="#">Notification</a>
                     </li>
                     <li class="menu-content ps-menu">
-                        <a href="#">
-                            <div class="message-icon text-danger">
+
+                        @if ($getProductRequest != 0)
+                        <a href="{{ route('requestProduct.index') }}">
+                            <div class="message-icon text-warning">
                                 <i class="fas fa-exclamation-triangle"></i>
-                            </div>
-                            <div class="message-content read">
-                                <div class="body">
-                                    There's incoming event, don't miss it!!
-                                </div>
-                                <div class="time">Just now</div>
-                            </div>
-                        </a>
-                        <a href="#">
-                            <div class="message-icon text-info">
-                                <i class="fas fa-info"></i>
-                            </div>
-                            <div class="message-content read">
-                                <div class="body">
-                                    Your licence will expired soon
-                                </div>
-                                <div class="time">3 hours ago</div>
-                            </div>
-                        </a>
-                        <a href="#">
-                            <div class="message-icon text-success">
-                                <i class="fas fa-check"></i>
                             </div>
                             <div class="message-content">
                                 <div class="body">
-                                    Successfully register new user
+                                    Ada {{ $getProductRequest }} pending request produk yang perlu ditinjau.
                                 </div>
-                                <div class="time">8 hours ago</div>
+                                <div class="time">Harap segera tanggapi</div>
                             </div>
                         </a>
+                        @endif
+
+                        @if ($getIngredientRequest != 0)
+                        <a href="{{ route('requestIngredient.index') }}">
+                            <div class="message-icon text-warning">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="message-content">
+                                <div class="body">
+                                    Ada {{ $getIngredientRequest }} pending request bahan baku yang perlu ditinjau.
+                                </div>
+                                <div class="time">Harap segera tanggapi</div>
+                            </div>
+                        </a>
+                        @endif
+
+                        @if ($hasLowStock)
+                            <a href="{{ route('requestProduct.index') }}">
+                                <div class="message-icon text-danger">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="message-content">
+                                    <div class="body">
+                                        Ada beberapa produk dengan stok hampir habis (di bawah 10):
+                                        @php
+                                            $lowStockString = $lowStockProducts->map(function ($product) {
+                                                return $product->name . ' (Stok: ' . $product->quantity . ')';
+                                            })->implode(', ');
+                                        @endphp
+                                        {{ $lowStockString }}
+                                    </div>
+                                </div>
+                            </a>
+                        @endif
                     </li>
                 </ul>
             </div>
@@ -143,14 +106,11 @@
                 <a href="#" class="user-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
                     <div class="label">
                         <span></span>
-                        <div>Admin</div>
+                        <div>{{ Auth::user()->name }}</div>
                     </div>
-                    <img class="img-user" src="{{ asset('admin') }}/assets/images/avatar1.png" alt="user"srcset="">
+                    <img class="img-user" src="{{ asset('admin/assets/images/avatar1.png') }}" alt="user">
                 </a>
                 <ul class="dropdown-menu small">
-                    <!-- <li class="menu-header">
-                                <a class="dropdown-item" href="#">Notifikasi</a>
-                            </li> -->
                     <li class="menu-content ps-menu">
                         <a href="#">
                             <div class="description">
@@ -162,15 +122,17 @@
                                 <i class="ti-settings"></i> Setting
                             </div>
                         </a>
-                        <a href="#">
-                            <div class="description">
-                                <i class="ti-power-off"></i> Logout
-                            </div>
-                        </a>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();" class="dropdown-item">
+                                <div class="description">
+                                    <i class="ti-power-off"></i> Logout
+                                </div>
+                            </a>
+                        </form>
                     </li>
                 </ul>
             </div>
-
         </div>
     </div>
 </header>

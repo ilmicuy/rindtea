@@ -5,12 +5,12 @@
         <h1 class="page-title">Shop Detail</h1>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item"><a href="#">Pages</a></li>
+            <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
             <li class="breadcrumb-item active">Shop Detail</li>
         </ol>
     </div>
 
-    <!-- Single Product Start -->
+    <!-- Single Produk Start -->
     <div class="single-product">
         <div class="container">
             <div class="product-wrapper">
@@ -45,8 +45,8 @@
                                         <i data-feather="minus"></i>
                                     </button>
                                 </div>
-                                <input id="qty-input" type="text" name="qty" class="form-control text-center"
-                                    value="1">
+                                <input id="qty-input" type="number" name="qty" class="form-control text-center"
+                                    value="1" min="1" max="{{ $product->quantity }}">
                                 <div class="input-group-btn">
                                     <button id="btn-plus" class="border btn btn-sm btn-plus rounded-circle bg-light"
                                         type="button">
@@ -70,8 +70,8 @@
                         <div class="mb-3 nav nav-tabs" id="nav-tab" role="tablist">
                             <button class="nav-link active" id="nav-about-tab" data-bs-target="#nav-about" type="button"
                                 role="tab" aria-controls="nav-about" aria-selected="true">Description</button>
-                            <button class="nav-link" id="nav-missions-tab" data-bs-target="#nav-missions" type="button"
-                                role="tab" aria-controls="nav-missions" aria-selected="false">Reviews</button>
+                            {{-- <button class="nav-link" id="nav-missions-tab" data-bs-target="#nav-missions" type="button"
+                                role="tab" aria-controls="nav-missions" aria-selected="false">Reviews</button> --}}
                         </div>
                     </nav>
                     <div class="tab-content" id="nav-tabContent">
@@ -79,6 +79,10 @@
                             aria-labelledby="nav-description-tab">
                             <p>{!! $product->thumb_description !!}</p>
                             <div class="product-info">
+                                <div class="info-item">
+                                    <p class="info-label">Opsi Pengiriman</p>
+                                    <p class="info-value">{{ implode(' / ', json_decode($product->opsi_pengiriman, true)) }}</p>
+                                </div>
                                 <div class="info-item">
                                     <p class="info-label">Min Weight</p>
                                     <p class="info-value">{{ $product->weight }}</p>
@@ -101,7 +105,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane" id="nav-missions" role="tabpanel" aria-labelledby="nav-missions-tab">
+                        {{-- <div class="tab-pane" id="nav-missions" role="tabpanel" aria-labelledby="nav-missions-tab">
                             @foreach ($review as $item)
                                 <div class="d-flex">
                                     <img src="{{ asset('img/avatar.jpg') }}" class="p-3 img-fluid rounded-circle"
@@ -128,14 +132,14 @@
                                 </div>
                                 <hr>
                             @endforeach
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Single Product End -->
+    <!-- Single Produk End -->
 @endsection
 
 
@@ -173,6 +177,11 @@
                     newVal = 0;
                 }
             }
+
+            if(newVal > {{ $product->quantity }}){
+                return false;
+            }
+
             button.parent().parent().find('input').val(newVal);
         });
     </script>

@@ -7,7 +7,7 @@
         <h1 class="page-title">Order List</h1>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item"><a href="#">Pages</a></li>
+            {{-- <li class="breadcrumb-item"><a href="#">Pages</a></li> --}}
             <li class="breadcrumb-item active">Order List</li>
         </ol>
     </div>
@@ -26,7 +26,7 @@
                             <th scope="col">Pesanan Dibuat</th>
                             <th scope="col">Total Harga</th>
                             <th scope="col">Status Transaksi</th>
-                            <th scope="col">Action</th>
+                            <th scope="col">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>

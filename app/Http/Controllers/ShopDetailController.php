@@ -7,6 +7,7 @@ use App\Models\CustomerReview;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Termwind\Components\Raw;
 
 class ShopDetailController extends Controller
 {
@@ -27,14 +28,40 @@ class ShopDetailController extends Controller
 
     public function add(Request $request, $id)
     {
-        $data = [
-            'products_id' => $id,
-            'qty' => $request->qty,
-            'users_id' => Auth::user()->id,
-        ];
+        $product = Product::find($id);
 
-        Cart::create($data);
+        if($product->quantity < $request->qty){
+            return redirect()->back()->with('error', 'Stok tidak mencukupi!');
+        }
+
+        $getExistingCart = Cart::where([
+            'users_id' => Auth::user()->id,
+            'products_id' => $id,
+        ])->first();
+
+        if($getExistingCart){
+            if($product->quantity < $getExistingCart->qty + $request->qty){
+                return redirect()->back()->with('error', 'Stok tidak mencukupi!');
+            }
+
+            $getExistingCart->qty += $request->qty;
+            $getExistingCart->save();
+        }else{
+            $data = [
+                'products_id' => $id,
+                'qty' => $request->qty,
+                'users_id' => Auth::user()->id,
+            ];
+
+            Cart::create($data);
+        }
+
         return redirect()->back();
+    }
+
+    public function addQuantity(Request $request)
+    {
+
     }
     /**
      * Show the form for creating a new resource.

@@ -5,8 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\admin\ProductRequest;
 use App\Http\Requests\admin\UpdateProductRequest;
 use App\Models\Category;
+use App\Models\Ingredient;
 use App\Models\Product;
+use App\Models\ProductTransaction;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 
@@ -19,8 +25,16 @@ class ProductController extends Controller
     {
         $query = Product::paginate(10);
 
+        $lowStockProducts = Product::all()->filter(function ($product) {
+            return $product->quantity < 10;
+        });
+
+        $hasLowStock = $lowStockProducts->isNotEmpty();
+
         return view('pages.admin.product.index', [
-            'query' => $query
+            'query' => $query,
+            'hasLowStock' => $hasLowStock,
+            'lowStockProducts' => $lowStockProducts,
         ]);
     }
 
@@ -31,8 +45,11 @@ class ProductController extends Controller
     {
         $categories = Category::all();
 
+        $bahanBaku = Ingredient::all();
+
         return view('pages.admin.product.create', [
-            'categories' => $categories
+            'categories' => $categories,
+            'ingredients' => $bahanBaku
         ]);
     }
 
@@ -43,22 +60,67 @@ class ProductController extends Controller
     {
         $data = $request->all();
 
+        $data['kode_produk'] = (new Product)->generateKodeProduk();  // Generate the product code
         $data['slug'] = Str::slug($request->name);
         $data['photos'] = $request->file('photos')->store('assets/product', 'public');
+        $data['quantity'] = 0;
 
+        if ($request->has('opsi_pengiriman')) {
+            $data['opsi_pengiriman'] = json_encode($request->opsi_pengiriman);
+        }
 
-        Product::create($data);
+        $product = Product::create($data);
 
-        return redirect()->route('product');
+        $bahanBakuData = [];
+        foreach ($request->list_bahan_baku as $bahan_baku) {
+            $bahanBakuData[$bahan_baku['bahan_baku']] = ['qty_needed' => $bahan_baku['qty_needed']];
+        }
+
+        $product->ingredients()->sync($bahanBakuData);
+
+        // Log the initial product creation
+        ProductTransaction::create([
+            'product_id' => $product->id,
+            'transaction_id' => null, // No specific transaction ID for initial creation
+            'user_id' => Auth::user()->id,
+            'transaction_type' => 'initial',
+            'quantity' => 0,
+            'old_quantity' => null,
+            'new_quantity' => 0,
+            'transaction_date' => Carbon::now(),
+            'description' => 'Initial creation of product',
+        ]);
+
+        return redirect()->route('product.index')->with('success', 'Berhasil Tambah Produk!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function productTransactions(Request $request)
     {
-     
+        $query = ProductTransaction::query();
+
+        // Check if date range is selected
+        if ($request->filled('date_range')) {
+            $dateRange = explode(' to ', $request->input('date_range'));
+
+            if (count($dateRange) === 2) {
+                $startDate = Carbon::parse($dateRange[0])->startOfDay();
+                $endDate = Carbon::parse($dateRange[1])->endOfDay();
+
+                // Filter by date range
+                $query->whereBetween('transaction_date', [$startDate, $endDate]);
+            }
+        }
+
+        // Order and paginate the results
+        $productTransaction = $query->orderBy('created_at', 'DESC')->paginate(10);
+
+        // Pass the transactions to the view
+        return view('pages.admin.product.productTransaction', [
+            'transactions' => $productTransaction,
+            'dateRange' => $request->has('date_range') ? $request->input('date_range') : null,
+        ]);
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -67,31 +129,83 @@ class ProductController extends Controller
     {
         $item = Product::findOrFail($id);
         $categories = Category::all();
+        $bahanBaku = Ingredient::all();
 
         return view('pages.admin.product.edit', [
             'item' => $item,
             'categories' => $categories,
+            'ingredients' => $bahanBaku
         ]);
     }
+
+    public function downloadPdf(Request $request)
+    {
+        $query = ProductTransaction::with(['product', 'user']);
+        $dateRangeRaw = 'Semua Waktu';
+
+        // Check if date range is selected
+        if ($request->filled('date_range')) {
+            $dateRangeRaw = $request->input('date_range');
+            $dateRange = explode(' to ', $request->input('date_range'));
+
+            if (count($dateRange) === 2) {
+                $startDate = Carbon::parse($dateRange[0])->startOfDay();
+                $endDate = Carbon::parse($dateRange[1])->endOfDay();
+
+                // Filter by date range
+                $query->whereBetween('transaction_date', [$startDate, $endDate]);
+            }
+        }
+
+        // Get the filtered transactions
+        $transactions = $query->get();
+
+        // Load the view for the PDF
+        $pdf = PDF::loadView('pages.admin.product.productTransactionPdf', compact('transactions', 'dateRangeRaw'));
+
+        // Stream the PDF back to the user for download
+        return $pdf->download('product_transaction_log.pdf');
+    }
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateProductRequest $request, $id)
     {
+        // Retrieve all form data
         $data = $request->all();
 
+        // Generate a slug from the product name
         $data['slug'] = Str::slug($request->name);
+
+        // Handle file upload if a new photo is provided
         if ($request->hasFile('photos')) {
             $data['photos'] = $request->file('photos')->store('assets/product', 'public');
         }
 
-        $item = Product::findOrFail($id);
+        // Handle the opsi_pengiriman field, encode it as JSON
+        if ($request->has('opsi_pengiriman')) {
+            $data['opsi_pengiriman'] = json_encode($request->opsi_pengiriman);
+        }
 
+        // Find the product by its ID and update it with the new data
+        $item = Product::findOrFail($id);
         $item->update($data);
 
-        return redirect()->route('product');
+        // Prepare the ingredients data for syncing
+        $bahanBakuData = [];
+        foreach ($request->list_bahan_baku as $bahan_baku) {
+            $bahanBakuData[$bahan_baku['bahan_baku']] = ['qty_needed' => $bahan_baku['qty_needed']];
+        }
+
+        // Sync the ingredients with the product
+        $item->ingredients()->sync($bahanBakuData);
+
+        // Redirect back to the edit page with a success message
+        return redirect()->route('product.edit', $id)->with('success', 'Product updated successfully.');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -101,6 +215,6 @@ class ProductController extends Controller
         $item = Product::findOrFail($id);
         $item->delete();
 
-        return redirect()->route('product');
+        return redirect()->route('product.index');
     }
 }
