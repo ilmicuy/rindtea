@@ -36,6 +36,7 @@
                                         <th>No</th>
                                         <th>Kode Produk</th>
                                         <th>Nama Produk</th>
+                                        <th>Harga Modal</th>
                                         <th>Harga</th>
                                         <th>Jumlah</th>
                                         <th>Kualitas</th>
@@ -53,6 +54,7 @@
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $product->kode_produk }}</td>
                                             <td>{{ $product->name }}</td>
+                                            <td>Rp.{{ number_format($product->raw_price) }}</td>
                                             <td>Rp.{{ number_format($product->price) }}</td>
                                             <td>{{ $product->quantity }} Pcs</td>
                                             <td>{{ $product->quality }}</td>

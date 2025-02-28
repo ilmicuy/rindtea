@@ -31,7 +31,7 @@
         @hasanyrole('owner|keuangan')
             <div class="content-wrapper">
                 <div class="row same-height">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card">
                             <div class="card-header">
                                 <h4>Total Produk</h4>
@@ -43,10 +43,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Pendapatan</h4>
+                                <h4>Pendapatan Total</h4>
                             </div>
                             <div class="card-body">
                                 <div class="text-gray-900 dark:text-gray-100">
@@ -55,7 +55,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Pendapatan Bersih</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="text-gray-900 dark:text-gray-100">
+                                    Rp.{{ number_format($netRevenue) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
                         <div class="card">
                             <div class="card-header">
                                 <h4>Transaksi Pending</h4>

@@ -17,6 +17,15 @@ class DashboardController extends Controller
     {
         $productCount = Product::count();
         $revenue = Transaction::whereNotNull('paid_at')->sum('total_price');
+
+        $transactions = Transaction::whereNotNull('paid_at')->get();
+        $rawPriceTotal = TransactionDetail::whereHas('transaction', function ($query) {
+            $query->whereNotNull('paid_at');
+        })->join('products', 'transaction_details.products_id', '=', 'products.id')
+        ->sum('products.raw_price');
+
+        $netRevenue = $revenue - $rawPriceTotal;
+
         $transactionPending = Transaction::where('transaction_status', 'pending')->count('transaction_status');
 
         // Fetch all transaction details with products and transactions
@@ -67,6 +76,7 @@ class DashboardController extends Controller
             'currentMonth' => $currentMonth,
             'productCount' => $productCount,
             'revenue' => $revenue,
+            'netRevenue' => $netRevenue,
             'transactionPending' => $transactionPending
         ]);
     }

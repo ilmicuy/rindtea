@@ -21,6 +21,7 @@ class Product extends Model
         'quantity',
         'quality',
         'thumb_description',
+        'raw_price',
         'price',
         'weight',
         'check',
@@ -67,5 +68,10 @@ class Product extends Model
     public function productTransactions()
     {
         return $this->hasMany(ProductTransaction::class);
+    }
+
+    public function getPendapatanBersihAttribute()
+    {
+        return $this->price - $this->raw_price;
     }
 }
