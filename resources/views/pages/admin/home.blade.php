@@ -126,6 +126,71 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- FILTER FORM & TOP 5 TABLE -->
+                <div class="row same-height mt-4">
+                    <div class="col-md-12">
+                        <!-- FORM FILTER TANGGAL -->
+                        <!-- NOTE: We remove the action/method so we can intercept with JS -->
+                        <form id="filterForm" class="row mb-3">
+                            <div class="col-md-3">
+                                <label for="start_date">Start Date:</label>
+                                <input type="date" name="start_date" class="form-control"
+                                    value="{{ $startDate }}">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="end_date">End Date:</label>
+                                <input type="date" name="end_date" class="form-control"
+                                    value="{{ $endDate }}">
+                            </div>
+                            <div class="col-md-3 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary">
+                                    Filter
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- TABEL 5 PRODUK -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Top 5 Produk (Periode <span id="dateRangeLabel">{{ $startDate }} s/d {{ $endDate }}</span>)</h4>
+                            </div>
+                            <div class="card-body table-responsive">
+                                <table class="table small-font table-striped table-hover table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Produk</th>
+                                            <th>Harga Jual</th>
+                                            <th>Terjual (qty)</th>
+                                            <th>Pendapatan Kotor</th>
+                                            <th>Pendapatan Bersih</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="topProductsTableBody">
+                                        @foreach($topProducts as $item)
+                                            <tr>
+                                                <td>{{ $item['name'] }}</td>
+                                                <td>Rp. {{ number_format($item['selling_price'], 0, ',', '.') }}</td>
+                                                <td>{{ $item['total_qty'] }}</td>
+                                                <td>Rp. {{ number_format($item['gross_revenue'], 0, ',', '.') }}</td>
+                                                <td>Rp. {{ number_format($item['net_revenue'], 0, ',', '.') }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                    <tfoot id="topProductsTableFooter">
+                                        <tr>
+                                            <th colspan="2">Total</th>
+                                            <th>{{ $totals['total_qty'] }}</th>
+                                            <th>Rp. {{ number_format($totals['gross_revenue'], 0, ',', '.') }}</th>
+                                            <th>Rp. {{ number_format($totals['net_revenue'], 0, ',', '.') }}</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         @endhasanyrole
     </div>
@@ -136,75 +201,148 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
     <script>
+        // ==================================================
+        // 1) INITIAL CHART RENDER
+        // ==================================================
         var ctx = document.getElementById('myChart').getContext('2d');
-        var salesData = @json($salesData);
+        var initialSalesData = @json($salesData);
 
-        var labels = Object.keys(salesData);
-        var datasets = [];
-        var productNames = new Set();
+        var chartInstance = null; // We'll store Chart.js instance globally
 
-        var colors = [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
-        ];
+        function renderChart(salesData) {
+            // If there's already a chart, destroy it before re-creating
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
 
-        var borderColors = [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
-        ];
+            var labels = Object.keys(salesData);
+            var datasets = [];
+            var productNames = new Set();
 
-        // Collect all product names
-        Object.values(salesData).forEach(monthlyData => {
-            Object.values(monthlyData).forEach(product => {
-                productNames.add(product.name);
+            var colors = [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ];
+
+            var borderColors = [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ];
+
+            // Collect all product names
+            Object.values(salesData).forEach(monthlyData => {
+                Object.values(monthlyData).forEach(product => {
+                    productNames.add(product.name);
+                });
             });
-        });
 
-        productNames = Array.from(productNames);
+            productNames = Array.from(productNames);
 
-        // Initialize datasets for each product
-        productNames.forEach((productName, index) => {
-            datasets.push({
-                label: productName,
-                data: Array(labels.length).fill(0),
-                backgroundColor: colors[index % colors.length],
-                borderColor: borderColors[index % borderColors.length],
-                borderWidth: 1
+            // Initialize datasets for each product
+            productNames.forEach((productName, index) => {
+                datasets.push({
+                    label: productName,
+                    data: Array(labels.length).fill(0),
+                    backgroundColor: colors[index % colors.length],
+                    borderColor: borderColors[index % borderColors.length],
+                    borderWidth: 1
+                });
             });
-        });
 
-        // Fill datasets with data
-        labels.forEach((month, monthIndex) => {
-            Object.values(salesData[month]).forEach(product => {
-                var productIndex = productNames.indexOf(product.name);
-                if (productIndex !== -1) {
-                    datasets[productIndex].data[monthIndex] = product.qty;
-                }
+            // Fill datasets with data
+            labels.forEach((month, monthIndex) => {
+                Object.values(salesData[month]).forEach(product => {
+                    var productIndex = productNames.indexOf(product.name);
+                    if (productIndex !== -1) {
+                        datasets[productIndex].data[monthIndex] = product.qty;
+                    }
+                });
             });
-        });
 
-        var myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: datasets
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: datasets
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
 
+        // Render chart on page load
+        renderChart(initialSalesData);
+
+
+        // ==================================================
+        // 2) AJAX FILTER HANDLER
+        // ==================================================
+        document.getElementById('filterForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            var start_date = document.querySelector('input[name="start_date"]').value;
+            var end_date = document.querySelector('input[name="end_date"]').value;
+
+            // Make AJAX request
+            fetch("{{ route('dashboard') }}?start_date=" + start_date + "&end_date=" + end_date, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Update table date range label
+                document.getElementById('dateRangeLabel').textContent = data.startDate + ' s/d ' + data.endDate;
+
+                // 1) Update the table body
+                var tableBody = document.getElementById('topProductsTableBody');
+                tableBody.innerHTML = ''; // Clear existing rows
+
+                data.topProducts.forEach(function(item) {
+                    var row = `
+                        <tr>
+                            <td>${item.name}</td>
+                            <td>Rp. ${new Intl.NumberFormat('id-ID').format(item.selling_price)}</td>
+                            <td>${item.total_qty}</td>
+                            <td>Rp. ${new Intl.NumberFormat('id-ID').format(item.gross_revenue)}</td>
+                            <td>Rp. ${new Intl.NumberFormat('id-ID').format(item.net_revenue)}</td>
+                        </tr>
+                    `;
+                    tableBody.insertAdjacentHTML('beforeend', row);
+                });
+
+                // 2) Update the table footer
+                var tableFooter = document.getElementById('topProductsTableFooter');
+                tableFooter.innerHTML = `
+                    <tr>
+                        <th colspan="2">Total</th>
+                        <th>${data.totals.total_qty}</th>
+                        <th>Rp. ${new Intl.NumberFormat('id-ID').format(data.totals.gross_revenue)}</th>
+                        <th>Rp. ${new Intl.NumberFormat('id-ID').format(data.totals.net_revenue)}</th>
+                    </tr>
+                `;
+
+                // 3) Update the chart with new data
+                renderChart(data.salesData);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+        });
     </script>
 @endpush

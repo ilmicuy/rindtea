@@ -71,10 +71,11 @@
                                         <input type="number" class="form-control" id="price" name="price" required value="{{ $item->price }}">
                                     </div>
                                 </div>
+
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label for="weight" class="form-label">Weight</label>
-                                        <input type="number" class="form-control" id="weight" name="weight" required value="{{ $item->weight }}">
+                                        <label for="price" class="form-label">Raw Price</label>
+                                        <input type="number" class="form-control" id="raw_price" name="raw_price" required value="{{ $item->raw_price }}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -83,6 +84,12 @@
                                         <input type="file" class="form-control" id="photos" name="photos">
                                     </div>
                                     <img src="{{ Storage::url($item->photos) }}" alt="" class="img-fluid" width="200px">
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="weight" class="form-label">Weight</label>
+                                        <input type="number" class="form-control" id="weight" name="weight" required value="{{ $item->weight }}">
+                                    </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group mb-3">
