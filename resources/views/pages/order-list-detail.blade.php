@@ -144,12 +144,12 @@
                                                 @if ($log->column_name == 'transaction_status')
                                                     <tr>
                                                         <td>{{ \Carbon\Carbon::parse($log->created_at)->format('d M Y H:i:s') }}</td>
-                                                        <td>Status Transaksi Berubah dari {{ ucfirst($log->old_value) }} ke {{ ucfirst($log->new_value) }}</td>
+                                                        <td>Pesanan {{ \App\Helpers\TransactionHelper::translateStatus($log->new_value) }}</td>
                                                     </tr>
                                                 @elseif ($log->column_name == 'paid_at')
                                                     <tr>
                                                         <td>{{ \Carbon\Carbon::parse($log->created_at)->format('d M Y H:i:s') }}</td>
-                                                        <td>Transaksi dibayar pada {{ \Carbon\Carbon::parse($log->new_value)->format('d M Y H:i:s') }}</td>
+                                                        <td>Pesanan Dibayar</td>
                                                     </tr>
                                                 @endif
                                             @endforeach
