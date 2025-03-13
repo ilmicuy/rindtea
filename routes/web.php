@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Auth;
 Route::group(['middleware' => ['redirect_to_admin', 'check.verified']], function() {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+    Route::post('/contact/submit', [ContactController::class, 'submitForm'])->name('contact.submit');
 
     Route::get('/shop', [ShopController::class, 'index'])->name('shop');
     Route::get('/shop-detail/{id}', [ShopDetailController::class, 'index'])->name('shop-detail');
@@ -72,6 +73,7 @@ Route::group(['middleware' => ['auth', 'redirect_to_admin', 'verified']], functi
 
     Route::get('/address', [AddressController::class, 'index'])->name('address');
     Route::post('/address/store', [AddressController::class, 'store'])->name('address.store');
+    Route::get('/get-cities', [AddressController::class, 'getCities'])->name('get.cities');
 });
 
 Route::group(['middleware' => ['auth', 'admin']], function () {

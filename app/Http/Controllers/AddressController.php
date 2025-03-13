@@ -25,15 +25,9 @@ class AddressController extends Controller
         ])->get(env('API_ONGKIR_BASE_URL') . 'province');
         $provinces = $response['rajaongkir']['results'];
 
-        $response = Http::withHeaders([
-            'key' => env('API_ONGKIR_KEY')
-        ])->get(env('API_ONGKIR_BASE_URL') . 'city');
-        $cities = $response['rajaongkir']['results'];
-
         $id = Auth::id();
-        // $provinces = Province::all();
         $address = Address::where('users_id', $id)->get();
-        return view('pages.address', ['provinces' => $provinces, 'address' => $address, 'cities' => $cities]);
+        return view('pages.address', ['provinces' => $provinces, 'address' => $address]);
     }
 
     /**
@@ -89,6 +83,22 @@ class AddressController extends Controller
     public function destroy(Address $address)
     {
         //
+    }
+
+    /**
+     * Get cities based on province ID
+     */
+    public function getCities(Request $request)
+    {
+        $provinceId = $request->province_id;
+
+        $response = Http::withHeaders([
+            'key' => env('API_ONGKIR_KEY')
+        ])->get(env('API_ONGKIR_BASE_URL') . 'city', [
+            'province' => $provinceId
+        ]);
+
+        return response()->json($response['rajaongkir']['results']);
     }
 
     // public function getkota(Request $request)

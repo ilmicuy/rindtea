@@ -268,6 +268,16 @@
             </div>
         </form>
     </div>
+
+    <style>
+        .delivery-marker {
+            background-color: #4a90e2;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            width: 12px;
+            height: 12px;
+        }
+    </style>
 @endsection
 
 @push('js')
@@ -286,20 +296,33 @@
 @endif
 
 @if ($transaction->addressChoosen->latitude != null && $transaction->addressChoosen->longitude != null)
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCCfRlVGUObDiUnSXJl7cS0GJw5yHJNSX8&callback=initMap" async defer></script>
     <script>
         function initMap() {
-            var latitude = {{ $transaction->addressChoosen->latitude }};
-            var longitude = {{ $transaction->addressChoosen->longitude }};
-            var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 15,
-                center: {lat: latitude, lng: longitude}
+            const latitude = {{ $transaction->addressChoosen->latitude }};
+            const longitude = {{ $transaction->addressChoosen->longitude }};
+
+            // Initialize map
+            const map = L.map('map').setView([latitude, longitude], 15);
+
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Add delivery location marker
+            const deliveryIcon = L.divIcon({
+                className: 'delivery-marker',
+                iconSize: [12, 12]
             });
-            var marker = new google.maps.Marker({
-                position: {lat: latitude, lng: longitude},
-                map: map
-            });
+            L.marker([latitude, longitude], {
+                icon: deliveryIcon
+            }).bindPopup('Lokasi Pengiriman').addTo(map);
         }
+
+        // Initialize map when document is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            initMap();
+        });
     </script>
 @endif
 

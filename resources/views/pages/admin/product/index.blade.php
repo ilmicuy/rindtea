@@ -36,6 +36,8 @@
                                         <th>No</th>
                                         <th>Kode Produk</th>
                                         <th>Nama Produk</th>
+                                        <th>Grup Varian</th>
+                                        <th>Harga Modal</th>
                                         <th>Harga</th>
                                         <th>Jumlah</th>
                                         <th>Kualitas</th>
@@ -53,6 +55,8 @@
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $product->kode_produk }}</td>
                                             <td>{{ $product->name }}</td>
+                                            <td>{{ $product->variant_grouping ?: '-' }}</td>
+                                            <td>Rp.{{ number_format($product->raw_price) }}</td>
                                             <td>Rp.{{ number_format($product->price) }}</td>
                                             <td>{{ $product->quantity }} Pcs</td>
                                             <td>{{ $product->quality }}</td>
@@ -80,14 +84,13 @@
                                                         </button>
                                                     </form>
                                                     @endhasallroles
-
                                                 </div>
                                             </td>
                                             @endunlessrole
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="8">
+                                            <td colspan="12">
                                                 <p>Tidak ada data terbaru</p>
                                             </td>
                                         </tr>
@@ -102,7 +105,6 @@
         </div>
     </div>
 @endsection
-
 
 @push('js')
 <!-- Include SweetAlert CSS and JS -->

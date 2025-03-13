@@ -16,11 +16,13 @@ class Product extends Model
     protected $fillable = [
         'kode_produk',
         'name',
+        'variant_grouping',
         'slug',
         'photos',
         'quantity',
         'quality',
         'thumb_description',
+        'raw_price',
         'price',
         'weight',
         'check',
@@ -67,5 +69,24 @@ class Product extends Model
     public function productTransactions()
     {
         return $this->hasMany(ProductTransaction::class);
+    }
+
+    public function getPendapatanBersihAttribute()
+    {
+        return $this->price - $this->raw_price;
+    }
+
+    /**
+     * Get all products that belong to the same variant group
+     */
+    public function getVariantGroupProducts()
+    {
+        if (!$this->variant_grouping) {
+            return collect([$this]);
+        }
+
+        return self::where('variant_grouping', $this->variant_grouping)
+                  ->where('id', '!=', $this->id)
+                  ->get();
     }
 }

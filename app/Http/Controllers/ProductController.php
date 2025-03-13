@@ -44,12 +44,16 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
-
         $bahanBaku = Ingredient::all();
+        $existingGroups = Product::whereNotNull('variant_grouping')
+                                ->distinct()
+                                ->pluck('variant_grouping')
+                                ->toArray();
 
         return view('pages.admin.product.create', [
             'categories' => $categories,
-            'ingredients' => $bahanBaku
+            'ingredients' => $bahanBaku,
+            'existingGroups' => $existingGroups
         ]);
     }
 
@@ -130,11 +134,17 @@ class ProductController extends Controller
         $item = Product::findOrFail($id);
         $categories = Category::all();
         $bahanBaku = Ingredient::all();
+        $existingGroups = Product::whereNotNull('variant_grouping')
+                                ->where('id', '!=', $id)
+                                ->distinct()
+                                ->pluck('variant_grouping')
+                                ->toArray();
 
         return view('pages.admin.product.edit', [
             'item' => $item,
             'categories' => $categories,
-            'ingredients' => $bahanBaku
+            'ingredients' => $bahanBaku,
+            'existingGroups' => $existingGroups
         ]);
     }
 

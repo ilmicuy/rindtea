@@ -1,188 +1,250 @@
 @extends('layouts.home')
 
 @section('content')
-    <div class="single-page-header">
-        <h1 class="page-title">Shop Detail</h1>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
-            <li class="breadcrumb-item active">Shop Detail</li>
-        </ol>
-    </div>
-
-    <!-- Single Produk Start -->
-    <div class="single-product">
+    <!-- Single Page Header start -->
+    <div class="single-page-header py-5" style="background-color: var(--primary);" data-aos="fade-down">
         <div class="container">
-            <div class="product-wrapper">
-                <div class="product-image-container">
-                    <div class="product-gallery">
-                        <div class="product-image">
-                            <a href="#">
-                                <img src="{{ Storage::url($product->photos) }}" class="img-fluid" alt="Image">
-                            </a>
+            <h1 class="page-title mb-3">Product Details</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ $product->name }}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- Single Page Header End -->
+
+    <!-- Product Detail Start -->
+    <div class="modern-checkout py-5">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Product Image -->
+                <div class="col-lg-5">
+                    <div class="checkout-card h-100">
+                        <div class="card-body p-0">
+                            <div class="product-image-wrapper position-relative">
+                                <div class="main-image">
+                                    <img src="{{ Storage::url($product->photos) }}" class="img-fluid w-100" alt="{{ $product->name }}">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="product-details-container">
-                    <div class="product-details">
-                        <h4 class="product-name">{{ $product->name }}</h4>
-                        <h5 class="rupiah" data-price="{{ $product->price }}"></h5>
-                        <div class="product-rating">
-                            <i class="fa fa-star text-secondary"></i>
-                            <i class="fa fa-star text-secondary"></i>
-                            <i class="fa fa-star text-secondary"></i>
-                            <i class="fa fa-star text-secondary"></i>
-                            <i class="fa fa-star"></i>
-                        </div>
-                        <p class="product-description">{!! $product->thumb_description !!}</p>
-                        <p class="product-quantity">Qty: {{ $product->quantity }}</p>
-                        <form id="add-to-cart-form" action="{{ route('add-to-cart', $product->id) }}" method="POST"
-                            enctype="multipart/form-data">
-                            <div class="mb-5 input-group quantity">
-                                <div class="input-group-btn">
-                                    <button id="btn-minus" class="border btn btn-sm btn-minus rounded-circle bg-light"
-                                        type="button">
-                                        <i data-feather="minus"></i>
-                                    </button>
+
+                <!-- Product Info -->
+                <div class="col-lg-7">
+                    <div class="checkout-card h-100">
+                        <div class="card-body">
+                            @if($product->variant_grouping)
+                                <div class="variant-group mb-2">
+                                    <span class="badge bg-primary">{{ $product->variant_grouping }}</span>
                                 </div>
-                                <input id="qty-input" type="number" name="qty" class="form-control text-center"
-                                    value="1" min="1" max="{{ $product->quantity }}">
-                                <div class="input-group-btn">
-                                    <button id="btn-plus" class="border btn btn-sm btn-plus rounded-circle bg-light"
-                                        type="button">
-                                        <i data-feather="plus"></i>
-                                    </button>
+                            @endif
+                            <h2 class="product-title mb-3">{{ $product->name }}</h2>
+
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="product-rating me-3">
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star-half-alt text-warning"></i>
+                                    <span class="ms-2">(4.5)</span>
+                                </div>
+                                <div class="product-stock ms-4">
+                                    <i class="fas fa-box me-2"></i>
+                                    <span>Stock: {{ $product->quantity }} items</span>
                                 </div>
                             </div>
-                            @auth
+
+                            @if($product->variant_grouping)
+                                <div class="variant-selection mb-4">
+                                    <label class="fw-bold mb-2">Available Variants:</label>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        @foreach($product->getVariantGroupProducts() as $variant)
+                                            <a href="{{ route('shop-detail', $variant->id) }}"
+                                               class="btn {{ $variant->id === $product->id ? 'btn-primary' : 'btn-outline-primary' }}">
+                                                {{ str_replace($product->variant_grouping . ' ', '', $variant->name) }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+
+                            <div class="product-price mb-4">
+                                <span class="rupiah h3" data-price="{{ $product->price }}"></span>
+                            </div>
+
+                            <div class="product-description mb-4">
+                                <p class="lead text-white">{!! $product->thumb_description !!}</p>
+                            </div>
+
+                            <form id="add-to-cart-form" action="{{ route('add-to-cart', $product->id) }}" method="POST" class="mb-4">
                                 @csrf
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-shopping-bag me-2 text-white"></i> Add to cart
-                                </button>
-                            @else
-                                <a href="{{ route('login') }}" class="btn btn-secondary">Login</a>
-                            @endauth
-                        </form>
-                    </div>
-                </div>
-                <div class="product-tabs">
-                    <nav>
-                        <div class="mb-3 nav nav-tabs" id="nav-tab" role="tablist">
-                            <button class="nav-link active" id="nav-about-tab" data-bs-target="#nav-about" type="button"
-                                role="tab" aria-controls="nav-about" aria-selected="true">Description</button>
-                            {{-- <button class="nav-link" id="nav-missions-tab" data-bs-target="#nav-missions" type="button"
-                                role="tab" aria-controls="nav-missions" aria-selected="false">Reviews</button> --}}
-                        </div>
-                    </nav>
-                    <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade show active" id="nav-about" role="tabpanel"
-                            aria-labelledby="nav-description-tab">
-                            <p>{!! $product->thumb_description !!}</p>
-                            <div class="product-info">
-                                <div class="info-item">
-                                    <p class="info-label">Opsi Pengiriman</p>
-                                    <p class="info-value">{{ implode(' / ', json_decode($product->opsi_pengiriman, true)) }}</p>
+                                <div class="quantity-wrapper d-flex align-items-center mb-4">
+                                    <label class="me-3 fw-bold">Quantity:</label>
+                                    <div class="input-group" style="width: 200px;">
+                                        <button type="button" class="btn btn-outline-primary btn-minus">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <input type="number" name="qty" class="form-control text-center" value="1" min="1" max="{{ $product->quantity }}">
+                                        <button type="button" class="btn btn-outline-primary btn-plus">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="info-item">
-                                    <p class="info-label">Min Weight</p>
-                                    <p class="info-value">{{ $product->weight }}</p>
+
+                                <div class="d-flex gap-3">
+                                    @auth
+                                        <button type="submit" class="btn btn-lg px-5" style="background-color: var(--primary); color: var(--bg);">
+                                            <i class="fas fa-shopping-cart me-2"></i> Add to Cart
+                                        </button>
+                                        <button type="button" class="btn btn-outline-primary btn-lg">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                    @else
+                                        <a href="{{ route('login') }}" class="btn btn-lg" style="background-color: var(--primary); color: var(--bg);">
+                                            <i class="fas fa-sign-in-alt me-2"></i> Login to Purchase
+                                        </a>
+                                    @endauth
                                 </div>
-                                <div class="info-item">
-                                    <p class="info-label">Country of Origin</p>
-                                    <p class="info-value">{{ $product->country_of_origin }}</p>
-                                </div>
-                                <div class="info-item">
-                                    <p class="info-label">Quality</p>
-                                    <p class="info-value">{{ $product->quality }}</p>
-                                </div>
-                                <div class="info-item">
-                                    <p class="info-label">Сheck</p>
-                                    <p class="info-value">{{ $product->check }}</p>
-                                </div>
-                                <div class="info-item">
-                                    <p class="info-label">Name</p>
-                                    <p class="info-value">{{ $product->name }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        {{-- <div class="tab-pane" id="nav-missions" role="tabpanel" aria-labelledby="nav-missions-tab">
-                            @foreach ($review as $item)
-                                <div class="d-flex">
-                                    <img src="{{ asset('img/avatar.jpg') }}" class="p-3 img-fluid rounded-circle"
-                                        style="width: 100px; height: 100px;" alt="">
-                                    <div class="flex justify-between">
-                                        <div class="flex flex-col">
-                                            <p class="mb-2 text-sm text-gray-600">
-                                                {{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}</p>
-                                            <h5 class="text-lg font-semibold">{{ $item->user->name }}</h5>
-                                            <div class="flex items-center">
-                                                <div class="mb-3 flex">
-                                                    @for ($i = 1; $i <= 5; $i++)
-                                                        @if ($i <= $item->rating)
-                                                            <i class="fa fa-star text-secondary"></i>
-                                                        @else
-                                                            <i class="fa fa-star"></i>
-                                                        @endif
-                                                    @endfor
+                            </form>
+
+                            <!-- Product Details -->
+                            <div class="product-details mt-5">
+                                <div class="checkout-card">
+                                    <div class="card-body">
+                                        <h5 class="mb-4">
+                                            <i class="fas fa-info-circle me-2"></i>
+                                            Product Information
+                                        </h5>
+                                        <div class="row g-4">
+                                            <div class="col-sm-6">
+                                                <div class="info-item">
+                                                    <i class="fas fa-shipping-fast me-2"></i>
+                                                    <strong>Shipping Options:</strong>
+                                                    <p class="mb-0 mt-2">{{ implode(' / ', json_decode($product->opsi_pengiriman, true)) }}</p>
                                                 </div>
                                             </div>
-                                            <p>{{ $item->description_review }}</p>
+                                            <div class="col-sm-6">
+                                                <div class="info-item">
+                                                    <i class="fas fa-weight-hanging me-2"></i>
+                                                    <strong>Weight:</strong>
+                                                    <p class="mb-0 mt-2">{{ $product->weight }}g</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="info-item">
+                                                    <i class="fas fa-globe-asia me-2"></i>
+                                                    <strong>Origin:</strong>
+                                                    <p class="mb-0 mt-2">{{ $product->country_of_origin }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="info-item">
+                                                    <i class="fas fa-certificate me-2"></i>
+                                                    <strong>Quality:</strong>
+                                                    <p class="mb-0 mt-2">{{ $product->quality }}</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <hr>
-                            @endforeach
-                        </div> --}}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Single Produk End -->
+    <!-- Product Detail End -->
 @endsection
 
-
 @push('myscript')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const tabs = document.querySelectorAll('.nav-tabs button');
-            const tabContents = document.querySelectorAll('.tab-pane');
+<script>
+$(document).ready(function() {
+    // Format rupiah
+    $('.rupiah').each(function() {
+        var price = $(this).data('price');
+        $(this).text(new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(price));
+    });
 
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    // Remove active class from all tabs
-                    tabs.forEach(t => t.classList.remove('active'));
-                    // Hide all tab contents
-                    tabContents.forEach(content => content.classList.remove('show', 'active'));
+    // Quantity buttons
+    $('.btn-minus').click(function() {
+        var input = $(this).closest('.input-group').find('input');
+        var value = parseInt(input.val());
+        if (value > 1) {
+            input.val(value - 1);
+        }
+    });
 
-                    // Add active class to the clicked tab
-                    this.classList.add('active');
-                    // Show the corresponding tab content
-                    const target = document.querySelector(this.getAttribute('data-bs-target'));
-                    target.classList.add('show', 'active');
-                });
-            });
+    $('.btn-plus').click(function() {
+        var input = $(this).closest('.input-group').find('input');
+        var value = parseInt(input.val());
+        var max = {{ $product->quantity }};
+        if (value < max) {
+            input.val(value + 1);
+        }
+    });
+
+    // Prevent manual input beyond limits
+    $('input[name="qty"]').on('change', function() {
+        var value = parseInt($(this).val());
+        var max = {{ $product->quantity }};
+        if (value < 1) $(this).val(1);
+        if (value > max) $(this).val(max);
+    });
+
+    // Image zoom effect
+    $('.main-image').on('mousemove', function(e) {
+        const x = e.clientX - $(this).offset().left;
+        const y = e.clientY - $(this).offset().top;
+
+        $(this).find('img').css({
+            'transform-origin': `${x}px ${y}px`,
+            'transform': 'scale(1.2)'
         });
-
-        $('.quantity button').on('click', function() {
-            var button = $(this);
-            var oldValue = button.parent().parent().find('input').val();
-            if (button.hasClass('btn-plus')) {
-                var newVal = parseFloat(oldValue) + 1;
-            } else {
-                if (oldValue > 0) {
-                    var newVal = parseFloat(oldValue) - 1;
-                } else {
-                    newVal = 0;
-                }
-            }
-
-            if(newVal > {{ $product->quantity }}){
-                return false;
-            }
-
-            button.parent().parent().find('input').val(newVal);
+    }).on('mouseleave', function() {
+        $(this).find('img').css({
+            'transform': 'scale(1)'
         });
-    </script>
+    });
+
+    // Add to cart animation
+    $('#add-to-cart-form').on('submit', function(e) {
+        e.preventDefault();
+        const form = this;
+
+        $(form).find('button[type="submit"]').html('<i class="fas fa-spinner fa-spin me-2"></i> Adding...');
+
+        setTimeout(function() {
+            form.submit();
+        }, 500);
+    });
+});
+</script>
+
+<style>
+.variant-group .badge {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+}
+
+.variant-selection .btn {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+}
+
+.variant-selection .btn-outline-primary:hover {
+    color: var(--bg);
+    background-color: var(--primary);
+}
+</style>
 @endpush
