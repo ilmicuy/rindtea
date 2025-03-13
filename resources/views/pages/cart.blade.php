@@ -44,14 +44,14 @@
                                             @foreach ($carts as $cart)
                                                 <tr>
                                                     <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="product-image me-3">
+                                                        <div class="product-info">
+                                                            <div class="product-image">
                                                                 <img src="{{ Storage::url($cart->product->photos) }}"
                                                                     alt="{{ $cart->product->name }}">
                                                             </div>
                                                             <div>
-                                                                <h6 class="mb-1">{{ $cart->product->name }}</h6>
-                                                                <small class="text-muted">Weight: {{ $cart->product->weight }}g</small>
+                                                                <h6 class="product-name">{{ $cart->product->name }}</h6>
+                                                                <small class="product-weight">Weight: {{ $cart->product->weight }}g</small>
                                                             </div>
                                                         </div>
                                                     </td>

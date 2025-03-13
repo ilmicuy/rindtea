@@ -59,14 +59,14 @@
                                                 <tr>
                                                     <input type="hidden" id="weight" name="weight" value="{{ $weight }}">
                                                     <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="product-image me-3">
+                                                        <div class="product-info">
+                                                            <div class="product-image">
                                                                 <img src="{{ Storage::url($checkout->product->photos) }}"
                                                                     alt="{{ $checkout->product->name }}">
                                                             </div>
                                                             <div>
-                                                                <h6 class="mb-1">{{ $checkout->product->name }}</h6>
-                                                                <small class="text-muted">Weight: {{ $checkout->product->weight }}g</small>
+                                                                <h6 class="product-name">{{ $checkout->product->name }}</h6>
+                                                                <small class="product-weight">Weight: {{ $checkout->product->weight }}g</small>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -156,6 +156,7 @@
                                                 </label>
                                             </div>
                                         </div>
+                                        <hr class="shipping-separator my-3" style="border-color: rgba(255, 255, 255, 0.1);">
                                     @endif
 
                                     <div class="delivery-option">
@@ -167,6 +168,7 @@
                                             </label>
                                         </div>
                                     </div>
+                                    <hr class="shipping-separator my-3" style="border-color: rgba(255, 255, 255, 0.1);">
 
                                     <div class="delivery-option">
                                         <div class="form-check">
@@ -188,6 +190,27 @@
                                     @else
                                         <div class="available-services" style="display: none;"></div>
                                     @endif
+
+                                    <!-- Store Address Information -->
+                                    <div class="store-address" style="display: none;">
+                                        <div class="shipping-info mt-3">
+                                            <div class="alert alert-success mb-3">
+                                                <i class="fas fa-info-circle me-2"></i>
+                                                No delivery fee for pick up orders
+                                            </div>
+                                            <div class="card-body bg-dark rounded p-3 border border-secondary">
+                                                <h6 class="mb-3"><i class="fas fa-store me-2"></i>Store Address:</h6>
+                                                <address class="mb-0">
+                                                    <strong>Rind Tea</strong><br>
+                                                    Jl. Raya Menganti No.123<br>
+                                                    Surabaya, Jawa Timur<br>
+                                                    Indonesia<br>
+                                                    <i class="fas fa-phone me-1"></i> (031) 12345678<br>
+                                                    <i class="fas fa-clock me-1"></i> Open: 10:00 - 22:00
+                                                </address>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -319,6 +342,7 @@ $(document).ready(function() {
     // Handle local delivery options
     function handleLocalDelivery(type) {
         $('.available-services').hide().html('');
+        $('.store-address').hide();
 
         if (type === 'lokal_kurir') {
             $.ajax({
@@ -335,15 +359,10 @@ $(document).ready(function() {
                 },
                 error: handleAjaxError
             });
-        } else {
+        } else if (type === 'ambil_ditempat') {
             // Pick up option
             updateTotalAmount(0);
-            $('.available-services').show().html(`
-                <div class="alert alert-success mb-0">
-                    <i class="fas fa-info-circle me-2"></i>
-                    No delivery fee for pick up orders
-                </div>
-            `);
+            $('.store-address').show();
         }
     }
 
@@ -371,21 +390,23 @@ $(document).ready(function() {
         updateTotalAmount(localPrice);
 
         $('.available-services').show().html(`
-            <div class="shipping-info">
-                <table class="table-sm mb-0">
-                    <tr>
-                        <th>Local Delivery Fee</th>
-                        <td class="text-end">${formatRupiah(result.tarif_lokal_kurir_per_km)}/Km</td>
-                    </tr>
-                    <tr>
-                        <th>Distance</th>
-                        <td class="text-end">${result.distance_in_km} Km</td>
-                    </tr>
-                    <tr class="border-top">
-                        <th>Total Delivery Fee</th>
-                        <td class="text-end">${formatRupiah(localPrice)}</td>
-                    </tr>
-                </table>
+            <div class="shipping-info mt-3">
+                <div class="card-body bg-dark rounded p-3 border border-secondary">
+                    <table class="table table-sm table-borderless mb-0 text-white">
+                        <tr>
+                            <th><i class="fas fa-tag me-2"></i>Local Delivery Fee</th>
+                            <td class="text-end">${formatRupiah(result.tarif_lokal_kurir_per_km)}/Km</td>
+                        </tr>
+                        <tr>
+                            <th><i class="fas fa-route me-2"></i>Distance</th>
+                            <td class="text-end">${result.distance_in_km} Km</td>
+                        </tr>
+                        <tr class="border-top border-secondary mt-2">
+                            <th class="pt-2"><i class="fas fa-money-bill me-2"></i>Total Delivery Fee</th>
+                            <td class="text-end pt-2"><strong>${formatRupiah(localPrice)}</strong></td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         `);
     }

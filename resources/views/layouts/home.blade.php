@@ -226,6 +226,10 @@
 
     <!-- Modal Box Item Detal -->
 
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/+6281234567890" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
     <script>
         feather.replace();
