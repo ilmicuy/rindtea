@@ -10,6 +10,24 @@
         border-radius: 8px;
         margin-bottom: 1.5rem;
     }
+    .leaflet-popup-content {
+        margin: 8px;
+        text-align: center;
+    }
+    .store-marker {
+        background-color: #ffd700;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        width: 12px;
+        height: 12px;
+    }
+    .user-marker {
+        background-color: #4a90e2;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        width: 12px;
+        height: 12px;
+    }
 </style>
 
 <!-- Link to Select2 CSS -->
@@ -198,98 +216,65 @@
     @endif
 
     let map;
-    let marker;
+    let userMarker;
     const sellerLocation = {
-        lat: -6.862265474370653,
-        lng: 107.5936457665463
+        lat: -6.986817,
+        lng: 110.454872
     };
     let maxDistanceKm = 10;
 
     function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: sellerLocation,
-            zoom: 14,
-            styles: [
-                {
-                    "elementType": "geometry",
-                    "stylers": [{"color": "#242f3e"}]
-                },
-                {
-                    "elementType": "labels.text.fill",
-                    "stylers": [{"color": "#746855"}]
-                },
-                {
-                    "elementType": "labels.text.stroke",
-                    "stylers": [{"color": "#242f3e"}]
-                },
-                {
-                    "featureType": "administrative.locality",
-                    "elementType": "labels.text.fill",
-                    "stylers": [{"color": "#d59563"}]
-                },
-                {
-                    "featureType": "road",
-                    "elementType": "geometry",
-                    "stylers": [{"color": "#38414e"}]
-                },
-                {
-                    "featureType": "road",
-                    "elementType": "geometry.stroke",
-                    "stylers": [{"color": "#212a37"}]
-                },
-                {
-                    "featureType": "road",
-                    "elementType": "labels.text.fill",
-                    "stylers": [{"color": "#9ca5b3"}]
-                },
-                {
-                    "featureType": "water",
-                    "elementType": "geometry",
-                    "stylers": [{"color": "#17263c"}]
-                }
-            ]
-        });
+        // Initialize map
+        map = L.map('map').setView([sellerLocation.lat, sellerLocation.lng], 14);
 
-        // Seller marker with custom icon
-        new google.maps.Marker({
-            position: sellerLocation,
-            map: map,
-            title: 'Lokasi Penjual',
-            icon: {
-                url: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'
-            }
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Add seller marker
+        const sellerIcon = L.divIcon({
+            className: 'store-marker',
+            iconSize: [12, 12]
         });
+        L.marker([sellerLocation.lat, sellerLocation.lng], {
+            icon: sellerIcon
+        }).bindPopup('Lokasi Toko').addTo(map);
 
         // Add delivery radius circle
-        new google.maps.Circle({
-            map: map,
-            radius: 10000, // 10 km
+        L.circle([sellerLocation.lat, sellerLocation.lng], {
+            radius: 10000, // 10 km in meters
+            color: '#AA0000',
             fillColor: '#AA0000',
-            strokeColor: '#AA0000',
-            strokeOpacity: 0.5,
             fillOpacity: 0.2,
-            center: sellerLocation,
-            clickable: false
-        });
+            weight: 1
+        }).addTo(map);
 
-        // User location marker with custom icon
-        let userMarker = new google.maps.Marker({
-            map: map,
-            title: 'Lokasi Anda',
-            icon: {
-                url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
-            }
+        // Create user marker but don't add to map yet
+        const userIcon = L.divIcon({
+            className: 'user-marker',
+            iconSize: [12, 12]
+        });
+        userMarker = L.marker([0, 0], {
+            icon: userIcon
         });
 
         // Click listener for map
-        map.addListener("click", (mapsMouseEvent) => {
-            let lat = mapsMouseEvent.latLng.lat();
-            let lng = mapsMouseEvent.latLng.lng();
+        map.on('click', function(e) {
+            const lat = e.latlng.lat;
+            const lng = e.latlng.lng;
 
-            let distanceInKm = calculateDistanceInKm(sellerLocation.lat, sellerLocation.lng, lat, lng);
+            const distanceInKm = calculateDistanceInKm(
+                sellerLocation.lat,
+                sellerLocation.lng,
+                lat,
+                lng
+            );
 
-            userMarker.setPosition(mapsMouseEvent.latLng);
-            userMarker.setTitle(`Lat: ${lat}, Lng: ${lng}`);
+            userMarker.setLatLng([lat, lng])
+                .bindPopup(`Lokasi Anda<br>Jarak: ${distanceInKm} km`)
+                .addTo(map)
+                .openPopup();
 
             document.getElementById('latitude').value = lat;
             document.getElementById('longitude').value = lng;
@@ -316,15 +301,10 @@
         return degrees * (Math.PI / 180);
     }
 
-    function loadGoogleMapsAPI() {
-        const script = document.createElement('script');
-        script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCCfRlVGUObDiUnSXJl7cS0GJw5yHJNSX8&callback=initMap`;
-        script.async = true;
-        script.defer = true;
-        document.head.appendChild(script);
-    }
-
-    loadGoogleMapsAPI();
+    // Initialize map when document is ready
+    document.addEventListener('DOMContentLoaded', function() {
+        initMap();
+    });
 
     // Province and City selection handlers
     $(document).ready(function() {
@@ -387,68 +367,6 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-
-        // $('#province_id').on('change', function() {
-        //     let id_provinsi = $(this).val();
-
-        //     $.ajax({
-        //         type: 'POST',
-        //         url: "{{ route('getkota') }}",
-        //         data: {
-        //             id_provinsi: id_provinsi
-        //         },
-        //         cache: false,
-
-        //         success: function(msg) {
-        //             $('#regency_id').html(msg);
-
-        //         },
-        //         error: function(data) {
-        //             console.log('error:', data);
-        //         }
-        //     });
-        // });
-
-        // $('#regency_id').on('change', function() {
-        //     let id_kota = $(this).val();
-
-        //     $.ajax({
-        //         type: 'POST',
-        //         url: "{{ route('getkecamatan') }}",
-        //         data: {
-        //             id_kota: id_kota
-        //         },
-        //         cache: false,
-
-        //         success: function(msg) {
-        //             $('#district_id').html(msg);
-        //         },
-        //         error: function(data) {
-        //             console.log('error:', data);
-        //         }
-        //     });
-        // });
-        // $('#district_id').on('change', function() {
-        //     let id_kecamatan = $(this).val();
-
-        //     $.ajax({
-        //         type: 'POST',
-        //         url: "{{ route('getdesa') }}",
-        //         data: {
-        //             id_kecamatan: id_kecamatan
-        //         },
-        //         cache: false,
-
-        //         success: function(msg) {
-        //             $('#village_id').html(msg);
-        //         },
-        //         error: function(data) {
-        //             console.log('error:', data);
-        //         }
-        //     });
-        // });
-
-
     });
 </script>
 @endpush

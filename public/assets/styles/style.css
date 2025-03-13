@@ -2753,3 +2753,118 @@ footer .credit a {
     font-size: 0.875rem;
     color: rgba(255, 255, 255, 0.7);
 }
+
+/* Map styling */
+#map, .map-container {
+    height: 500px;
+    width: 100%;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Map markers */
+.store-marker {
+    background-color: #ffd700;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+}
+
+.user-marker, .delivery-marker {
+    background-color: #4a90e2;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Map popup styling */
+.leaflet-popup-content {
+    margin: 8px;
+    text-align: center;
+    color: #333;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.leaflet-popup-content strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #000;
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: 8px;
+    padding: 2px;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+    color: #666;
+    padding: 8px 8px 0 0;
+}
+
+.leaflet-container a.leaflet-popup-close-button:hover {
+    color: #333;
+}
+
+/* Map controls */
+.leaflet-control-zoom {
+    border: none !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.leaflet-control-zoom a {
+    background-color: var(--bg) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.leaflet-control-zoom a:hover {
+    background-color: var(--primary) !important;
+    color: var(--bg) !important;
+}
+
+/* Map attribution */
+.leaflet-control-attribution {
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    padding: 0 5px !important;
+    border-radius: 3px !important;
+}
+
+/* Responsive map adjustments */
+@media (max-width: 768px) {
+    #map, .map-container {
+        height: 400px;
+    }
+
+    .leaflet-popup-content {
+        font-size: 12px;
+    }
+}
+
+/* Responsive adjustments for product images */
+
+.leaflet-container a.leaflet-popup-close-button:hover {
+    color: #333;
+}
+
+/* Contact section map specific styling */
+#contact-map {
+    height: 100% !important;
+    min-height: 400px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#contact .map-column {
+    height: 100%;
+    min-height: 400px;
+}
+
+/* Map controls */

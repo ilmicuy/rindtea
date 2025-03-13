@@ -139,9 +139,7 @@
             </p>
             <div class="row g-4">
                 <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right" data-aos-delay="200">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.190591427269!2d110.45487167460662!3d-6.986816993014149!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e708cc449126cd7%3A0xdbbeca96fe6ac732!2sJl.%20Parang%20Kusumo%20V%2C%20Tlogosari%20Kulon%2C%20Kec.%20Pedurungan%2C%20Kota%20Semarang%2C%20Jawa%20Tengah%2050196!5e0!3m2!1sid!2sid!4v1719762047373!5m2!1sid!2sid"
-                        class="w-100 h-100 rounded" style="min-height: 400px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <div id="contact-map" style="width: 100%; height: 400px; border-radius: 8px;"></div>
                 </div>
                 <div class="col-lg-6" data-aos="fade-left" data-aos-delay="300">
                     <form id="contactForm">
@@ -181,28 +179,27 @@
 @push('myscript')
     <script>
         $(document).ready(function() {
-            $(document).on('click', '.item-detail-button', function(e) {
-                e.preventDefault();
-                var id = $(this).attr("id");
-                $.ajax({
-                    type: 'POST',
-                    url: '/product/detail',
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        id: id
-                    },
-                    cache: false,
-                    success: function(respond) {
-                        $("#modal-content").html(respond);
-                        var modal = new bootstrap.Modal(document.getElementById('item-detail-modal'));
-                        modal.show();
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr);
-                    }
-                });
-            });
+            // Initialize map
+            var map = L.map('contact-map').setView([-6.986817, 110.454872], 16);
 
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Add marker for store location
+            var storeMarker = L.marker([-6.986817, 110.454872]).addTo(map);
+
+            // Add popup with store information
+            storeMarker.bindPopup(`
+                <strong>Rind Tea</strong><br>
+                Jl. Parang Kusumo V<br>
+                Tlogosari Kulon, Kec. Pedurungan<br>
+                Kota Semarang, Jawa Tengah 50196
+            `).openPopup();
+
+            // Existing contact form code
             $('#contactForm').on('submit', function(e) {
                 e.preventDefault();
 
@@ -226,6 +223,29 @@
                             title: 'Oops...',
                             text: 'Terjadi kesalahan! Silakan coba lagi.'
                         });
+                    }
+                });
+            });
+
+            // Existing product detail code
+            $(document).on('click', '.item-detail-button', function(e) {
+                e.preventDefault();
+                var id = $(this).attr("id");
+                $.ajax({
+                    type: 'POST',
+                    url: '/product/detail',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        id: id
+                    },
+                    cache: false,
+                    success: function(respond) {
+                        $("#modal-content").html(respond);
+                        var modal = new bootstrap.Modal(document.getElementById('item-detail-modal'));
+                        modal.show();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr);
                     }
                 });
             });

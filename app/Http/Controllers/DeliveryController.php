@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
 class DeliveryController extends Controller
@@ -22,8 +21,8 @@ class DeliveryController extends Controller
         // Constants
         $ratePerKm = 4000; // 4000 IDR per km
         $maxDistanceKm = 10; // Max distance for local courier
-        $sellerLatitude = -6.862265474370653;
-        $sellerLongitude = 107.5936457665463;
+        $sellerLatitude = -6.986817;
+        $sellerLongitude = 110.454872;
 
         // Get user location
         $userLatitude = $request->input('latitude');

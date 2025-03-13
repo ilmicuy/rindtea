@@ -19,70 +19,60 @@
             color: var(--text-color);
             margin-bottom: 1.5rem;
             text-align: center;
-
         }
-
 
         #map {
             height: 500px;
-
             width: 100%;
-
             border: 1px solid var(--border-color);
-
             border-radius: 8px;
-
             margin-bottom: 1.5rem;
-
         }
-
 
         .btn {
             display: inline-block;
             padding: 0.75rem 1.5rem;
-
             font-size: 16px;
-
             font-weight: bold;
-
             text-align: center;
-
             color: #fff;
-
             background-color: var(--highlight-color);
-
             border: none;
-
             border-radius: 5px;
-
             cursor: pointer;
-
             transition: background-color 0.3s ease;
-
             margin-bottom: 1rem;
-
         }
 
         .btn:hover {
             background-color: var(--highlight-hover-color);
-
         }
 
         .btn:focus {
             outline: none;
-
         }
-
 
         #result {
             font-size: 18px;
-
             color: var(--text-color);
-
             text-align: center;
-
             margin-top: 1.5rem;
+        }
 
+        .store-marker {
+            background-color: #ffd700;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            width: 12px;
+            height: 12px;
+        }
+
+        .user-marker {
+            background-color: #4a90e2;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            width: 12px;
+            height: 12px;
         }
     </style>
     <div class="single-page-header">
@@ -106,92 +96,89 @@
 @push('myscript')
     <script>
         let map;
-        let marker;
+        let userMarker;
         const sellerLocation = {
-            lat: -6.862265474370653,
-            lng: 107.5936457665463
+            lat: -6.986817,
+            lng: 110.454872
         };
 
         function initMap() {
-            map = new google.maps.Map(document.getElementById('map'), {
-                center: sellerLocation,
-                zoom: 14,
-            });
+            // Initialize map
+            map = L.map('map').setView([sellerLocation.lat, sellerLocation.lng], 14);
 
-            // Place a marker at the seller's location
-            new google.maps.Marker({
-                position: sellerLocation,
-                map: map,
-                title: 'Lokasi Penjual'
-            });
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
 
-            // Add a circle around the seller's location
-            new google.maps.Circle({
-                map: map,
-                radius: 10000, // 10 km
+            // Add seller marker
+            const sellerIcon = L.divIcon({
+                className: 'store-marker',
+                iconSize: [12, 12]
+            });
+            L.marker([sellerLocation.lat, sellerLocation.lng], {
+                icon: sellerIcon
+            }).bindPopup('Lokasi Toko').addTo(map);
+
+            // Add delivery radius circle
+            L.circle([sellerLocation.lat, sellerLocation.lng], {
+                radius: 10000, // 10 km in meters
+                color: '#AA0000',
                 fillColor: '#AA0000',
-                strokeColor: '#AA0000',
-                strokeOpacity: 0.5,
                 fillOpacity: 0.2,
-                center: sellerLocation
+                weight: 1
+            }).addTo(map);
+
+            // Create user marker but don't add to map yet
+            const userIcon = L.divIcon({
+                className: 'user-marker',
+                iconSize: [12, 12]
+            });
+            userMarker = L.marker([0, 0], {
+                icon: userIcon
             });
 
             // Listen for clicks on the map to place a marker
-            map.addListener('click', function(event) {
-                placeMarker(event.latLng);
+            map.on('click', function(e) {
+                placeMarker(e.latlng);
             });
         }
 
-        function placeMarker(location) {
-            // Check if location is a google.maps.LatLng object
-            if (location instanceof google.maps.LatLng) {
-                if (marker) {
-                    marker.setPosition(location);
-                } else {
-                    marker = new google.maps.Marker({
-                        position: location,
-                        map: map,
-                    });
-                }
+        function placeMarker(latlng) {
+            const lat = latlng.lat;
+            const lng = latlng.lng;
 
-                // Update the hidden input fields with the user's location
-                $('#user-latitude').val(location.lat());
-                $('#user-longitude').val(location.lng());
+            userMarker.setLatLng([lat, lng])
+                .bindPopup('Lokasi Anda')
+                .addTo(map)
+                .openPopup();
 
-                // Log the values to the console for debugging
-                console.log('Latitude:', location.lat());
-                console.log('Longitude:', location.lng());
-            } else {
-                console.error('Invalid location object:', location);
-            }
+            // Update the hidden input fields with the user's location
+            $('#user-latitude').val(lat);
+            $('#user-longitude').val(lng);
+
+            // Log the values to the console for debugging
+            console.log('Latitude:', lat);
+            console.log('Longitude:', lng);
         }
 
-        function loadGoogleMapsAPI() {
-            const script = document.createElement('script');
-            script.src =
-                `https://maps.googleapis.com/maps/api/js?key=AIzaSyCCfRlVGUObDiUnSXJl7cS0GJw5yHJNSX8&callback=initMap`;
-            script.async = true;
-            script.defer = true;
-            document.head.appendChild(script);
-        }
-
-        loadGoogleMapsAPI();
+        // Initialize map when document is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            initMap();
+        });
 
         $('#get-location').click(function() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
-                    const userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords
-                        .longitude);
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
 
                     // Place marker at user's location
-                    placeMarker(userLatLng);
+                    placeMarker({ lat, lng });
 
                     // Center the map on the user's location
-                    map.setCenter(userLatLng);
+                    map.setView([lat, lng], 14);
 
-                    // Update hidden input fields with user's latitude and longitude
-                    $('#user-latitude').val(position.coords.latitude);
-                    $('#user-longitude').val(position.coords.longitude);
                 }, function(error) {
                     alert('Error getting location. Please check your browser settings.');
                 });
