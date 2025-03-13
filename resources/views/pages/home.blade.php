@@ -144,23 +144,30 @@
                         class="w-100 h-100 rounded" style="min-height: 400px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
                 <div class="col-lg-6" data-aos="fade-left" data-aos-delay="300">
-                    <form>
+                    <form id="contactForm">
+                        @csrf
                         <div class="mb-3">
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                <input type="text" class="form-control" placeholder="Nama" />
+                                <input type="text" class="form-control" name="name" placeholder="Nama" required />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                                <input type="email" class="form-control" placeholder="Email" />
+                                <input type="email" class="form-control" name="email" placeholder="Email" required />
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                                <input type="tel" class="form-control" placeholder="No Telepon" />
+                                <input type="tel" class="form-control" name="phone" placeholder="No Telepon" required />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-comment"></i></span>
+                                <textarea class="form-control" name="message" rows="4" placeholder="Pesan" required></textarea>
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Kirim Pesan</button>
@@ -192,6 +199,33 @@
                     },
                     error: function(xhr, status, error) {
                         console.error(xhr);
+                    }
+                });
+            });
+
+            $('#contactForm').on('submit', function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: '{{ route("contact.submit") }}',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        if(response.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil!',
+                                text: response.message
+                            });
+                            $('#contactForm')[0].reset();
+                        }
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Terjadi kesalahan! Silakan coba lagi.'
+                        });
                     }
                 });
             });
