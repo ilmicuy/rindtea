@@ -59,7 +59,7 @@
                                                         <span class="rupiah" data-price="{{ $cart->product->price }}"></span>
                                                     </td>
                                                     <td>
-                                                        <div class="quantity-wrapper" style="width: 120px;">
+                                                        <div class="quantity-wrapper" style="width: 150px;">
                                                             <div class="input-group">
                                                                 <button class="btn btn-outline-secondary btn-sm btn-minus" type="button" data-id="{{ $cart->id }}">
                                                                     <i class="fas fa-minus"></i>
