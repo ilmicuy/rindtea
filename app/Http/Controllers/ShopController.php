@@ -13,12 +13,12 @@ class ShopController extends Controller
      */
     public function index()
     {
-        $products = Product::simplePaginate(6);
-
+        $products = Product::orderBy('variant_grouping')
+                          ->orderBy('name')
+                          ->simplePaginate(6);
 
         return view('pages.shop', [
-            'products'    => $products,
-
+            'products' => $products,
         ]);
     }
 
@@ -43,7 +43,11 @@ class ShopController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+
+        return view('pages.shop-detail', [
+            'product' => $product,
+        ]);
     }
 
     /**

@@ -16,6 +16,7 @@ class Product extends Model
     protected $fillable = [
         'kode_produk',
         'name',
+        'variant_grouping',
         'slug',
         'photos',
         'quantity',
@@ -73,5 +74,19 @@ class Product extends Model
     public function getPendapatanBersihAttribute()
     {
         return $this->price - $this->raw_price;
+    }
+
+    /**
+     * Get all products that belong to the same variant group
+     */
+    public function getVariantGroupProducts()
+    {
+        if (!$this->variant_grouping) {
+            return collect([$this]);
+        }
+
+        return self::where('variant_grouping', $this->variant_grouping)
+                  ->where('id', '!=', $this->id)
+                  ->get();
     }
 }

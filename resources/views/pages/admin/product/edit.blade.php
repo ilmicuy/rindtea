@@ -20,6 +20,25 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
+                                        <label for="variant_grouping" class="form-label">Grup Varian Produk</label>
+                                        <select class="form-control select2-tags" id="variant_grouping" name="variant_grouping">
+                                            <option value="">Pilih atau buat grup varian baru</option>
+                                            @foreach($existingGroups ?? [] as $group)
+                                                <option value="{{ $group }}" {{ $item->variant_grouping === $group ? 'selected' : '' }}>
+                                                    {{ $group }}
+                                                </option>
+                                            @endforeach
+                                            @if($item->variant_grouping && !in_array($item->variant_grouping, $existingGroups ?? []))
+                                                <option value="{{ $item->variant_grouping }}" selected>
+                                                    {{ $item->variant_grouping }}
+                                                </option>
+                                            @endif
+                                        </select>
+                                        <small class="text-muted">Kosongkan jika produk tidak memiliki varian</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
                                         <label for="quantity" class="form-label">Quantity</label>
                                         <input type="number" class="form-control" id="quantity" name="quantity" disabled value="{{ $item->quantity }}">
                                     </div>
@@ -187,11 +206,77 @@
     </div>
 @endsection
 
+@push('css')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<style>
+.select2-container--default .select2-selection--single {
+    height: 38px;
+    line-height: 38px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 38px;
+    padding-left: 12px;
+    color: #495057;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 36px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+    color: #6c757d;
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: #435ebe;
+    color: #fff;
+}
+
+.select2-container--default .select2-results__option[aria-selected=true] {
+    background-color: #e9ecef;
+    color: #495057;
+}
+
+.select2-results__option {
+    color: #495057;
+}
+
+.select2-dropdown {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+</style>
+@endpush
+
 @push('js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.repeater/1.2.1/jquery.repeater.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
     $(document).ready(function () {
+        // Initialize Select2 with tags
+        $('.select2-tags').select2({
+            tags: true,
+            placeholder: 'Pilih atau buat grup varian baru',
+            allowClear: true,
+            width: '100%',
+            language: {
+                noResults: function() {
+                    return "Tidak ada hasil yang ditemukan";
+                }
+            }
+        }).on('select2:opening', function() {
+            $(this).data('select2').$dropdown.find(':input.select2-search__field').attr('placeholder', 'Ketik untuk mencari atau membuat baru');
+        });
+
         $('#repeater').repeater({
             initEmpty: false,
             defaultValues: {

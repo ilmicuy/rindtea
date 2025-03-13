@@ -37,6 +37,11 @@
                 <div class="col-lg-7">
                     <div class="checkout-card h-100">
                         <div class="card-body">
+                            @if($product->variant_grouping)
+                                <div class="variant-group mb-2">
+                                    <span class="badge bg-primary">{{ $product->variant_grouping }}</span>
+                                </div>
+                            @endif
                             <h2 class="product-title mb-3">{{ $product->name }}</h2>
 
                             <div class="d-flex align-items-center mb-4">
@@ -53,6 +58,20 @@
                                     <span>Stock: {{ $product->quantity }} items</span>
                                 </div>
                             </div>
+
+                            @if($product->variant_grouping)
+                                <div class="variant-selection mb-4">
+                                    <label class="fw-bold mb-2">Available Variants:</label>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        @foreach($product->getVariantGroupProducts() as $variant)
+                                            <a href="{{ route('shop-detail', $variant->id) }}"
+                                               class="btn {{ $variant->id === $product->id ? 'btn-primary' : 'btn-outline-primary' }}">
+                                                {{ str_replace($product->variant_grouping . ' ', '', $variant->name) }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
 
                             <div class="product-price mb-4">
                                 <span class="rupiah h3" data-price="{{ $product->price }}"></span>
@@ -211,4 +230,21 @@ $(document).ready(function() {
     });
 });
 </script>
+
+<style>
+.variant-group .badge {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+}
+
+.variant-selection .btn {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+}
+
+.variant-selection .btn-outline-primary:hover {
+    color: var(--bg);
+    background-color: var(--primary);
+}
+</style>
 @endpush
