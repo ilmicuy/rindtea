@@ -883,14 +883,16 @@ body {
     background-color: var(--primary);
     padding: 4rem 0;
     margin-bottom: 2rem;
-    margin-top: 80px; /* Add space for navbar */
+    margin-top: 80px; /* Space for desktop navbar */
+    text-align: center; /* Center all text content */
 }
 
 .single-page-header h1 {
     font-size: 3rem;
-    color: var(--bg);
+    color: #ffffff;
     margin-bottom: 1rem;
     font-weight: 600;
+    text-align: center;
 }
 
 .single-page-header .breadcrumb {
@@ -899,26 +901,27 @@ body {
     margin: 0;
     display: flex;
     align-items: center;
+    justify-content: center; /* Center the breadcrumb */
 }
 
 .single-page-header .breadcrumb-item {
     font-size: 1.1rem;
-    color: var(--bg);
+    color: #ffffff;
     display: flex;
     align-items: center;
 }
 
 .single-page-header .breadcrumb-item a {
-    color: var(--bg);
+    color: #ffffff;
     text-decoration: none;
 }
 
 .single-page-header .breadcrumb-item.active {
-    color: rgba(1, 1, 1, 0.7);
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .single-page-header .breadcrumb-item + .breadcrumb-item::before {
-    color: var(--bg);
+    color: #ffffff;
     content: ">";
     padding: 0 0.8rem;
     font-size: 1.1rem;
@@ -1731,10 +1734,26 @@ footer .credit a {
 
   .navbar {
     padding: 1rem;
+    height: 64px; /* Fixed height for mobile navbar */
   }
 
   .navbar-brand {
     font-size: 1.8rem !important;
+  }
+
+  .single-page-header {
+    margin-top: 64px; /* Adjusted space for mobile navbar */
+    padding: 2rem 0; /* Slightly reduced padding for mobile */
+    text-align: center;
+  }
+
+  .single-page-header h1 {
+    font-size: 2.4rem;
+    text-align: center;
+  }
+
+  .single-page-header .breadcrumb {
+    justify-content: center;
   }
 
   .navbar .mobile-nav-buttons {
@@ -1877,15 +1896,6 @@ footer .credit a {
     padding: 0.2rem 0.5rem;
     font-size: 0.8rem;
     font-weight: bold;
-  }
-
-  .single-page-header {
-    margin-top: 64px; /* Smaller margin for mobile navbar */
-    padding: 3rem 0;
-  }
-
-  .single-page-header h1 {
-    font-size: 2.4rem;
   }
 }
 
@@ -2330,14 +2340,16 @@ footer .credit a {
     background-color: var(--primary);
     padding: 4rem 0;
     margin-bottom: 2rem;
-    margin-top: 80px; /* Add space for navbar */
+    margin-top: 80px; /* Space for desktop navbar */
+    text-align: center; /* Center all text content */
 }
 
 .single-page-header h1 {
     font-size: 3rem;
-    color: var(--bg);
+    color: #ffffff;
     margin-bottom: 1rem;
     font-weight: 600;
+    text-align: center;
 }
 
 .single-page-header .breadcrumb {
@@ -2346,26 +2358,27 @@ footer .credit a {
     margin: 0;
     display: flex;
     align-items: center;
+    justify-content: center; /* Center the breadcrumb */
 }
 
 .single-page-header .breadcrumb-item {
     font-size: 1.1rem;
-    color: var(--bg);
+    color: #ffffff;
     display: flex;
     align-items: center;
 }
 
 .single-page-header .breadcrumb-item a {
-    color: var(--bg);
+    color: #ffffff;
     text-decoration: none;
 }
 
 .single-page-header .breadcrumb-item.active {
-    color: rgba(1, 1, 1, 0.7);
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .single-page-header .breadcrumb-item + .breadcrumb-item::before {
-    color: var(--bg);
+    color: #ffffff;
     content: ">";
     padding: 0 0.8rem;
     font-size: 1.1rem;

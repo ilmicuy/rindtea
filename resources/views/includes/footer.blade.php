@@ -26,6 +26,7 @@
                     <a href="#home" class="text-light text-decoration-none">Home</a>
                     <a href="#about" class="text-light text-decoration-none">Tentang Kami</a>
                     <a href="#menu" class="text-light text-decoration-none">Menu</a>
+                    <a href="#products" class="text-light text-decoration-none">Produk</a>
                     <a href="#contact" class="text-light text-decoration-none">Kontak</a>
                 </div>
             </div>
