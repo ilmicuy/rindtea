@@ -6,14 +6,14 @@
         @forelse ($hero_section as $hero)
             <div class="container">
                 <div class="row min-vh-100 align-items-center">
-                    <div class="col-lg-8 mx-auto text-center">
+                    <div class="col-lg-8 mx-auto text-center" data-aos="fade-up" data-aos-delay="100">
                         <h1 class="display-3 fw-bold mb-4">
                             <span class="text-primary">{{ $hero->span }}</span> {{ $hero->heading }}
                         </h1>
-                        <p class="lead mb-4">
+                        <p class="lead mb-4" data-aos="fade-up" data-aos-delay="200">
                             {{ $hero->subheading }}
                         </p>
-                        <a href="#products" class="btn btn-primary btn-lg">Beli Sekarang</a>
+                        <a href="#products" class="btn btn-primary btn-lg" data-aos="fade-up" data-aos-delay="300">Beli Sekarang</a>
                     </div>
                 </div>
             </div>
@@ -25,13 +25,13 @@
     <!-- About US -->
     <section class="py-5" id="about">
         <div class="container">
-            <h2 class="text-center mb-5">Tentang <span class="text-primary">Kami</span></h2>
+            <h2 class="text-center mb-5" data-aos="fade-up">Tentang <span class="text-primary">Kami</span></h2>
             @forelse ($abouts as $about)
                 <div class="row align-items-center">
-                    <div class="col-md-6 mb-4 mb-md-0">
+                    <div class="col-md-6 mb-4 mb-md-0" data-aos="fade-right" data-aos-delay="100">
                         <img src="{{ Storage::url($about->thumbnail) }}" alt="Tentang Kami" class="img-fluid rounded shadow" />
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6" data-aos="fade-left" data-aos-delay="200">
                         <h3 class="mb-4">{{ $about->name }}</h3>
                         @forelse ($about->keypoints as $keypoint)
                             <p class="lead">
@@ -51,15 +51,17 @@
     <!-- Menu -->
     <section class="bg-light py-5" id="menu">
         <div class="container">
-            <h2 class="text-center mb-3"><span class="text-primary">Menu</span> Kami</h2>
-            <p class="text-center mb-5 lead">
+            <h2 class="text-center mb-3" data-aos="fade-up">
+                <span class="text-primary">Menu</span> Kami
+            </h2>
+            <p class="text-center mb-5 lead" data-aos="fade-up" data-aos-delay="100">
                 Rind Tea menawarkan berbagai varian teh dari kulit buah yang unik dan
                 kaya manfaat. Setiap produk terbuat dari kulit salak asli, memberikan
                 rasa dan manfaat alami yang istimewa.
             </p>
             <div class="row g-4">
                 @forelse ($menus as $menu)
-                    <div class="col-md-4">
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
                         <div class="card h-100 shadow-sm">
                             <img class="card-img-top" src="{{ Storage::url($menu->thumbnail) }}" alt="{{ $menu->name }}" />
                             <div class="card-body text-center">
@@ -78,8 +80,8 @@
     <!-- Produk -->
     <section class="py-5" id="products">
         <div class="container">
-            <h2 class="text-center mb-3">Produk <span class="text-primary">Kami</span></h2>
-            <p class="text-center mb-5 lead">
+            <h2 class="text-center mb-3" data-aos="fade-up">Produk <span class="text-primary">Kami</span></h2>
+            <p class="text-center mb-5 lead" data-aos="fade-up" data-aos-delay="100">
                 Rind Tea menawarkan berbagai varian teh dari kulit buah yang unik dan
                 kaya manfaat. Setiap produk terbuat dari kulit salak asli, memberikan
                 rasa dan manfaat alami yang istimewa.
@@ -87,7 +89,7 @@
 
             <div class="row g-4">
                 @forelse ($products as $product)
-                    <div class="col-md-4">
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
                         <div class="card h-100 shadow-sm">
                             <div class="position-relative">
                                 <img src="{{ Storage::url($product->photos) }}" class="card-img-top" alt="{{ $product->name }}">
@@ -129,17 +131,19 @@
     <!-- Contact -->
     <section class="bg-light py-5" id="contact">
         <div class="container">
-            <h2 class="text-center mb-3"><span class="text-primary">Kontak</span> Kami</h2>
-            <p class="text-center mb-5 lead">
+            <h2 class="text-center mb-3" data-aos="fade-up">
+                <span class="text-primary">Kontak</span> Kami
+            </h2>
+            <p class="text-center mb-5 lead" data-aos="fade-up" data-aos-delay="100">
                 Untuk informasi lebih lanjut atau pemesanan, hubungi kami di kolom Bawah ini. Kunjungi juga gerai kami di Jalan Parang Kusumo V, Desa/Kelurahan Tlogosari Kulon, Kec. Pedurungan, Kota Semarang, Provinsi Jawa Tengah, 50196
             </p>
             <div class="row g-4">
-                <div class="col-lg-6 mb-4 mb-lg-0">
+                <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right" data-aos-delay="200">
                     <iframe
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.190591427269!2d110.45487167460662!3d-6.986816993014149!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e708cc449126cd7%3A0xdbbeca96fe6ac732!2sJl.%20Parang%20Kusumo%20V%2C%20Tlogosari%20Kulon%2C%20Kec.%20Pedurungan%2C%20Kota%20Semarang%2C%20Jawa%20Tengah%2050196!5e0!3m2!1sid!2sid!4v1719762047373!5m2!1sid!2sid"
                         class="w-100 h-100 rounded" style="min-height: 400px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6" data-aos="fade-left" data-aos-delay="300">
                     <form>
                         <div class="mb-3">
                             <div class="input-group">

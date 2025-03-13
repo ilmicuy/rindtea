@@ -1,313 +1,414 @@
 @extends('layouts.home')
 
 @section('content')
-<!-- Single Page Header start -->
-<div class="single-page-header">
-    <h1 class="page-title">Checkout</h1>
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/">Home</a></li>
-        <li class="breadcrumb-item"><a href="#">Pages</a></li>
-        <li class="breadcrumb-item active">Checkout</li>
-    </ol>
-</div>
-<!-- Single Page Header End -->
-
-<!-- Checkout Page Start -->
-<div class="checkout-page">
-    <div class="container">
-        <h1 class="title">Billing details</h1>
-        <form method="post" id="frmCheckout" action="{{ route('checkout.store') }}" enctype="multipart/form-data">
-            @csrf
-            <div class="order-summary">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Produk</th>
-                            <th scope="col">Nama Produk</th>
-                            <th scope="col">Harga</th>
-                            <th scope="col">Jumlah</th>
-                            <th scope="col">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                        $total = 0;
-                        $weight = 0;
-                        $only_instant_shipping = false;
-                        @endphp
-                        @foreach ($checkouts as $checkout)
-                        @php
-                        $weight = $checkout->product->weight * $checkout->qty;
-                        $total = $checkout->product->price * $checkout->qty;
-
-                        $opsiPengiriman = json_decode($checkout->product->opsi_pengiriman, true);
-
-                        if (count($opsiPengiriman) === 1 && in_array('Instant', $opsiPengiriman)) {
-                            $only_instant_shipping = true;
-                        }
-                        @endphp
-                        <tr>
-                            <input type="hidden" id="weight" name="weight" value="{{ $weight }}">
-                            <th scope="row">
-                                <div class="product-image">
-                                    <img src="{{ Storage::url($checkout->product->photos) }}" class="product-img" alt="">
-                                </div>
-                            </th>
-                            <td class="product-name">{{ $checkout->product->name }}</td>
-                            <td class="product-price">
-                                <p class="rupiah" data-price="{{ $checkout->product->price }}"></p>
-                            </td>
-                            <td class="product-quantity">{{ $checkout->qty }}</td>
-                            <input type="hidden" name="qty" value="{{ $checkout->qty }}">
-                            <td class="product-total">
-                                <p class="rupiah" data-price="{{ $total }}"></p>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
-                <!-- Shipping and Total Section -->
-                <div class="checkout-summary">
-                    <div class="shipping-section">
-                        <div class="shipping-header">
-                            <h5 class="shipping-title"><i class='bx bx-map'></i> Delivery Address</h5>
-                            <a href="{{ route('address') }}" class="btn btn-outline-secondary btn-sm">Add a new address</a>
-                        </div>
-                        <div class="address-list">
-                            <div class="row">
-                                @forelse ($addresses as $address)
-                                <div class="col-lg-6 col-12 mb-4 address-card">
-                                    <div class="card card-body p-3">
-                                        <div class="form-check mb-4">
-                                            <input class="form-check-input delivery-address" value="{{ $address->id }}" type="radio" name="address_id" class="homeRadio">
-                                            <label class="form-check-label" for="homeRadio">{{ $address->label }}</label>
-                                        </div>
-                                        <address>
-                                            <strong>{{ $address->fullname }}</strong><br>
-                                            {{ $address->address }}<br>
-                                            {{ $address->regency_name }}<br>
-                                            {{ $address->province_name }}<br>
-                                            {{ $address->postcode }}<br>
-                                            <abbr title="Phone">P: {{ $address->phone }}</abbr>
-                                        </address>
-                                        <span class="text-danger">Default address</span>
-                                    </div>
-                                </div>
-                                @empty
-                                <div class="col-12">
-                                    <p>No address found</p>
-                                </div>
-                                @endforelse
-                            </div>
-                        </div>
-                        <h5 class="shipping-title"><i class='bx bxs-truck'></i> Delivery Service</h5>
-                        <div class="courier-options d-flex justify-content-start">
-                            @if(!$only_instant_shipping)
-                            <div class="shipping-option d-flex align-items-center mr-4">
-                                <input class="courier-code" type="radio" name="courier" id="inlineRadio1" value="jne">
-                                <label class="courier-label ml-2" for="inlineRadio1">JNE</label>
-                            </div>
-                            {{-- <div class="shipping-option d-flex align-items-center mr-4">
-                                <input class="courier-code" type="radio" name="courier" id="inlineRadio2" value="pos">
-                                <label class="courier-label ml-2" for="inlineRadio2">POS</label>
-                            </div>
-                            <div class="shipping-option d-flex align-items-center">
-                                <input class="courier-code" type="radio" name="courier" id="inlineRadio3" value="tiki">
-                                <label class="courier-label ml-2" for="inlineRadio3">TIKI</label>
-                            </div> --}}
-                            @endif
-
-                            <div class="shipping-option d-flex align-items-center">
-                                <input class="courier-code" type="radio" name="courier" id="inlineRadio4" value="lokal_kurir">
-                                <label class="courier-label ml-2" for="inlineRadio4">Lokal Kurir</label>
-                            </div>
-
-                            <div class="shipping-option d-flex align-items-center">
-                                <input class="courier-code" type="radio" name="courier" id="inlineRadio5" value="ambil_ditempat">
-                                <label class="courier-label ml-2" for="inlineRadio5">Ambil Ditempat</label>
-                            </div>
-                        </div>
-
-                        <div class="available-services-container">
-                            <p>Available services:</p>
-                            @if($only_instant_shipping)
-                                <p>Produk ini hanya menerima pengiriman Lokal Kurir atau Ambil Ditempat</p>
-                            @else
-                                <ul class="available-services" style="display: none;"></ul>
-                            @endif
-                        </div>
-
-                        <div class="shipping-cost">
-                            <h3>Shipping fee</h3>
-                            <p class="rupiah" data-price="0"></p>
-                        </div>
-
-                        <div class="total-section">
-                            @php
-                            $totalPrice = 0;
-                            @endphp
-                            @foreach ($checkouts as $checkout)
-                            @php $totalPrice += $checkout->product->price * $checkout->qty @endphp
-                            @endforeach
-                            <div class="total-summary">
-                                <div class="total-label">
-                                    <h3>TOTAL</h3>
-                                </div>
-                                <div class="total-amount">
-                                    <p class="rupiah" data-price="{{ $totalPrice }}">Rp
-                                        {{ number_format($totalPrice) }}
-                                    </p>
-                                    <input type="hidden" name="total_price" value="{{ $totalPrice }}">
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="place-order">
-                    <button type="submit" class="btn-submit" id="">Checkout</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
-<div class="modal" id="modal-showmap">
-    <div class="modal-container">
-        <a href="#" class="close-icon" data-dismiss="modal"><i data-feather="x"></i></a>
-        <div class="modal-content" id="modal-content">
-            <div id="map" style="height: 500px; width: 100%;"></div>
+    <!-- Single Page Header start -->
+    <div class="single-page-header py-5" style="background-color: var(--primary);" data-aos="fade-down">
+        <div class="container">
+            <h1 class="page-title mb-3">Checkout</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/cart">Cart</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+                </ol>
+            </nav>
         </div>
     </div>
-</div>
-<!-- Checkout Page End -->
+    <!-- Single Page Header End -->
+
+    <!-- Checkout Page Start -->
+    <div class="modern-checkout">
+        <div class="container">
+            <form method="post" id="frmCheckout" action="{{ route('checkout.store') }}" enctype="multipart/form-data">
+                @csrf
+                <div class="row g-4">
+                    <!-- Main Content -->
+                    <div class="col-lg-8">
+                        <!-- Order Summary -->
+                        <div class="checkout-card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title d-flex align-items-center mb-4">
+                                    <i class="fas fa-shopping-bag me-2"></i>
+                                    Order Summary
+                                </h5>
+                                <div class="table-responsive">
+                                    <table class="table table-dark table-hover mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Product</th>
+                                                <th scope="col">Price</th>
+                                                <th scope="col">Quantity</th>
+                                                <th scope="col">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @php
+                                                $total = 0;
+                                                $weight = 0;
+                                                $only_instant_shipping = false;
+                                            @endphp
+                                            @foreach ($checkouts as $checkout)
+                                                @php
+                                                    $weight = $checkout->product->weight * $checkout->qty;
+                                                    $total = $checkout->product->price * $checkout->qty;
+                                                    $opsiPengiriman = json_decode($checkout->product->opsi_pengiriman, true);
+                                                    if (count($opsiPengiriman) === 1 && in_array('Instant', $opsiPengiriman)) {
+                                                        $only_instant_shipping = true;
+                                                    }
+                                                @endphp
+                                                <tr>
+                                                    <input type="hidden" id="weight" name="weight" value="{{ $weight }}">
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="product-image me-3">
+                                                                <img src="{{ Storage::url($checkout->product->photos) }}"
+                                                                    alt="{{ $checkout->product->name }}">
+                                                            </div>
+                                                            <div>
+                                                                <h6 class="mb-1">{{ $checkout->product->name }}</h6>
+                                                                <small class="text-muted">Weight: {{ $checkout->product->weight }}g</small>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span class="rupiah" data-price="{{ $checkout->product->price }}"></span>
+                                                    </td>
+                                                    <td>{{ $checkout->qty }}</td>
+                                                    <input type="hidden" name="qty" value="{{ $checkout->qty }}">
+                                                    <td>
+                                                        <span class="rupiah" data-price="{{ $total }}"></span>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delivery Address -->
+                        <div class="checkout-card mb-4">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-map-marker-alt me-2"></i> Delivery Address
+                                    </h5>
+                                    <a href="{{ route('address') }}" class="btn btn-outline-primary">
+                                        <i class="fas fa-plus me-1"></i> Add New Address
+                                    </a>
+                                </div>
+
+                                <div class="row g-3">
+                                    @forelse ($addresses as $address)
+                                        <div class="col-md-6">
+                                            <div class="address-card {{ $address->is_default ? 'selected' : '' }}">
+                                                <div class="p-3">
+                                                    <div class="form-check mb-3">
+                                                        <input class="form-check-input delivery-address"
+                                                            type="radio"
+                                                            name="address_id"
+                                                            value="{{ $address->id }}"
+                                                            {{ $address->is_default ? 'checked' : '' }}>
+                                                        <label class="form-check-label fw-bold">
+                                                            {{ $address->label }}
+                                                            @if($address->is_default)
+                                                                <span class="badge bg-primary ms-2">Default</span>
+                                                            @endif
+                                                        </label>
+                                                    </div>
+                                                    <address class="mb-0">
+                                                        <strong>{{ $address->fullname }}</strong><br>
+                                                        {{ $address->address }}<br>
+                                                        {{ $address->regency_name }}, {{ $address->province_name }}<br>
+                                                        {{ $address->postcode }}<br>
+                                                        <i class="fas fa-phone me-1"></i> {{ $address->phone }}
+                                                    </address>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <div class="col-12">
+                                            <div class="alert alert-warning mb-0">
+                                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                                No address found. Please add a delivery address.
+                                            </div>
+                                        </div>
+                                    @endforelse
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delivery Service -->
+                        <div class="checkout-card">
+                            <div class="card-body">
+                                <h5 class="card-title mb-4">
+                                    <i class="fas fa-truck me-2"></i> Delivery Service
+                                </h5>
+
+                                <div class="delivery-options mb-4">
+                                    @if(!$only_instant_shipping)
+                                        <div class="delivery-option">
+                                            <div class="form-check">
+                                                <input class="form-check-input courier-code" type="radio" name="courier" id="jne" value="jne">
+                                                <label class="form-check-label d-flex align-items-center" for="jne">
+                                                    <img src="{{ asset('assets/img/jne.png') }}" alt="JNE" height="30" class="me-3">
+                                                    <span>JNE Express</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    <div class="delivery-option">
+                                        <div class="form-check">
+                                            <input class="form-check-input courier-code" type="radio" name="courier" id="lokal_kurir" value="lokal_kurir">
+                                            <label class="form-check-label d-flex align-items-center" for="lokal_kurir">
+                                                <i class="fas fa-motorcycle me-3 fa-lg"></i>
+                                                <span>Local Courier</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="delivery-option">
+                                        <div class="form-check">
+                                            <input class="form-check-input courier-code" type="radio" name="courier" id="ambil_ditempat" value="ambil_ditempat">
+                                            <label class="form-check-label d-flex align-items-center" for="ambil_ditempat">
+                                                <i class="fas fa-store me-3 fa-lg"></i>
+                                                <span>Pick Up at Store</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="available-services-container">
+                                    @if($only_instant_shipping)
+                                        <div class="alert alert-info mb-0">
+                                            <i class="fas fa-info-circle me-2"></i>
+                                            This product is only available for Local Courier or Pick Up delivery.
+                                        </div>
+                                    @else
+                                        <div class="available-services" style="display: none;"></div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order Summary Sidebar -->
+                    <div class="col-lg-4">
+                        <div class="order-summary">
+                            <h5 class="mb-4">Order Total</h5>
+
+                            @php
+                                $totalPrice = 0;
+                                foreach ($checkouts as $checkout) {
+                                    $totalPrice += $checkout->product->price * $checkout->qty;
+                                }
+                            @endphp
+
+                            <div class="summary-item">
+                                <span>Subtotal</span>
+                                <span class="rupiah" data-price="{{ $totalPrice }}"></span>
+                            </div>
+
+                            <div class="summary-item">
+                                <span>Shipping Fee</span>
+                                <span class="rupiah shipping-cost" data-price="0">-</span>
+                            </div>
+
+                            <div class="summary-item">
+                                <strong>Total</strong>
+                                <strong class="rupiah total-amount" data-price="{{ $totalPrice }}"></strong>
+                            </div>
+
+                            <input type="hidden" name="total_price" value="{{ $totalPrice }}">
+
+                            <button type="submit" class="btn-checkout mt-4">
+                                <i class="fas fa-lock me-2"></i> Place Order
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Checkout Page End -->
 @endsection
 
 @push('myscript')
 <script>
-    @if(session('success'))
-        Swal.fire({
-            title: 'Alamat berhasil ditambahkan!',
-            icon: 'success',
-            confirmButtonText: 'OK'
-        });
-    @endif
+$(document).ready(function() {
+    // Format rupiah
+    function formatRupiah(price) {
+        return new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(price);
+    }
 
+    $('.rupiah').each(function() {
+        var price = $(this).data('price');
+        $(this).text(formatRupiah(price));
+    });
+
+    // Form validation
     $("#frmCheckout").submit(function(event) {
         var address = $("input[name='address_id']:checked").val();
-        var courier = $(".courier-code").is(":checked");
+        var courier = $("input[name='courier']:checked").val();
 
         if (!address) {
-            alert('Please select a delivery address.');
+            Swal.fire({
+                icon: 'warning',
+                title: 'Address Required',
+                text: 'Please select a delivery address to continue.',
+            });
             event.preventDefault();
             return false;
         }
 
         if (!courier) {
-            alert('Please select a delivery option.');
+            Swal.fire({
+                icon: 'warning',
+                title: 'Delivery Service Required',
+                text: 'Please select a delivery service to continue.',
+            });
             event.preventDefault();
             return false;
         }
     });
 
-    $(function() {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
+    // Delivery address selection
+    $('.delivery-address').change(function() {
+        $('.courier-code').prop('checked', false);
+        $('.available-services').hide().html('');
+        updateTotalAmount(0);
 
-        $(document).ready(function() {
-            $('.delivery-address').change(function() {
-                $('.courier-code').prop('checked', false);
-                $('.available-services').hide();
-                $('.available-services').html('');
-            });
-
-            $('.courier-code').click(function() {
-                let courier = $(this).val();
-                let weight = $('#weight').val();
-                let addressID = $('.delivery-address:checked').val();
-
-                if (addressID) {
-                    $.ajax({
-                        url: "{{ route('shippingfee') }}",
-                        method: "POST",
-                        data: {
-                            address_id: addressID,
-                            courier: courier,
-                            weight: weight,
-                            _token: $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function(result) {
-                            if(courier == 'lokal_kurir'){
-                                let lokal_kurir_price = result.total;
-
-                                $('.available-services').show();
-                                $('.available-services').html(`
-                                    <table>
-                                        <tr>
-                                            <th>Ongkos Kirim Lokal Kurir</th>
-                                            <td>${rupiah(result.tarif_lokal_kurir_per_km)}/Km</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Jarak Kirim</th>
-                                            <td>${result.distance_in_km}Km</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Total Ongkos Kirim</th>
-                                            <td>${rupiah(lokal_kurir_price)}</td>
-                                        </tr>
-                                    </table>
-                                `);
-
-                                var originalTotalPrice = parseFloat($(".total-amount .rupiah").attr('data-price')) || 0;
-                                var currentShippingCost = parseFloat($(".shipping-cost .rupiah").attr('data-price')) || 0;
-
-                                var newTotalPrice = originalTotalPrice - currentShippingCost + lokal_kurir_price;
-
-                                $(".shipping-cost .rupiah").attr('data-price', lokal_kurir_price).text(rupiah(lokal_kurir_price));
-                                $(".total-amount .rupiah").attr('data-price', newTotalPrice).text(rupiah(newTotalPrice));
-                                $("input[name='total_price']").val(newTotalPrice);
-                            }else if(courier == 'ambil_ditempat'){
-                                $('.available-services').show();
-                                $('.available-services').html(`
-                                    <table>
-                                        <tr>
-                                            <th>Biaya Ambil Di Tempat</th>
-                                            <td>${rupiah(0)}</td>
-                                        </tr>
-                                    </table>
-                                `);
-
-                                var originalTotalPrice = parseFloat($(".total-amount .rupiah").attr('data-price')) || 0;
-                                var currentShippingCost = parseFloat($(".shipping-cost .rupiah").attr('data-price')) || 0;
-
-                                var newTotalPrice = originalTotalPrice - currentShippingCost;
-
-                                $(".shipping-cost .rupiah").attr('data-price', 0).text(rupiah(0));
-                                $(".total-amount .rupiah").attr('data-price', newTotalPrice).text(rupiah(newTotalPrice));
-                                $("input[name='total_price']").val(newTotalPrice);
-                            }else{
-                                $('.available-services').show();
-                                $('.available-services').html(result);
-                            }
-                        },
-                        error: function(e) {
-                            console.log(e);
-                        }
-                    });
-                } else {
-                    alert('Please select a delivery address first.');
-                }
-
-                if(courier == 'lokal_kurir' || courier == 'ambil_ditempat') {
-                    $('.available-services').hide();
-                    $('.available-services').html('');
-                }
-            });
-        });
+        // Update selected state
+        $('.address-card').removeClass('selected');
+        $(this).closest('.address-card').addClass('selected');
     });
+
+    // Courier selection
+    $('.courier-code').click(function() {
+        let courier = $(this).val();
+        let weight = $('#weight').val();
+        let addressID = $('.delivery-address:checked').val();
+
+        // Update selected state
+        $('.delivery-option').removeClass('selected');
+        $(this).closest('.delivery-option').addClass('selected');
+
+        if (!addressID) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Address Required',
+                text: 'Please select a delivery address first.',
+            });
+            $(this).prop('checked', false);
+            return;
+        }
+
+        if (courier === 'lokal_kurir' || courier === 'ambil_ditempat') {
+            handleLocalDelivery(courier);
+        } else {
+            getShippingCost(addressID, courier, weight);
+        }
+    });
+
+    // Handle local delivery options
+    function handleLocalDelivery(type) {
+        $('.available-services').hide().html('');
+
+        if (type === 'lokal_kurir') {
+            $.ajax({
+                url: "{{ route('shippingfee') }}",
+                method: "POST",
+                data: {
+                    address_id: $('.delivery-address:checked').val(),
+                    courier: type,
+                    weight: $('#weight').val(),
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(result) {
+                    updateLocalDeliveryUI(result);
+                },
+                error: handleAjaxError
+            });
+        } else {
+            // Pick up option
+            updateTotalAmount(0);
+            $('.available-services').show().html(`
+                <div class="alert alert-success mb-0">
+                    <i class="fas fa-info-circle me-2"></i>
+                    No delivery fee for pick up orders
+                </div>
+            `);
+        }
+    }
+
+    // Get shipping cost for regular couriers
+    function getShippingCost(addressID, courier, weight) {
+        $.ajax({
+            url: "{{ route('shippingfee') }}",
+            method: "POST",
+            data: {
+                address_id: addressID,
+                courier: courier,
+                weight: weight,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(result) {
+                $('.available-services').show().html(result);
+            },
+            error: handleAjaxError
+        });
+    }
+
+    // Update UI for local delivery
+    function updateLocalDeliveryUI(result) {
+        let localPrice = result.total;
+        updateTotalAmount(localPrice);
+
+        $('.available-services').show().html(`
+            <div class="shipping-info">
+                <table class="table-sm mb-0">
+                    <tr>
+                        <th>Local Delivery Fee</th>
+                        <td class="text-end">${formatRupiah(result.tarif_lokal_kurir_per_km)}/Km</td>
+                    </tr>
+                    <tr>
+                        <th>Distance</th>
+                        <td class="text-end">${result.distance_in_km} Km</td>
+                    </tr>
+                    <tr class="border-top">
+                        <th>Total Delivery Fee</th>
+                        <td class="text-end">${formatRupiah(localPrice)}</td>
+                    </tr>
+                </table>
+            </div>
+        `);
+    }
+
+    // Update total amount
+    function updateTotalAmount(shippingCost) {
+        let subtotal = parseFloat($(".total-amount").attr('data-price')) || 0;
+        let currentShipping = parseFloat($(".shipping-cost").attr('data-price')) || 0;
+        let newTotal = subtotal - currentShipping + shippingCost;
+
+        $(".shipping-cost").attr('data-price', shippingCost).text(formatRupiah(shippingCost));
+        $(".total-amount").attr('data-price', newTotal).text(formatRupiah(newTotal));
+        $("input[name='total_price']").val(newTotal);
+    }
+
+    // Handle AJAX errors
+    function handleAjaxError() {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong! Please try again.'
+        });
+    }
+});
 </script>
 @endpush

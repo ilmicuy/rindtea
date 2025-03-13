@@ -72,6 +72,7 @@ Route::group(['middleware' => ['auth', 'redirect_to_admin', 'verified']], functi
 
     Route::get('/address', [AddressController::class, 'index'])->name('address');
     Route::post('/address/store', [AddressController::class, 'store'])->name('address.store');
+    Route::get('/get-cities', [AddressController::class, 'getCities'])->name('get.cities');
 });
 
 Route::group(['middleware' => ['auth', 'admin']], function () {
