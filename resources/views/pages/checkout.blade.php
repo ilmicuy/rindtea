@@ -151,7 +151,9 @@
                                             <div class="form-check">
                                                 <input class="form-check-input courier-code" type="radio" name="courier" id="jne" value="jne">
                                                 <label class="form-check-label d-flex align-items-center" for="jne">
-                                                    <img src="{{ asset('assets/img/jne.png') }}" alt="JNE" height="30" class="me-3">
+                                                    <div class="ms-2 me-2 courier-logo bg-white p-2 rounded">
+                                                        <img src="{{ asset('assets/img/jne.png') }}" alt="JNE" height="30" class="me-3">
+                                                    </div>
                                                     <span>JNE Express</span>
                                                 </label>
                                             </div>

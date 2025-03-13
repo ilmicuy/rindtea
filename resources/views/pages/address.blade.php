@@ -28,6 +28,25 @@
         width: 12px;
         height: 12px;
     }
+
+    /* Add these styles for clickable radio cards */
+    .radio-card {
+        cursor: pointer;
+        padding: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .radio-card:hover {
+        background-color: rgba(255, 255, 255, 0.08);
+        border-color: var(--primary);
+    }
+
+    .radio-card.selected {
+        background-color: rgba(249, 202, 122, 0.1);
+        border-color: var(--primary);
+    }
 </style>
 
 <!-- Link to Select2 CSS -->
@@ -60,17 +79,21 @@
                             <div class="mb-4">
                                 <h5 class="mb-3">Jenis Alamat</h5>
                                 <div class="d-flex gap-4">
-                                    <div class="form-check">
-                                        <input id="kantor" class="form-check-input" type="radio" name="label" value="Kantor">
-                                        <label class="form-check-label" for="kantor">
-                                            <i class="fas fa-building me-2"></i>Kantor
-                                        </label>
+                                    <div class="radio-card">
+                                        <div class="form-check">
+                                            <input id="kantor" class="form-check-input" type="radio" name="label" value="Kantor">
+                                            <label class="form-check-label" for="kantor">
+                                                <i class="fas fa-building me-2"></i>Kantor
+                                            </label>
+                                        </div>
                                     </div>
-                                    <div class="form-check">
-                                        <input id="rumah" class="form-check-input" type="radio" name="label" value="Rumah">
-                                        <label class="form-check-label" for="rumah">
-                                            <i class="fas fa-home me-2"></i>Rumah
-                                        </label>
+                                    <div class="radio-card">
+                                        <div class="form-check">
+                                            <input id="rumah" class="form-check-input" type="radio" name="label" value="Rumah">
+                                            <label class="form-check-label" for="rumah">
+                                                <i class="fas fa-home me-2"></i>Rumah
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -357,6 +380,22 @@
             const cityName = $(this).find(':selected').text();
             $("input[name='regency_name']").val(cityName);
         });
+
+        // Add this code for radio card functionality
+        $('.radio-card').click(function() {
+            // Find the radio input within this card
+            const radio = $(this).find('input[type="radio"]');
+
+            // Check the radio
+            radio.prop('checked', true);
+
+            // Remove selected class from all cards and add to clicked one
+            $('.radio-card').removeClass('selected');
+            $(this).addClass('selected');
+        });
+
+        // Initialize selected state if a radio is already checked
+        $('input[type="radio"]:checked').closest('.radio-card').addClass('selected');
     });
 </script>
 
