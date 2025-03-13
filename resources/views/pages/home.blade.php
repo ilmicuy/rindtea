@@ -179,6 +179,71 @@
 @push('myscript')
     <script>
         $(document).ready(function() {
+            // Scroll spy functionality
+            function updateActiveSection() {
+                const sections = $('section[id]');  // Get all sections with IDs
+                let currentSection = '';
+
+                sections.each(function() {
+                    const sectionTop = $(this).offset().top;
+                    const sectionBottom = sectionTop + $(this).outerHeight();
+                    const scrollPosition = $(window).scrollTop();
+                    const buffer = 200; // Adjust this value to change when the section becomes active
+
+                    // Check if we're scrolled into the section (accounting for navbar height)
+                    if (scrollPosition >= sectionTop - buffer &&
+                        scrollPosition < sectionBottom - buffer) {
+                        currentSection = $(this).attr('id');
+                        return false; // Break the loop
+                    }
+                });
+
+                // Update navbar links active state
+                $('.nav-scroll').removeClass('active');
+                if (currentSection) {
+                    $(`.nav-scroll[data-section="${currentSection}"]`).addClass('active');
+                } else if ($(window).scrollTop() <= 100) {
+                    // If at the top of the page, activate home
+                    $('.nav-scroll[data-section="home"]').addClass('active');
+                }
+            }
+
+            // Throttle scroll event for better performance
+            let scrollTimeout;
+            $(window).on('scroll', function() {
+                if (scrollTimeout) {
+                    clearTimeout(scrollTimeout);
+                }
+                scrollTimeout = setTimeout(function() {
+                    updateActiveSection();
+                }, 50);
+            });
+
+            // Update on page load
+            updateActiveSection();
+
+            // Update on any dynamic content changes
+            $(window).on('load', function() {
+                updateActiveSection();
+            });
+
+            // Smooth scroll for anchor links
+            $('.nav-scroll').on('click', function(e) {
+                if (this.hash !== "") {
+                    e.preventDefault();
+                    const hash = this.hash;
+                    const target = $(hash);
+
+                    if (target.length) {
+                        $('html, body').animate({
+                            scrollTop: target.offset().top - 80
+                        }, 800, function() {
+                            updateActiveSection();
+                        });
+                    }
+                }
+            });
+
             // Initialize map
             var map = L.map('contact-map').setView([-6.986817, 110.454872], 16);
 

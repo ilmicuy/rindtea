@@ -6,19 +6,19 @@
         <div class="navbar-nav d-none d-lg-flex">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="/">Home</a>
+                    <a class="nav-link nav-scroll" href="/" data-section="home">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ request()->routeIs('home') ? '#about' : route('home') . '#about' }}">Tentang Kami</a>
+                    <a class="nav-link nav-scroll" href="{{ request()->routeIs('home') ? '#about' : route('home') . '#about' }}" data-section="about">Tentang Kami</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ request()->routeIs('home') ? '#menu' : route('home') . '#menu' }}">Menu</a>
+                    <a class="nav-link nav-scroll" href="{{ request()->routeIs('home') ? '#menu' : route('home') . '#menu' }}" data-section="menu">Menu</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ request()->routeIs('home') ? '#products' : route('home') . '#products' }}">Produk</a>
+                    <a class="nav-link nav-scroll" href="{{ request()->routeIs('home') ? '#products' : route('home') . '#products' }}" data-section="products">Produk</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ request()->routeIs('home') ? '#contact' : route('home') . '#contact' }}">Kontak</a>
+                    <a class="nav-link nav-scroll" href="{{ request()->routeIs('home') ? '#contact' : route('home') . '#contact' }}" data-section="contact">Kontak</a>
                 </li>
             </ul>
         </div>
