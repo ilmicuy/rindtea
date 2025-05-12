@@ -175,6 +175,10 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('/inbox/create', [InboxController::class, 'create'])->name('inbox.create');
     Route::post('/inbox', [InboxController::class, 'store'])->name('inbox.store');
     Route::get('/inbox/{id}', [InboxController::class, 'show'])->name('inbox.show');
+
+    // Variant Group
+    Route::get('/variant-group', [ProductController::class, 'variantGroupIndex'])->name('product.variantGroupIndex');
+    Route::post('/variant-group/delete', [ProductController::class, 'variantGroupDelete'])->name('product.variantGroupDelete');
 });
 
 Route::post('/midtrans-callback', [CheckoutController::class, 'callback'])->name('midtrans.callback');
