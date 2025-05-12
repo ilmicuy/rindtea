@@ -112,7 +112,7 @@
                 </a>
                 <ul class="dropdown-menu small">
                     <li class="menu-content ps-menu">
-                        <a href="#">
+                        <a href="{{ route('admin.profile.edit') }}">
                             <div class="description">
                                 <i class="ti-user"></i> Profile
                             </div>
