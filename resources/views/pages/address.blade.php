@@ -79,18 +79,18 @@
                             <div class="mb-4">
                                 <h5 class="mb-3">Jenis Alamat</h5>
                                 <div class="d-flex gap-4">
-                                    <div class="radio-card">
-                                        <div class="form-check">
+                                    <div class="address-card radio-card" id="card-kantor">
+                                        <div class="form-check mb-0">
                                             <input id="kantor" class="form-check-input" type="radio" name="label" value="Kantor">
-                                            <label class="form-check-label" for="kantor">
+                                            <label class="form-check-label fw-bold" for="kantor">
                                                 <i class="fas fa-building me-2"></i>Kantor
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="radio-card">
-                                        <div class="form-check">
+                                    <div class="address-card radio-card" id="card-rumah">
+                                        <div class="form-check mb-0">
                                             <input id="rumah" class="form-check-input" type="radio" name="label" value="Rumah">
-                                            <label class="form-check-label" for="rumah">
+                                            <label class="form-check-label fw-bold" for="rumah">
                                                 <i class="fas fa-home me-2"></i>Rumah
                                             </label>
                                         </div>
@@ -266,7 +266,7 @@
 
         // Add delivery radius circle
         L.circle([sellerLocation.lat, sellerLocation.lng], {
-            radius: 10000, // 10 km in meters
+            radius: 5000, // 5km in meters
             color: '#AA0000',
             fillColor: '#AA0000',
             fillOpacity: 0.2,
@@ -381,21 +381,19 @@
             $("input[name='regency_name']").val(cityName);
         });
 
-        // Add this code for radio card functionality
-        $('.radio-card').click(function() {
-            // Find the radio input within this card
-            const radio = $(this).find('input[type="radio"]');
-
-            // Check the radio
-            radio.prop('checked', true);
-
-            // Remove selected class from all cards and add to clicked one
-            $('.radio-card').removeClass('selected');
-            $(this).addClass('selected');
+        // Card-style radio for Jenis Alamat
+        $('.address-card.radio-card').css('cursor', 'pointer').click(function(e) {
+            if (!$(e.target).is('input[type="radio"]')) {
+                $(this).find('input[type="radio"]').prop('checked', true).trigger('change');
+            }
         });
-
-        // Initialize selected state if a radio is already checked
-        $('input[type="radio"]:checked').closest('.radio-card').addClass('selected');
+        // Highlight selected
+        $('input[name="label"]').change(function() {
+            $('.address-card.radio-card').removeClass('selected');
+            $(this).closest('.address-card.radio-card').addClass('selected');
+        });
+        // Init highlight if already checked
+        $('input[name="label"]:checked').closest('.address-card.radio-card').addClass('selected');
     });
 </script>
 
