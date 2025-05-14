@@ -24,10 +24,16 @@
                 <span>Produk</span>
             </li>
 
-            <li class="{{ request()->routeIs('product.*') && !request()->routeIs('product.productTransactions') ? 'active' : '' }}">
+            <li class="{{ request()->routeIs('product.index') ? 'active' : '' }}">
                 <a href="{{ route('product.index') }}" class="link">
                     <i class="fas fa-box"></i>
                     <span>Produk</span>
+                </a>
+            </li>
+            <li class="{{ request()->routeIs('product.variantGroupIndex') ? 'active' : '' }}">
+                <a href="{{ route('product.variantGroupIndex') }}" class="link">
+                    <i class="fas fa-layer-group"></i>
+                    <span>Kelola Grup Varian Produk</span>
                 </a>
             </li>
             @endhasanyrole

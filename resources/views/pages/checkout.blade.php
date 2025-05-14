@@ -432,6 +432,21 @@ $(document).ready(function() {
             text: 'Something went wrong! Please try again.'
         });
     }
+
+    // Address card click behaviour
+    $('.address-card').css('cursor', 'pointer').click(function(e) {
+        // Hindari double trigger jika klik pada radio
+        if (!$(e.target).is('input[type="radio"]')) {
+            $(this).find('input[type="radio"]').prop('checked', true).trigger('click');
+        }
+    });
+
+    // Delivery option click behaviour
+    $('.delivery-option').css('cursor', 'pointer').click(function(e) {
+        if (!$(e.target).is('input[type="radio"]')) {
+            $(this).find('input[type="radio"]').prop('checked', true).trigger('click');
+        }
+    });
 });
 </script>
 @endpush

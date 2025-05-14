@@ -227,4 +227,22 @@ class ProductController extends Controller
 
         return redirect()->route('product.index');
     }
+
+
+    // Tampilkan halaman manajemen grup varian
+    public function variantGroupIndex()
+    {
+        $groups = Product::whereNotNull('variant_grouping')
+            ->distinct()
+            ->pluck('variant_grouping');
+        return view('pages.admin.product.variant-group', compact('groups'));
+    }
+
+    // Hapus grup varian (set null pada produk terkait)
+    public function variantGroupDelete(Request $request)
+    {
+        $group = $request->input('group');
+        Product::where('variant_grouping', $group)->update(['variant_grouping' => null]);
+        return redirect()->route('product.variantGroupIndex')->with('success', 'Grup varian berhasil dihapus.');
+    }
 }

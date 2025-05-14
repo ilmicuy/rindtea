@@ -90,6 +90,10 @@ class RequestProductController extends Controller
         // Get users with 'produksi' role
         $getProduksiUser = User::role('produksi')->get();
 
+        // Get owner user
+        $getOwnerUser = User::role('owner')->first();
+        Mail::to($getOwnerUser->email)->send(new \App\Mail\RequestCreateNotificationEmail('request_product', $getRequestProduct, $getOwnerUser));
+
         foreach ($getProduksiUser as $user) {
             // Send email
             Mail::to($user->email)->send(new \App\Mail\RequestCreateNotificationEmail('request_product', $getRequestProduct, $user));

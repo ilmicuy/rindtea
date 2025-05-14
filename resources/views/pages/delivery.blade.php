@@ -122,7 +122,7 @@
 
             // Add delivery radius circle
             L.circle([sellerLocation.lat, sellerLocation.lng], {
-                radius: 10000, // 10 km in meters
+                radius: 5000, // 5km in meters
                 color: '#AA0000',
                 fillColor: '#AA0000',
                 fillOpacity: 0.2,

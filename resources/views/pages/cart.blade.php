@@ -28,7 +28,7 @@
                                     <i class="fas fa-shopping-bag me-2"></i>
                                     Cart Items
                                 </h5>
-                                <div class="table-responsive">
+                                <div class="table-responsive d-none d-md-block">
                                     <table class="table table-dark table-hover mb-0">
                                         <thead>
                                             <tr>
@@ -89,6 +89,62 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+                                </div>
+
+                                <!-- Mobile View -->
+                                <div class="d-md-none">
+                                    @foreach ($carts as $cart)
+                                        <div class="card mb-3 bg-dark text-white">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                                    <div class="product-info d-flex">
+                                                        <div class="product-image me-3">
+                                                            <img src="{{ Storage::url($cart->product->photos) }}"
+                                                                alt="{{ $cart->product->name }}" style="width: 80px; height: 80px; object-fit: cover;">
+                                                        </div>
+                                                        <div>
+                                                            <h6 class="product-name mb-1">{{ $cart->product->name }}</h6>
+                                                            <small class="product-weight">Weight: {{ $cart->product->weight }}g</small>
+                                                        </div>
+                                                    </div>
+                                                    <form action="{{ route('cart-delete', $cart->id) }}" method="POST" class="d-inline">
+                                                        @method('DELETE')
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-link text-danger p-0">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <span>Price:</span>
+                                                    <span class="rupiah" data-price="{{ $cart->product->price }}"></span>
+                                                </div>
+
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <span>Quantity:</span>
+                                                    <div class="quantity-wrapper" style="width: 120px;">
+                                                        <div class="input-group">
+                                                            <button class="btn btn-outline-secondary btn-sm btn-minus" type="button" data-id="{{ $cart->id }}">
+                                                                <i class="fas fa-minus"></i>
+                                                            </button>
+                                                            <input type="number" class="form-control form-control-sm text-center qty-input"
+                                                                value="{{ $cart->qty }}" min="1" data-id="{{ $cart->id }}">
+                                                            <button class="btn btn-outline-secondary btn-sm btn-plus" type="button" data-id="{{ $cart->id }}">
+                                                                <i class="fas fa-plus"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span>Total:</span>
+                                                    @php $total = $cart->product->price * $cart->qty @endphp
+                                                    <span class="rupiah" data-price="{{ $total }}"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
